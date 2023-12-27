@@ -23,7 +23,7 @@ static const struct proc proc_versions[] = {
         .p_list_le_prev = 0x8,
         .task           = 0,
         .p_pid          = 0x60,
-        .p_fd_fd_ofiles = 0xf8,
+        .p_fd_fd_ofiles = 0x100,
         .object_size    = 0x530
     }, // iOS 16.0 - 16.1 arm64
     

@@ -13,7 +13,7 @@ struct uthread {
 
 static const struct uthread uthread_versions[] = {
     // Note: sizes below here are wrong idc
-    { .object_size = 0x1b0 }, // iOS 16.0 - 16.1 arm64
+    { .object_size = 0x200 }, // iOS 16.0 - 16.1 arm64
     { .object_size = 0x1b0 }, // iOS 16.2 - 16.3 arm64
     { .object_size = 0x1b0 }, // iOS 16.4 - 16.6 arm64
 };
