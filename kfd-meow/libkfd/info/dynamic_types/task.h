@@ -40,6 +40,14 @@ static const struct task task_versions[] = {
         .itk_space      = 0x300,
         .object_size    = 0x640
     }, // iOS 16.4 - 16.6 arm64
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x50,
+        .threads_prev   = 0x58,
+        .itk_space      = 0x300,
+        .object_size    = 0x608
+    }, // iOS 17.0 beta 1 arm64
 };
 
 typedef uint64_t task_map_t;

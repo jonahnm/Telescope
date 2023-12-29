@@ -40,6 +40,14 @@ static const struct thread thread_versions[] = {
         .thread_id         = 0x3f0,
         .object_size       = 0x498
     }, // iOS 16.4 - 16.6 arm64
+    
+    {
+        .task_threads_next = 0x378,
+        .task_threads_prev = 0x380,
+        .map               = 0x390,
+        .thread_id         = 0x430,
+        .object_size       = 0x4c8
+    }, // iOS 17.0 beta 1 arm64
 };
 
 typedef uint64_t thread_task_threads_next_t;

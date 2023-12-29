@@ -41,6 +41,14 @@ static const struct kqworkloop kqworkloop_versions[] = {
         .kqwl_dynamicid = 0xe8,
         .object_size    = 0x108
     }, // iOS 16.4 - 16.6 arm64
+    
+    {
+        .kqwl_state     = 0x10,
+        .kqwl_p         = 0x18,
+        .kqwl_owner     = 0xd0,
+        .kqwl_dynamicid = 0xe8,
+        .object_size    = 0x108
+    }, // iOS 17.0 beta 1 arm64
 };
 
 typedef uint16_t kqworkloop_kqwl_state_t;

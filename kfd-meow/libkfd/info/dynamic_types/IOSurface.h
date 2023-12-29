@@ -46,6 +46,15 @@ static const struct IOSurface IOSurface_versions[] = {
         .IndexedTimestampPtr    = 0x368,
         .ReadDisplacement       = 0x18
     }, // iOS 16.4 - 16.6 arm64
+    
+    {
+        .isa                    = 0x0,
+        .PixelFormat            = 0xAC,
+        .AllocSize              = 0xB4,
+        .UseCountPtr            = 0xC8,
+        .IndexedTimestampPtr    = 0x390,
+        .ReadDisplacement       = 0x18
+    }, // iOS 17.0 beta 1 arm64
 };
 
 typedef uint64_t IOSurface_isa_t;

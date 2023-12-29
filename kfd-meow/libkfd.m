@@ -21,6 +21,9 @@
 #include <mach-o/reloc.h>
 
 int isAvailable(void) {
+    if (@available(iOS 17.0, *)) {
+        return 3;
+    }
     if (@available(iOS 16.4, *)) {
         return 2;
     }
