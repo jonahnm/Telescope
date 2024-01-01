@@ -9,6 +9,7 @@
 
 #include "puaf/smith.h"
 #include "puaf/physpuppet.h"
+#include "puaf/landa.h"
 
 // Forward declarations for helper functions.
 extern void puaf_helper_get_vm_map_first_and_last(uint64_t* first_out, uint64_t* last_out);

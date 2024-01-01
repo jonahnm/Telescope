@@ -26,7 +26,7 @@ uint64_t _kfd = 0;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        _kfd = kopen(MEOW_EXPLOIT_SMITH);
+        _kfd = kopen(MEOW_EXPLOIT_LANDA);
         
         if(_kfd) {
             

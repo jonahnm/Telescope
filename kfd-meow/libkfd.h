@@ -15,6 +15,7 @@
 
 #define MEOW_EXPLOIT_PHYSPUPPET (1 << 0)
 #define MEOW_EXPLOIT_SMITH      (1 << 1)
+#define MEOW_EXPLOIT_LANDA      (1 << 2)
 
 #define KERNEL_BASE_ADDRESS     0xFFFFFFF007004000
 
