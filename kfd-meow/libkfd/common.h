@@ -99,8 +99,8 @@
         if (!(condition)) {                                             \
             print_failure("assertion failed: (%s)", #condition);        \
             print_failure("file: %s, line: %d", __FILE__, __LINE__);    \
-            print_failure("... sleep(30) before exit(1) ...");          \
-            sleep(30);                                                  \
+            print_failure("... sleep(3) before exit(1) ...");          \
+            sleep(3);                                                  \
             exit(1);                                                    \
         }                                                               \
     } while (0)

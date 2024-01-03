@@ -12,7 +12,7 @@ static unsigned char header[0x4000];
 static uint64_t find_prev_insn_kread(uint64_t vaddr, uint32_t num, uint32_t insn, uint32_t mask) {
     uint32_t from = 0;
     while(num) {
-        from = kread32(vaddr);
+        from = kread32_kfd(vaddr);
         if((from & mask) == (insn & mask)) {
             return vaddr;
         }
@@ -26,11 +26,11 @@ static uint64_t search_proc_set_ucred_kread(uint64_t vaddr, uint64_t size) {
     vaddr += 0x400000; // maybe
     
     for(uint64_t i = 0; i < (size - 0x400000); i += 4) {
-        if(kread32(vaddr + i + 0) == 0x910023e3) { // add x3, sp, #0x8
-            if(kread32(vaddr + i + 4) == 0x528000a0) { // mov w0, #0x5
-                if(kread32(vaddr + i + 8) == 0x52800402) { // mov w2, #0x20
-                    if(kread32(vaddr + i + 12) == 0x52800104) { // mov w4, #0x8
-                        if((kread32(vaddr + i + 16) & 0xfc000000) == 0x94000000) { // bl _xxx
+        if(kread32_kfd(vaddr + i + 0) == 0x910023e3) { // add x3, sp, #0x8
+            if(kread32_kfd(vaddr + i + 4) == 0x528000a0) { // mov w0, #0x5
+                if(kread32_kfd(vaddr + i + 8) == 0x52800402) { // mov w2, #0x20
+                    if(kread32_kfd(vaddr + i + 12) == 0x52800104) { // mov w4, #0x8
+                        if((kread32_kfd(vaddr + i + 16) & 0xfc000000) == 0x94000000) { // bl _xxx
                             // pongoOS
                             // Most reliable marker of a stack frame seems to be "add x29, sp, 0x...".
                             uint64_t frame = find_prev_insn_kread(vaddr + i, 2000, 0x910003fd, 0xff8003ff);
@@ -63,7 +63,7 @@ void offsetfinder64_kread(void)
     if(!kernel_base) return;
     
     memset(&header, 0, 0x4000);
-    kreadbuf(kernel_base, &header, 0x4000);
+    kreadbuf_kfd(kernel_base, &header, 0x4000);
     
     const struct mach_header_64 *hdr = (struct mach_header_64 *)header;
     const uint8_t *q = NULL;

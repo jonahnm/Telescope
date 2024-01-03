@@ -32,11 +32,11 @@ uint64_t _kfd = 0;
             
             NSLog(@"Success");
             
-            meow();
+            if(!isarm64e())
+                meow();
             
-            if(_kfd) {
+            if(_kfd)
                 kclose(_kfd);
-            }
         }
         
     });

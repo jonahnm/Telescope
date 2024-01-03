@@ -38,6 +38,7 @@ struct info {
         uint64_t tid;
         uint64_t vid;
         bool     ios;
+        uint64_t exploit_type;
         uint64_t maxfilesperproc;
     } env;
     struct {
@@ -133,6 +134,7 @@ extern uint64_t _kfd;
  * The public API of libkfd.
  */
 
+bool isarm64e(void);
 int isAvailable(void);
 
 struct kfd* kfd_init(uint64_t exploit_type);
@@ -143,8 +145,15 @@ void kwrite_kfd(uint64_t kfd, const void* ua, uint64_t va, uint64_t size);
 void kclose(uint64_t kfd);
 void kreadbuf_kfd(uint64_t va, void* ua, size_t size);
 void kwritebuf_kfd(uint64_t va, const void* ua, size_t size);
+uint64_t kread64_ptr_kfd(uint64_t where);
 uint64_t kread64_kfd(uint64_t va);
+uint32_t kread32_kfd(uint64_t va);
+uint16_t kread16_kfd(uint64_t va);
+uint8_t kread8_kfd(uint64_t va);
 void kwrite64_kfd(uint64_t va, uint64_t val);
+void kwrite32_kfd(uint64_t va, uint32_t val);
+void kwrite16_kfd(uint64_t va, uint16_t val);
+void kwrite8_kfd(uint64_t va, uint8_t val);
 uint64_t get_kaslr_slide(void);
 uint64_t get_kernel_proc(void);
 uint64_t get_kernel_task(void);

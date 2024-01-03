@@ -21,9 +21,65 @@ static const struct task task_versions[] = {
         .map            = 0x28,
         .threads_next   = 0x58,
         .threads_prev   = 0x60,
+        .itk_space      = 0x330,
+        .object_size    = 0x6B0
+    }, // iOS 15.0 - 15.1 arm64
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x58,
+        .threads_prev   = 0x60,
+        .itk_space      = 0x330,
+        .object_size    = 0x6B0
+    }, // iOS 15.0 - 15.1 arm64e
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x58,
+        .threads_prev   = 0x60,
+        .itk_space      = 0x308,
+        .object_size    = 0x6B0
+    }, // iOS 15.2 - 15.3 arm64
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x58,
+        .threads_prev   = 0x60,
+        .itk_space      = 0x308,
+        .object_size    = 0x6B0
+    }, // iOS 15.2 - 15.3 arm64e
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x58,
+        .threads_prev   = 0x60,
+        .itk_space      = 0x308,
+        .object_size    = 0x6B0
+    }, // iOS 15.4 - 15.7 arm64
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x58,
+        .threads_prev   = 0x60,
+        .itk_space      = 0x308,
+        .object_size    = 0x6B0
+    }, // iOS 15.4 - 15.7 arm64e
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x58,
+        .threads_prev   = 0x60,
         .itk_space      = 0x300,
         .object_size    = 0x640
     }, // iOS 16.0 - 16.1 arm64
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x58,
+        .threads_prev   = 0x60,
+        .itk_space      = 0x300,
+        .object_size    = 0x648
+    }, // iOS 16.0 - 16.1 arm64e
     
     {
         .map            = 0x28,
@@ -38,8 +94,24 @@ static const struct task task_versions[] = {
         .threads_next   = 0x58,
         .threads_prev   = 0x60,
         .itk_space      = 0x300,
+        .object_size    = 0x648
+    }, // iOS 16.2 - 16.3 arm64e
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x58,
+        .threads_prev   = 0x60,
+        .itk_space      = 0x300,
         .object_size    = 0x640
     }, // iOS 16.4 - 16.6 arm64
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x58,
+        .threads_prev   = 0x60,
+        .itk_space      = 0x300,
+        .object_size    = 0x640
+    }, // iOS 16.4 - 16.6 arm64e
     
     {
         .map            = 0x28,

@@ -13,13 +13,13 @@
 
 // Forward declarations for helper functions.
 void krkw_helper_init(struct kfd* kfd, struct krkw* krkw);
-void krkw_helper_grab_free_pages(struct kfd* kfd);
+int krkw_helper_grab_free_pages(struct kfd* kfd);
 void krkw_helper_run_allocate(struct kfd* kfd, struct krkw* krkw);
 void krkw_helper_run_deallocate(struct kfd* kfd, struct krkw* krkw);
 void krkw_helper_free(struct kfd* kfd, struct krkw* krkw);
 
 void krkw_init(struct kfd* kfd);
-void krkw_run(struct kfd* kfd);
+int krkw_run(struct kfd* kfd);
 void krkw_kread(struct kfd* kfd, uint64_t kaddr, void* uaddr, uint64_t size);
 void krkw_kwrite(struct kfd* kfd, void* uaddr, uint64_t kaddr, uint64_t size);
 void krkw_free(struct kfd* kfd);

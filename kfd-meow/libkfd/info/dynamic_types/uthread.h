@@ -13,9 +13,18 @@ struct uthread {
 
 static const struct uthread uthread_versions[] = {
     // Note: sizes below here are wrong idc
+    { .object_size = 0x1b0 }, // iOS 15.0 - 15.1 arm64
+    { .object_size = 0x1b0 }, // iOS 15.0 - 15.1 arm64e
+    { .object_size = 0x1b0 }, // iOS 15.2 - 15.3 arm64
+    { .object_size = 0x1b0 }, // iOS 15.2 - 15.3 arm64e
+    { .object_size = 0x1b0 }, // iOS 15.4 - 15.7 arm64
+    { .object_size = 0x1b0 }, // iOS 15.4 - 15.7 arm64e
     { .object_size = 0x200 }, // iOS 16.0 - 16.1 arm64
+    { .object_size = 0x200 }, // iOS 16.0 - 16.1 arm64e
     { .object_size = 0x1b0 }, // iOS 16.2 - 16.3 arm64
+    { .object_size = 0x200 }, // iOS 16.2 - 16.3 arm64e
     { .object_size = 0x1b0 }, // iOS 16.4 - 16.6 arm64
+    { .object_size = 0x200 }, // iOS 16.4 - 16.6 arm64e
     { .object_size = 0x200 }, // iOS 17.0 beta 1 arm64
 };
 
