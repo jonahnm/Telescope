@@ -16,7 +16,7 @@
 		86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A48A7A2B2B49CE005D1639 /* Assets.xcassets */; };
 		86A48A812B2B49CE005D1639 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A802B2B49CE005D1639 /* main.m */; };
 		86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A892B2B4A0A005D1639 /* puaf.c */; };
-		86A48ABD2B2B4A0A005D1639 /* perf.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A8A2B2B4A0A005D1639 /* perf.c */; };
+		86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A8A2B2B4A0A005D1639 /* perf.m */; };
 		86A48ABE2B2B4A0A005D1639 /* info.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A8B2B2B4A0A005D1639 /* info.c */; };
 		86A48AC02B2B4A0A005D1639 /* IOSurface_shared.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A922B2B4A0A005D1639 /* IOSurface_shared.c */; };
 		86A48AC12B2B4A0A005D1639 /* kwrite_IOSurface.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A952B2B4A0A005D1639 /* kwrite_IOSurface.c */; };
@@ -27,6 +27,8 @@
 		86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A48AC72B2B4A89005D1639 /* IOKit.framework */; };
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
 		D54990D72B42C7C3003B3486 /* landa.c in Sources */ = {isa = PBXBuildFile; fileRef = D54990D62B42C7C3003B3486 /* landa.c */; };
+		D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDA32B4726D500B62BED /* kwrite_sem_open.c */; };
+		D5D2DDA82B47B85F00B62BED /* kread_IOSurface.c in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDA62B47B85F00B62BED /* kread_IOSurface.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,7 +49,7 @@
 		86A48A802B2B49CE005D1639 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		86A48A872B2B4A0A005D1639 /* libkfd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libkfd.h; sourceTree = "<group>"; };
 		86A48A892B2B4A0A005D1639 /* puaf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = puaf.c; sourceTree = "<group>"; };
-		86A48A8A2B2B4A0A005D1639 /* perf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = perf.c; sourceTree = "<group>"; };
+		86A48A8A2B2B4A0A005D1639 /* perf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = perf.m; sourceTree = "<group>"; };
 		86A48A8B2B2B4A0A005D1639 /* info.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = info.c; sourceTree = "<group>"; };
 		86A48A8C2B2B4A0A005D1639 /* krkw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = krkw.h; sourceTree = "<group>"; };
 		86A48A912B2B4A0A005D1639 /* IOSurface_shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSurface_shared.h; sourceTree = "<group>"; };
@@ -93,6 +95,10 @@
 		86A48ACA2B2B5451005D1639 /* kread_sem_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kread_sem_open.h; sourceTree = "<group>"; };
 		D54990D52B42C7C3003B3486 /* landa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = landa.h; sourceTree = "<group>"; };
 		D54990D62B42C7C3003B3486 /* landa.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = landa.c; sourceTree = "<group>"; };
+		D5D2DDA32B4726D500B62BED /* kwrite_sem_open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kwrite_sem_open.c; sourceTree = "<group>"; };
+		D5D2DDA42B4726D500B62BED /* kwrite_sem_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kwrite_sem_open.h; sourceTree = "<group>"; };
+		D5D2DDA62B47B85F00B62BED /* kread_IOSurface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kread_IOSurface.c; sourceTree = "<group>"; };
+		D5D2DDA72B47B85F00B62BED /* kread_IOSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kread_IOSurface.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,7 +162,7 @@
 				86A48AB32B2B4A0A005D1639 /* puaf */,
 				86A48AB22B2B4A0A005D1639 /* common.h */,
 				86A48AB92B2B4A0A005D1639 /* perf.h */,
-				86A48A8A2B2B4A0A005D1639 /* perf.c */,
+				86A48A8A2B2B4A0A005D1639 /* perf.m */,
 				86A48ABA2B2B4A0A005D1639 /* info.h */,
 				86A48A8B2B2B4A0A005D1639 /* info.c */,
 				86A48A8C2B2B4A0A005D1639 /* krkw.h */,
@@ -183,6 +189,8 @@
 			children = (
 				86A48ACA2B2B5451005D1639 /* kread_sem_open.h */,
 				86A48AC92B2B5451005D1639 /* kread_sem_open.c */,
+				D5D2DDA72B47B85F00B62BED /* kread_IOSurface.h */,
+				D5D2DDA62B47B85F00B62BED /* kread_IOSurface.c */,
 			);
 			path = kread;
 			sourceTree = "<group>";
@@ -190,6 +198,8 @@
 		86A48A932B2B4A0A005D1639 /* kwrite */ = {
 			isa = PBXGroup;
 			children = (
+				D5D2DDA42B4726D500B62BED /* kwrite_sem_open.h */,
+				D5D2DDA32B4726D500B62BED /* kwrite_sem_open.c */,
 				86A48A942B2B4A0A005D1639 /* kwrite_IOSurface.h */,
 				86A48A952B2B4A0A005D1639 /* kwrite_IOSurface.c */,
 			);
@@ -334,10 +344,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				86A48AC42B2B4A0A005D1639 /* krkw.c in Sources */,
-				86A48ABD2B2B4A0A005D1639 /* perf.c in Sources */,
+				86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */,
 				86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */,
+				D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */,
 				86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */,
 				86A48AC32B2B4A0A005D1639 /* physpuppet.c in Sources */,
+				D5D2DDA82B47B85F00B62BED /* kread_IOSurface.c in Sources */,
 				86A48A762B2B49CD005D1639 /* ViewController.m in Sources */,
 				D54990D72B42C7C3003B3486 /* landa.c in Sources */,
 				86A48AC22B2B4A0A005D1639 /* smith.c in Sources */,
@@ -490,7 +502,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -516,7 +528,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

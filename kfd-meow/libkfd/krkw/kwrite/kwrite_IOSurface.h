@@ -14,6 +14,7 @@
 #include "../IOSurface_shared.h"
 #include "../../info.h"
 #include "../../info/dynamic_types/IOSurface.h"
+#include "../kread/kread_IOSurface.h"
 
 #define IOSURFACE_MAGIC 0x1EA5CACE
 extern io_connect_t g_surfaceConnect;

@@ -33,13 +33,14 @@ io_connect_t get_surface_client(void)
 }
 
 
-io_connect_t create_surface_fast_path(io_connect_t surface, uint32_t *surface_id, IOSurfaceFastCreateArgs *args)
+io_connect_t create_surface_fast_path(struct kfd* kfd, io_connect_t surface, uint32_t *surface_id, IOSurfaceFastCreateArgs *args)
 {
         io_connect_t conn = surface;
         kern_return_t kr = KERN_SUCCESS;
 
-        char output[IOSurfaceLockResultSize] = {0};
-        size_t output_cnt = IOSurfaceLockResultSize;
+        const uint64_t lock_result_size = IOSurfaceLockResultSize;
+        char *output = malloc(lock_result_size);
+        size_t output_cnt = lock_result_size;
 
         if (surface == 0) {
                 conn = get_surface_client();

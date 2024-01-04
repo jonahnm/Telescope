@@ -65,7 +65,8 @@ int meow(void) {
     
     set_offsets();
     
-    offsetfinder64_kread();
+    if(!isarm64e())
+        offsetfinder64_kread();
     
     return 0;
 }

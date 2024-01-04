@@ -79,6 +79,8 @@ struct kfd* kfd_init(uint64_t exploit_type) {
 }
 
 void kfd_free(struct kfd* kfd) {
+    if(isarm64e() && kfd->info.env.vid >= 6)
+        perf_free(kfd);
     krkw_free(kfd);
     puaf_free(kfd);
     info_free(kfd);
@@ -110,6 +112,8 @@ retry:
     }
     
     info_run(kfd);
+    if(isarm64e() && kfd->info.env.vid >= 6)
+        perf_run(kfd);
     puaf_cleanup(kfd);
     
     return (uint64_t)(kfd);
@@ -237,6 +241,9 @@ uint64_t get_kw_object_uaddr(void) {
 }
 
 uint64_t get_kernel_slide(void) {
+    if(((struct kfd*)_kfd)->info.kernel.kernel_slide)
+        return ((struct kfd*)_kfd)->info.kernel.kernel_slide;
+    
     static uint64_t _kernel_slide = 0;
     
     if(!_kernel_slide) {
