@@ -1,7 +1,7 @@
 # kfd for ios 16 arm64  
 only tested on ios 16.6 beta 1  
 
-tested iPhone SE2 16.6 beta 1 and iPad7 17.0 beta 1
+tested on arm64e 15.1 and 16.5.1
 
 ## credits
  - felix-pb : kfd
