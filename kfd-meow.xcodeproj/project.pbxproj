@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -29,6 +29,17 @@
 		D54990D72B42C7C3003B3486 /* landa.c in Sources */ = {isa = PBXBuildFile; fileRef = D54990D62B42C7C3003B3486 /* landa.c */; };
 		D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDA32B4726D500B62BED /* kwrite_sem_open.c */; };
 		D5D2DDA82B47B85F00B62BED /* kread_IOSurface.c in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDA62B47B85F00B62BED /* kread_IOSurface.c */; };
+		D5D2DDB52B4832B600B62BED /* KernelPatchfinder in Frameworks */ = {isa = PBXBuildFile; productRef = D5D2DDB42B4832B600B62BED /* KernelPatchfinder */; };
+		D5D2DDB82B4832E600B62BED /* fugufinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDB72B4832E600B62BED /* fugufinder.swift */; };
+		D5D2DDC12B48341400B62BED /* libgrabkernel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D2DDBC2B48341400B62BED /* libgrabkernel.a */; };
+		D5D2DDC22B48341400B62BED /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D2DDBD2B48341400B62BED /* libcurl.a */; };
+		D5D2DDC32B48341400B62BED /* libfragmentzip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D2DDBF2B48341400B62BED /* libfragmentzip.a */; };
+		D5D2DDCE2B4835E000B62BED /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D2DDCD2B4835E000B62BED /* libz.tbd */; };
+		D5D2DDD02B4835E800B62BED /* libMobileGestalt.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D2DDCF2B4835E800B62BED /* libMobileGestalt.tbd */; };
+		D5D2DDD22B4835F100B62BED /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D2DDD12B4835F100B62BED /* CoreServices.framework */; };
+		D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDBC2B48341400B62BED /* libgrabkernel.a */; };
+		D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDBD2B48341400B62BED /* libcurl.a */; };
+		D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDBF2B48341400B62BED /* libfragmentzip.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,6 +110,17 @@
 		D5D2DDA42B4726D500B62BED /* kwrite_sem_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kwrite_sem_open.h; sourceTree = "<group>"; };
 		D5D2DDA62B47B85F00B62BED /* kread_IOSurface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kread_IOSurface.c; sourceTree = "<group>"; };
 		D5D2DDA72B47B85F00B62BED /* kread_IOSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kread_IOSurface.h; sourceTree = "<group>"; };
+		D5D2DDB62B4832E500B62BED /* kfd-meow-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "kfd-meow-Bridging-Header.h"; sourceTree = "<group>"; };
+		D5D2DDB72B4832E600B62BED /* fugufinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fugufinder.swift; sourceTree = "<group>"; };
+		D5D2DDBB2B48341400B62BED /* libgrabkernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libgrabkernel.h; sourceTree = "<group>"; };
+		D5D2DDBC2B48341400B62BED /* libgrabkernel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgrabkernel.a; sourceTree = "<group>"; };
+		D5D2DDBD2B48341400B62BED /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcurl.a; sourceTree = "<group>"; };
+		D5D2DDBE2B48341400B62BED /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		D5D2DDBF2B48341400B62BED /* libfragmentzip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfragmentzip.a; sourceTree = "<group>"; };
+		D5D2DDCB2B4835D900B62BED /* libc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libc.tbd; path = usr/lib/libc.tbd; sourceTree = SDKROOT; };
+		D5D2DDCD2B4835E000B62BED /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		D5D2DDCF2B4835E800B62BED /* libMobileGestalt.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libMobileGestalt.tbd; path = usr/lib/libMobileGestalt.tbd; sourceTree = SDKROOT; };
+		D5D2DDD12B4835F100B62BED /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +128,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D2DDD22B4835F100B62BED /* CoreServices.framework in Frameworks */,
 				86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */,
+				D5D2DDD02B4835E800B62BED /* libMobileGestalt.tbd in Frameworks */,
+				D5D2DDCE2B4835E000B62BED /* libz.tbd in Frameworks */,
+				D5D2DDB52B4832B600B62BED /* KernelPatchfinder in Frameworks */,
+				D5D2DDC22B48341400B62BED /* libcurl.a in Frameworks */,
+				D5D2DDC12B48341400B62BED /* libgrabkernel.a in Frameworks */,
+				D5D2DDC32B48341400B62BED /* libfragmentzip.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +162,7 @@
 		86A48A6D2B2B49CD005D1639 /* kfd-meow */ = {
 			isa = PBXGroup;
 			children = (
+				D5D2DDB92B48341400B62BED /* libgrabkernel */,
 				86A48A6E2B2B49CD005D1639 /* AppDelegate.h */,
 				86A48A6F2B2B49CD005D1639 /* AppDelegate.m */,
 				86A48A712B2B49CD005D1639 /* SceneDelegate.h */,
@@ -146,10 +176,12 @@
 				868BDAB02B2E14260017CB10 /* libmeow.m */,
 				868BDAB82B2E1A840017CB10 /* meowfinder.h */,
 				868BDAB92B2E1A890017CB10 /* meowfinder.c */,
+				D5D2DDB72B4832E600B62BED /* fugufinder.swift */,
 				86A48A772B2B49CD005D1639 /* Main.storyboard */,
 				86A48A7A2B2B49CE005D1639 /* Assets.xcassets */,
 				86A48A7F2B2B49CE005D1639 /* Info.plist */,
 				86A48A802B2B49CE005D1639 /* main.m */,
+				D5D2DDB62B4832E500B62BED /* kfd-meow-Bridging-Header.h */,
 			);
 			path = "kfd-meow";
 			sourceTree = "<group>";
@@ -269,9 +301,33 @@
 		86A48AC62B2B4A89005D1639 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D5D2DDD12B4835F100B62BED /* CoreServices.framework */,
+				D5D2DDCF2B4835E800B62BED /* libMobileGestalt.tbd */,
+				D5D2DDCD2B4835E000B62BED /* libz.tbd */,
+				D5D2DDCB2B4835D900B62BED /* libc.tbd */,
 				86A48AC72B2B4A89005D1639 /* IOKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D5D2DDB92B48341400B62BED /* libgrabkernel */ = {
+			isa = PBXGroup;
+			children = (
+				D5D2DDBA2B48341400B62BED /* include */,
+				D5D2DDBC2B48341400B62BED /* libgrabkernel.a */,
+				D5D2DDBD2B48341400B62BED /* libcurl.a */,
+				D5D2DDBE2B48341400B62BED /* module.modulemap */,
+				D5D2DDBF2B48341400B62BED /* libfragmentzip.a */,
+			);
+			path = libgrabkernel;
+			sourceTree = "<group>";
+		};
+		D5D2DDBA2B48341400B62BED /* include */ = {
+			isa = PBXGroup;
+			children = (
+				D5D2DDBB2B48341400B62BED /* libgrabkernel.h */,
+			);
+			path = include;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,6 +346,9 @@
 			dependencies = (
 			);
 			name = "kfd-meow";
+			packageProductDependencies = (
+				D5D2DDB42B4832B600B62BED /* KernelPatchfinder */,
+			);
 			productName = "kfd-meow";
 			productReference = 86A48A6B2B2B49CD005D1639 /* kfd-meow.app */;
 			productType = "com.apple.product-type.application";
@@ -305,6 +364,7 @@
 				TargetAttributes = {
 					86A48A6A2B2B49CD005D1639 = {
 						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1500;
 					};
 				};
 			};
@@ -317,6 +377,9 @@
 				Base,
 			);
 			mainGroup = 86A48A622B2B49CD005D1639;
+			packageReferences = (
+				D5D2DDB32B4832B600B62BED /* XCLocalSwiftPackageReference "KernelPatchfinder" */,
+			);
 			productRefGroup = 86A48A6C2B2B49CD005D1639 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -343,8 +406,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */,
+				D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */,
+				D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */,
 				86A48AC42B2B4A0A005D1639 /* krkw.c in Sources */,
 				86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */,
+				D5D2DDB82B4832E600B62BED /* fugufinder.swift in Sources */,
 				86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */,
 				D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */,
 				86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */,
@@ -418,7 +485,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -429,11 +496,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -481,10 +550,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -494,7 +565,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = NO;
+				DEFINES_MODULE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "kfd-meow/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -507,10 +581,25 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/kfd-meow/libgrabkernel",
+				);
 				MARKETING_VERSION = 1.0;
+				OTHER_CFLAGS = "-Os";
+				OTHER_LDFLAGS = (
+					"-framework",
+					IOKit,
+					"-framework",
+					Foundation,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = debugging;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "kfd-meow/kfd-meow-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -520,7 +609,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = NO;
+				DEFINES_MODULE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "kfd-meow/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -533,10 +625,25 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/kfd-meow/libgrabkernel",
+				);
 				MARKETING_VERSION = 1.0;
+				OTHER_CFLAGS = "-Os";
+				OTHER_LDFLAGS = (
+					"-framework",
+					IOKit,
+					"-framework",
+					Foundation,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = debugging;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "kfd-meow/kfd-meow-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -563,6 +670,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		D5D2DDB32B4832B600B62BED /* XCLocalSwiftPackageReference "KernelPatchfinder" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = KernelPatchfinder;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D5D2DDB42B4832B600B62BED /* KernelPatchfinder */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KernelPatchfinder;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 86A48A632B2B49CD005D1639 /* Project object */;
 }

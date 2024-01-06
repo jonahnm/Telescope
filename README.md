@@ -8,6 +8,8 @@ tested on arm64e 15.1 and 16.5.1
  - opa334 : IOSurface kwrite method
  - checkra1n : pongoOS
  - wh1te4ever : offsets
+ - LinusHenze : Fugu15_Rootful KPF
+ - tihmstar : libgrabkernel
 
 ## todo
  - implement iosurface release_surface function
