@@ -9,12 +9,7 @@
 /* Begin PBXBuildFile section */
 		868BDAB12B2E14260017CB10 /* libmeow.m in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB02B2E14260017CB10 /* libmeow.m */; };
 		868BDABA2B2E1A890017CB10 /* meowfinder.c in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB92B2E1A890017CB10 /* meowfinder.c */; };
-		86A48A702B2B49CD005D1639 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A6F2B2B49CD005D1639 /* AppDelegate.m */; };
-		86A48A732B2B49CD005D1639 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A722B2B49CD005D1639 /* SceneDelegate.m */; };
-		86A48A762B2B49CD005D1639 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A752B2B49CD005D1639 /* ViewController.m */; };
-		86A48A792B2B49CD005D1639 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86A48A772B2B49CD005D1639 /* Main.storyboard */; };
 		86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A48A7A2B2B49CE005D1639 /* Assets.xcassets */; };
-		86A48A812B2B49CE005D1639 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A802B2B49CE005D1639 /* main.m */; };
 		86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A892B2B4A0A005D1639 /* puaf.c */; };
 		86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A8A2B2B4A0A005D1639 /* perf.m */; };
 		86A48ABE2B2B4A0A005D1639 /* info.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A8B2B2B4A0A005D1639 /* info.c */; };
@@ -27,6 +22,8 @@
 		86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A48AC72B2B4A89005D1639 /* IOKit.framework */; };
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
 		D54990D72B42C7C3003B3486 /* landa.c in Sources */ = {isa = PBXBuildFile; fileRef = D54990D62B42C7C3003B3486 /* landa.c */; };
+		D56FB6A02B499B0C00A48CA4 /* kfd-meow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56FB69F2B499B0C00A48CA4 /* kfd-meow.swift */; };
+		D56FB6A22B499B7000A48CA4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56FB6A12B499B7000A48CA4 /* ContentView.swift */; };
 		D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDA32B4726D500B62BED /* kwrite_sem_open.c */; };
 		D5D2DDA82B47B85F00B62BED /* kread_IOSurface.c in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDA62B47B85F00B62BED /* kread_IOSurface.c */; };
 		D5D2DDB52B4832B600B62BED /* KernelPatchfinder in Frameworks */ = {isa = PBXBuildFile; productRef = D5D2DDB42B4832B600B62BED /* KernelPatchfinder */; };
@@ -48,16 +45,8 @@
 		868BDAB82B2E1A840017CB10 /* meowfinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = meowfinder.h; sourceTree = "<group>"; };
 		868BDAB92B2E1A890017CB10 /* meowfinder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = meowfinder.c; sourceTree = "<group>"; };
 		86A48A6B2B2B49CD005D1639 /* kfd-meow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kfd-meow.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		86A48A6E2B2B49CD005D1639 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		86A48A6F2B2B49CD005D1639 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		86A48A712B2B49CD005D1639 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
-		86A48A722B2B49CD005D1639 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		86A48A742B2B49CD005D1639 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		86A48A752B2B49CD005D1639 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		86A48A782B2B49CD005D1639 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		86A48A7A2B2B49CE005D1639 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		86A48A7F2B2B49CE005D1639 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		86A48A802B2B49CE005D1639 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		86A48A872B2B4A0A005D1639 /* libkfd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libkfd.h; sourceTree = "<group>"; };
 		86A48A892B2B4A0A005D1639 /* puaf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = puaf.c; sourceTree = "<group>"; };
 		86A48A8A2B2B4A0A005D1639 /* perf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = perf.m; sourceTree = "<group>"; };
@@ -106,6 +95,8 @@
 		86A48ACA2B2B5451005D1639 /* kread_sem_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kread_sem_open.h; sourceTree = "<group>"; };
 		D54990D52B42C7C3003B3486 /* landa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = landa.h; sourceTree = "<group>"; };
 		D54990D62B42C7C3003B3486 /* landa.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = landa.c; sourceTree = "<group>"; };
+		D56FB69F2B499B0C00A48CA4 /* kfd-meow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "kfd-meow.swift"; sourceTree = "<group>"; };
+		D56FB6A12B499B7000A48CA4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D5D2DDA32B4726D500B62BED /* kwrite_sem_open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kwrite_sem_open.c; sourceTree = "<group>"; };
 		D5D2DDA42B4726D500B62BED /* kwrite_sem_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kwrite_sem_open.h; sourceTree = "<group>"; };
 		D5D2DDA62B47B85F00B62BED /* kread_IOSurface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kread_IOSurface.c; sourceTree = "<group>"; };
@@ -163,12 +154,6 @@
 			isa = PBXGroup;
 			children = (
 				D5D2DDB92B48341400B62BED /* libgrabkernel */,
-				86A48A6E2B2B49CD005D1639 /* AppDelegate.h */,
-				86A48A6F2B2B49CD005D1639 /* AppDelegate.m */,
-				86A48A712B2B49CD005D1639 /* SceneDelegate.h */,
-				86A48A722B2B49CD005D1639 /* SceneDelegate.m */,
-				86A48A742B2B49CD005D1639 /* ViewController.h */,
-				86A48A752B2B49CD005D1639 /* ViewController.m */,
 				86A48A882B2B4A0A005D1639 /* libkfd */,
 				86A48A872B2B4A0A005D1639 /* libkfd.h */,
 				86A48ABB2B2B4A0A005D1639 /* libkfd.m */,
@@ -177,10 +162,10 @@
 				868BDAB82B2E1A840017CB10 /* meowfinder.h */,
 				868BDAB92B2E1A890017CB10 /* meowfinder.c */,
 				D5D2DDB72B4832E600B62BED /* fugufinder.swift */,
-				86A48A772B2B49CD005D1639 /* Main.storyboard */,
+				D56FB69F2B499B0C00A48CA4 /* kfd-meow.swift */,
+				D56FB6A12B499B7000A48CA4 /* ContentView.swift */,
 				86A48A7A2B2B49CE005D1639 /* Assets.xcassets */,
 				86A48A7F2B2B49CE005D1639 /* Info.plist */,
-				86A48A802B2B49CE005D1639 /* main.m */,
 				D5D2DDB62B4832E500B62BED /* kfd-meow-Bridging-Header.h */,
 			);
 			path = "kfd-meow";
@@ -395,7 +380,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */,
-				86A48A792B2B49CD005D1639 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,8 +391,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */,
+				D56FB6A22B499B7000A48CA4 /* ContentView.swift in Sources */,
 				D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */,
 				D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */,
+				D56FB6A02B499B0C00A48CA4 /* kfd-meow.swift in Sources */,
 				86A48AC42B2B4A0A005D1639 /* krkw.c in Sources */,
 				86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */,
 				D5D2DDB82B4832E600B62BED /* fugufinder.swift in Sources */,
@@ -417,15 +403,11 @@
 				86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */,
 				86A48AC32B2B4A0A005D1639 /* physpuppet.c in Sources */,
 				D5D2DDA82B47B85F00B62BED /* kread_IOSurface.c in Sources */,
-				86A48A762B2B49CD005D1639 /* ViewController.m in Sources */,
 				D54990D72B42C7C3003B3486 /* landa.c in Sources */,
 				86A48AC22B2B4A0A005D1639 /* smith.c in Sources */,
-				86A48A702B2B49CD005D1639 /* AppDelegate.m in Sources */,
 				868BDABA2B2E1A890017CB10 /* meowfinder.c in Sources */,
 				868BDAB12B2E14260017CB10 /* libmeow.m in Sources */,
 				86A48AC12B2B4A0A005D1639 /* kwrite_IOSurface.c in Sources */,
-				86A48A812B2B49CE005D1639 /* main.m in Sources */,
-				86A48A732B2B49CD005D1639 /* SceneDelegate.m in Sources */,
 				86A48AC52B2B4A0A005D1639 /* libkfd.m in Sources */,
 				86A48ABE2B2B4A0A005D1639 /* info.c in Sources */,
 				86A48AC02B2B4A0A005D1639 /* IOSurface_shared.c in Sources */,
@@ -433,17 +415,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		86A48A772B2B49CD005D1639 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				86A48A782B2B49CD005D1639 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		86A48A822B2B49CE005D1639 /* Debug */ = {
@@ -572,8 +543,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "kfd-meow/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -616,8 +585,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "kfd-meow/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;

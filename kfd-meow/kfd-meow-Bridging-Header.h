@@ -4,17 +4,24 @@
 
 #import <Foundation/Foundation.h>
 #include "libgrabkernel.h"
+#include "libkfd.h"
+#include "libmeow.h"
 
-const uint64_t kpf_kernel_base;
-const uint64_t kpf_vn_kqfilter;
-const uint64_t kpf_ptov_table;
-const uint64_t kpf_gVirtBase;
-const uint64_t kpf_gPhysBase;
-const uint64_t kpf_gPhysSize;
-const uint64_t kpf_perfmon_devices;
-const uint64_t kpf_perfmon_dev_open;
-const uint64_t kpf_cdevsw;
-const uint64_t kpf_vm_pages;
-const uint64_t kpf_vm_page_array_beginning_addr;
-const uint64_t kpf_vm_page_array_ending_addr;
-const uint64_t kpf_vm_first_phys_ppnum;
+uint64_t _kfd = 0;
+
+uint64_t kpoen_bridge(uint64_t puaf_method) {
+    uint64_t exploit_type = (1 << puaf_method);
+    _kfd = kopen(exploit_type);
+    if(_kfd != 0)
+        return _kfd;
+    
+    return 0;
+}
+
+uint64_t meow_and_kclose(uint64_t _kfd) {
+    if(!isarm64e())
+        meow();
+    kclose(_kfd);
+    return 0;
+}
+

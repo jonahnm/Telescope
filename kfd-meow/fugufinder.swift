@@ -10,7 +10,7 @@ import KernelPatchfinder
 
 @objc class objcbridge: NSObject {
     @objc public func prepare_kpf() {
-        guard let pf = KernelPatchfinder.running else {
+        guard KernelPatchfinder.running != nil else {
             grabkernel(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path + "/kernel.img4")
             return
         }
@@ -44,9 +44,6 @@ import KernelPatchfinder
         return KernelPatchfinder.running?.cdevsw ?? 0x0
     }
     @objc public func find_vm_pages() -> UInt64 {
-        return KernelPatchfinder.running?.vm_pages ?? 0x0
-    }
-    @objc public func find_vm_page() -> UInt64 {
         return KernelPatchfinder.running?.vm_pages ?? 0x0
     }
     @objc public func find_vm_page_array_beginning() -> UInt64 {
