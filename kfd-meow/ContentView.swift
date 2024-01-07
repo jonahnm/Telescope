@@ -63,8 +63,9 @@ struct ContentView: View {
                                 message = "[-] couldn't find kernel"
                             }
                         }.disabled(result != 0).frame(minWidth: 0, maxWidth: .infinity)
-                        Button("overwrite") {
-                            message = message + "[*] overwitten!\n"
+                        Button("pplrw") {
+                            pplwrite_test()
+                            message = message + "[*] ppl bypassed!\n"
                             result = meow_and_kclose(result)
                             if (result == 0) {
                                 message = message + "[*] kclosed"

@@ -10,4 +10,6 @@
 
 #include <stdio.h>
 
+void pplwrite_test(void);
+
 #endif /* GPU_CoreSight_h */

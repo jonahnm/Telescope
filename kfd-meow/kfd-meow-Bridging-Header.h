@@ -6,6 +6,7 @@
 #include "libgrabkernel.h"
 #include "libkfd.h"
 #include "libmeow.h"
+#include "GPU_CoreSight.h"
 
 uint64_t _kfd = 0;
 

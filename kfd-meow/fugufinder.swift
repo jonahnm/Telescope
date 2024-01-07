@@ -61,4 +61,7 @@ public func prepare_kpf() -> Bool {
     @objc public func find_vm_first_phys_ppnum() -> UInt64 {
         return UInt64(KernelPatchfinder.running?.vm_page_array.ending ?? 0x0) + 0x8
     }
+    @objc public func find_ITK_SPACE() -> UInt64 {
+        return KernelPatchfinder.running?.ITK_SPACE ?? 0x0
+    }
 }
