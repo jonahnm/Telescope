@@ -8,13 +8,19 @@
 import Foundation
 import KernelPatchfinder
 
-@objc class objcbridge: NSObject {
-    @objc public func prepare_kpf() {
-        guard KernelPatchfinder.running != nil else {
-            grabkernel(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path + "/kernel.img4")
-            return
+public func prepare_kpf() -> Bool {
+    guard KernelPatchfinder.running != nil else {
+        let status = grabkernel(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path + "/kernel.img4")
+        if(status == 0) {
+            exit(-1)
+        } else {
+            return false
         }
     }
+    return true
+}
+
+@objc class objcbridge: NSObject {
     
     @objc public func find_base() -> UInt64 {
         return KernelPatchfinder.running?.baseAddress ?? 0x0

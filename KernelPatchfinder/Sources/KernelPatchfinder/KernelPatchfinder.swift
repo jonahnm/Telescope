@@ -998,33 +998,46 @@ open class KernelPatchfinder {
     }()
     
     public lazy var cdevsw: UInt64? = {
-        guard let str1 = cStrSect.addrOf("Can\'t mark ptc as kqueue ok") else {
+        guard let str = cStrSect.addrOf("monotonic: cdevsw_add failed") else {
             return nil
         }
         
-        guard var pc1 = textExec.findNextXref(to: str1, optimization: .noBranches) else {
+        guard var ref = textExec.findNextXref(to: str, optimization: .noBranches) else {
             return nil
         }
         
-        guard let str2 = cStrSect.addrOf("ptmx kevent: unexpected filter:") else {
-            return nil
-        }
-        
-        guard var pc2 = textExec.findNextXref(to: str2, startAt: pc1 - 0x300) else {
-            return nil
-        }
-        
-        guard var pc = textExec.addrOf([0xD503237F], startAt: pc2 - 0x300) else {
+        guard var pacibsp = textExec.addrOf([0xD503237F], startAt: (textExec.findNextXref(to: str, optimization: .noBranches) ?? 0) - 0x200) else {
             return nil
         }
         
         var i:UInt64 = 0
-        while(i < 0x30) {
-            var ret = AArch64Instr.Emulate.adrpAdd(adrp: textExec.instruction(at: pc + i) ?? 0, add: textExec.instruction(at: pc + i + 0x4) ?? 0, pc: pc + i)
-            if(ret != nil) {
-                return ret
+        var pc:UInt64?
+        while(i < 0x50) {
+            pc = AArch64Instr.Emulate.bl(textExec.instruction(at: pacibsp + i) ?? 0, pc: pacibsp + i)
+            if(pc != nil) {
+                break
             }
             i += 4
+        }
+        guard var pc else{
+            return nil
+        }
+        
+        var j:UInt64 = 0
+        var h:UInt64 = 0
+        var ret:UInt64 = 0
+        while(j < 0x50) {
+            var ret = AArch64Instr.Emulate.adrpAdd(adrp: textExec.instruction(at: pc + j) ?? 0, add: textExec.instruction(at: pc + j + 0x4) ?? 0, pc: pc + j)
+            if(ret != nil) {
+                while(h < 0x50) {
+                    ret = AArch64Instr.Emulate.adrpAdd(adrp: textExec.instruction(at: pc + j + h + 0x4) ?? 0, add: textExec.instruction(at: pc + j + h + 0x8) ?? 0, pc: pc + j + h + 0x4)
+                    if(ret != nil) {
+                        return ret
+                    }
+                    h += 4
+                }
+            }
+            j += 4
         }
         return nil
     }()

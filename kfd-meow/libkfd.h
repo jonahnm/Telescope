@@ -145,7 +145,6 @@ void kwrite_kfd(uint64_t kfd, const void* ua, uint64_t va, uint64_t size);
 void kclose(uint64_t kfd);
 void kreadbuf_kfd(uint64_t va, void* ua, size_t size);
 void kwritebuf_kfd(uint64_t va, const void* ua, size_t size);
-uint64_t kread64_ptr_kfd(uint64_t where);
 uint64_t kread64_kfd(uint64_t va);
 uint32_t kread32_kfd(uint64_t va);
 uint16_t kread16_kfd(uint64_t va);
@@ -163,5 +162,39 @@ uint64_t get_kernel_pmap(void);
 uint64_t get_current_pmap(void);
 
 uint64_t get_kernel_slide(void);
+
+uint64_t get_proc(pid_t target);
+
+extern uint64_t off_p_pfd;
+extern uint64_t off_p_textvp;
+
+extern uint64_t off_fp_glob;
+extern uint64_t off_fg_data;
+extern uint64_t off_fg_flag;
+
+extern uint64_t off_fd_cdir;
+
+extern uint64_t off_namecache_nc_child_tqe_prev;
+extern uint64_t off_namecache_nc_vp;
+
+extern uint64_t off_mount_mnt_devvp;
+extern uint64_t off_mount_mnt_flag;
+
+extern uint64_t off_vnode_v_ncchildren_tqh_first;
+extern uint64_t off_vnode_v_iocount;
+extern uint64_t off_vnode_v_usecount;
+extern uint64_t off_vnode_v_flag;
+extern uint64_t off_vnode_v_name;
+extern uint64_t off_vnode_v_mount;
+extern uint64_t off_vnode_v_data;
+extern uint64_t off_vnode_v_kusecount;
+extern uint64_t off_vnode_v_references;
+extern uint64_t off_vnode_v_parent;
+extern uint64_t off_vnode_v_label;
+extern uint64_t off_vnode_v_cred;
+extern uint64_t off_vnode_v_writecount;
+extern uint64_t off_vnode_v_type;
+
+void offset_exporter(void);
 
 #endif /* libkfd_h */

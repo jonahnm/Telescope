@@ -287,3 +287,64 @@ uint64_t get_kernel_slide(void) {
     
     return _kernel_slide;
 }
+
+uint64_t get_proc(pid_t target) {
+    struct kfd* kfd = ((struct kfd*)_kfd);
+    uint64_t proc_kaddr = get_kernel_proc();
+    while (true) {
+        int32_t pid = dynamic_kget(proc, p_pid, proc_kaddr);
+        if (pid == target) {
+            break;
+        }
+        proc_kaddr = dynamic_kget(proc, p_list_le_prev, proc_kaddr);
+    }
+    return proc_kaddr;
+}
+
+uint64_t off_p_pfd    = 0;
+uint64_t off_p_textvp = 0;
+
+uint64_t off_fp_glob = 0;
+uint64_t off_fg_data = 0;
+uint64_t off_fg_flag = 0;
+
+uint64_t off_fd_cdir = 0x20;
+
+uint64_t off_namecache_nc_child_tqe_prev = 0;
+uint64_t off_namecache_nc_vp             = 0x48;
+
+uint64_t off_mount_mnt_devvp = 0x980;
+uint64_t off_mount_mnt_flag = 0x70;
+
+uint64_t off_vnode_v_ncchildren_tqh_first   = 0x30;
+uint64_t off_vnode_v_iocount                = 0x64;
+uint64_t off_vnode_v_usecount               = 0x60;
+uint64_t off_vnode_v_flag                   = 0x54;
+uint64_t off_vnode_v_name                   = 0xb8;
+uint64_t off_vnode_v_mount                  = 0xd8;
+uint64_t off_vnode_v_data                   = 0xe0;
+uint64_t off_vnode_v_kusecount              = 0x5c;
+uint64_t off_vnode_v_references             = 0x5b;
+uint64_t off_vnode_v_parent                 = 0xc0;
+uint64_t off_vnode_v_label                  = 0xe8;
+uint64_t off_vnode_v_cred                   = 0x98;
+uint64_t off_vnode_v_writecount             = 0xb0;
+uint64_t off_vnode_v_type                   = 0x70;
+
+void offset_exporter(void) {
+    struct kfd* kfd = ((struct kfd*)_kfd);
+    off_p_pfd = dynamic_offsetof(proc, p_fd_fd_ofiles);
+    
+    off_fp_glob = static_offsetof(fileproc, fp_glob);
+    off_fg_data = static_offsetof(fileglob, fg_data);
+    off_fg_flag = static_offsetof(fileglob, fg_flag);
+    
+    
+    if(kfd->info.env.vid == 7 || kfd->info.env.vid == 9) {
+        off_p_textvp = 0x350;
+        off_namecache_nc_child_tqe_prev = 0x10;
+    } else if(kfd->info.env.vid == 11) {
+        off_p_textvp = 0x548;
+        off_namecache_nc_child_tqe_prev = 0x0;
+    }
+}

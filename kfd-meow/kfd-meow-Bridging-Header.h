@@ -12,6 +12,7 @@ uint64_t _kfd = 0;
 uint64_t kpoen_bridge(uint64_t puaf_method) {
     uint64_t exploit_type = (1 << puaf_method);
     _kfd = kopen(exploit_type);
+    offset_exporter();
     if(_kfd != 0)
         return _kfd;
     
