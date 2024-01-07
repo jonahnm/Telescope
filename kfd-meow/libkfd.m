@@ -228,12 +228,20 @@ uint64_t get_current_task(void) {
     return ((struct kfd*)_kfd)->info.kernel.current_task;
 }
 
+uint64_t get_current_map(void) {
+    return ((struct kfd*)_kfd)->info.kernel.current_map;
+}
+
 uint64_t get_kernel_pmap(void) {
     return ((struct kfd*)_kfd)->info.kernel.kernel_pmap;
 }
 
 uint64_t get_current_pmap(void) {
     return ((struct kfd*)_kfd)->info.kernel.current_pmap;
+}
+
+uint64_t get_kernel_map(void) {
+    return ((struct kfd*)_kfd)->info.kernel.kernel_map;
 }
 
 uint64_t get_kw_object_uaddr(void) {
@@ -286,6 +294,16 @@ uint64_t get_kernel_slide(void) {
     }
     
     return _kernel_slide;
+}
+
+uint64_t phystokv_kfd(uint64_t pa) {
+    struct kfd* kfd = ((struct kfd*)_kfd);
+    return phystokv(kfd, pa);
+}
+
+uint64_t vtophys_kfd(uint64_t va) {
+    struct kfd* kfd = ((struct kfd*)_kfd);
+    return vtophys(kfd, va);
 }
 
 uint64_t get_proc(pid_t target) {

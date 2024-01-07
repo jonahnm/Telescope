@@ -158,12 +158,17 @@ uint64_t get_kernel_proc(void);
 uint64_t get_kernel_task(void);
 uint64_t get_current_proc(void);
 uint64_t get_current_task(void);
+uint64_t get_current_map(void);
+uint64_t get_kernel_map(void);
 uint64_t get_kernel_pmap(void);
 uint64_t get_current_pmap(void);
 
 uint64_t get_kernel_slide(void);
 
 uint64_t get_proc(pid_t target);
+
+uint64_t phystokv_kfd(uint64_t pa);
+uint64_t vtophys_kfd(uint64_t va);
 
 extern uint64_t off_p_pfd;
 extern uint64_t off_p_textvp;
