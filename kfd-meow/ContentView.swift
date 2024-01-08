@@ -10,6 +10,8 @@ struct ContentView: View {
     @State private var result: UInt64 = 0
     private var puaf_method_options = ["physpuppet", "smith", "landa"]
     @State private var puaf_method = 2
+    private var pplrw_options = ["on", "off"]
+    @State private var pplrw_toggle = 1
     @State private var message = ""
 
     var body: some View {
@@ -25,14 +27,22 @@ struct ContentView: View {
                             Text(self.puaf_method_options[$0])
                         }
                     }.disabled(result != 0).pickerStyle(SegmentedPickerStyle())
+                    Picker(selection: $pplrw_toggle, label: Text("pplrw:")) {
+                        ForEach(0 ..< pplrw_options.count, id: \.self) {
+                            Text(self.pplrw_options[$0])
+                        }
+                    }.disabled(result != 0).pickerStyle(SegmentedPickerStyle())
                 }
                 Section {
                     HStack {
                         Button("kopen") {
                             message = ""
-                            result = kpoen_bridge(UInt64(puaf_method))
+                            result = kpoen_bridge(UInt64(puaf_method), UInt64(pplrw_toggle))
                             if (result != 0) {
                                 message = "[*] kopening\n[*] kslide: " + String(get_kaslr_slide(), radix:16) + "\n"
+                                if(pplrw_toggle == 0) {
+                                    message = message + "\n[*] ppl bypassed!"
+                                }
                             }
                         }.disabled(result != 0).frame(minWidth: 0, maxWidth: .infinity)
                         Button("kclose") {
@@ -63,9 +73,8 @@ struct ContentView: View {
                                 message = "[-] couldn't find kernel"
                             }
                         }.disabled(result != 0).frame(minWidth: 0, maxWidth: .infinity)
-                        Button("pplrw") {
-                            pplwrite_test()
-                            message = message + "[*] ppl bypassed!\n"
+                        Button("overwrite") {
+                            message = message + "[*] overwritten!\n"
                             result = meow_and_kclose(result)
                             if (result == 0) {
                                 message = message + "[*] kclosed"

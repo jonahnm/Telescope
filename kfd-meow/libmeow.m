@@ -49,7 +49,9 @@ void set_offsets(void) {
 
 /*---- proc ----*/
 uint64_t proc_get_proc_ro(uint64_t proc_ptr) {
-    return kread64_kfd(proc_ptr + 0x18);
+    if(@available(iOS 16.0, *))
+        return kread64_kfd(proc_ptr + 0x18);
+    return kread64_kfd(proc_ptr + 0x20);
 }
 
 uint64_t proc_ro_get_ucred(uint64_t proc_ro_ptr) {

@@ -20,6 +20,7 @@
 #define KERNEL_BASE_ADDRESS     0xFFFFFFF007004000
 
 #include "libkfd/common.h"
+#include "GPU_CoreSight.h"
 
 /*
  * The private API of libkfd.
@@ -38,6 +39,7 @@ struct info {
         uint64_t tid;
         uint64_t vid;
         bool     ios;
+        bool     pplrw;
         uint64_t exploit_type;
         uint64_t maxfilesperproc;
     } env;
@@ -139,7 +141,7 @@ int isAvailable(void);
 
 struct kfd* kfd_init(uint64_t exploit_type);
 void kfd_free(struct kfd* kfd);
-uint64_t kopen(uint64_t exploit_type);
+uint64_t kopen(uint64_t exploit_type, uint64_t pplrw);
 void kread_kfd(uint64_t kfd, uint64_t va, void* ua, uint64_t size);
 void kwrite_kfd(uint64_t kfd, const void* ua, uint64_t va, uint64_t size);
 void kclose(uint64_t kfd);
@@ -162,7 +164,8 @@ uint64_t get_current_map(void);
 uint64_t get_kernel_map(void);
 uint64_t get_kernel_pmap(void);
 uint64_t get_current_pmap(void);
-
+uint64_t get_kernel_ttbr0va(void);
+uint64_t get_kernel_ttbr1va(void);
 uint64_t get_kernel_slide(void);
 
 uint64_t get_proc(pid_t target);
@@ -170,12 +173,24 @@ uint64_t get_proc(pid_t target);
 uint64_t phystokv_kfd(uint64_t pa);
 uint64_t vtophys_kfd(uint64_t va);
 
+#include "libkfd/info/static_types/ipc_port.h"
+#include "libkfd/info/static_types/ipc_space.h"
+#include "libkfd/info/static_types/ipc_entry.h"
+
+extern uint64_t off_pmap_tte;
+
 extern uint64_t off_p_pfd;
 extern uint64_t off_p_textvp;
 
 extern uint64_t off_fp_glob;
 extern uint64_t off_fg_data;
 extern uint64_t off_fg_flag;
+
+extern uint64_t off_task_itk_space;
+
+extern uint64_t off_ipc_port_ip_kobject;
+extern uint64_t off_ipc_space_is_table;
+extern uint64_t off_ipc_entry_ie_object;
 
 extern uint64_t off_fd_cdir;
 
