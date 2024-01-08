@@ -10,6 +10,8 @@ tested on arm64e 15.1 and 16.5.1
  - wh1te4ever : offsets
  - LinusHenze : Fugu15_Rootful KPF
  - tihmstar : libgrabkernel
+ - xina520 : GPU_CoreSight
+ - wh1te4ever : GPU_CoreSight fork
 
 ## todo
  - implement iosurface release_surface function
