@@ -15,8 +15,10 @@ uint64_t kpoen_bridge(uint64_t puaf_method, uint64_t pplrw) {
     _kfd = kopen(exploit_type, pplrw);
     if(isarm64e()){
         offset_exporter();
-        if(pplrw == 0)
+        if(pplrw == 0) {
             test_pplrw();
+            test_kttr();
+        }
     }
     if(_kfd != 0)
         return _kfd;

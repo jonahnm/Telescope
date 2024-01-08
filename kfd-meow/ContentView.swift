@@ -21,7 +21,7 @@ struct ContentView: View {
                     TextEditor(text: $message)
                         .disabled(true)
                         .font(Font(UIFont.monospacedSystemFont(ofSize: 11.0, weight: .regular)))
-                        .frame(height: 170)
+                        .frame(height: 180)
                     Picker(selection: $puaf_method, label: Text("puaf method:")) {
                         ForEach(0 ..< puaf_method_options.count, id: \.self) {
                             Text(self.puaf_method_options[$0])
@@ -42,6 +42,10 @@ struct ContentView: View {
                                 message = "[*] kopening\n[*] kslide: " + String(get_kaslr_slide(), radix:16) + "\n"
                                 if(pplrw_toggle == 0) {
                                     message = message + "[*] ppl bypassed!\n"
+                                    result = meow_and_kclose(result)
+                                    if (result == 0) {
+                                        message = message + "[*] kclosed\n"
+                                    }
                                 }
                             }
                         }.disabled(result != 0).frame(minWidth: 0, maxWidth: .infinity)
@@ -57,7 +61,8 @@ struct ContentView: View {
                     HStack {
                         Button("finder") {
                             if(prepare_kpf()) {
-                                message = "cdevsw:                  " + String(KernelPatchfinder.running?.cdevsw ?? 0x0, radix: 16)
+                                message = "kttr:                    " + String(KernelPatchfinder.running?.ktrr ?? 0x0, radix: 16)
+                                message = message + "\ncdevsw:                  " + String(KernelPatchfinder.running?.cdevsw ?? 0x0, radix: 16)
                                 message = message + "\nptov_table:              " + String(KernelPatchfinder.running?.ptov_data?.table ?? 0x0, radix: 16)
                                 message = message + "\nphysBase:                " + String(KernelPatchfinder.running?.ptov_data?.physBase ?? 0x0, radix: 16)
                                 message = message + "\nphysSize:                " + String(UInt64(KernelPatchfinder.running?.ptov_data?.physBase ?? 0x0) + 0x8, radix: 16)

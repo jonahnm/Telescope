@@ -64,4 +64,7 @@ public func prepare_kpf() -> Bool {
     @objc public func find_ITK_SPACE() -> UInt64 {
         return KernelPatchfinder.running?.ITK_SPACE ?? 0x0
     }
+    @objc public func find_ktrr() -> UInt64 {
+        return KernelPatchfinder.running?.ktrr ?? 0x0
+    }
 }
