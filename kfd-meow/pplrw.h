@@ -9,6 +9,6 @@
 #define pplrw_h
 
 int test_pplrw(void);
-int test_kttr(void);
+int test_ktrr(void);
 
 #endif /* pplrw_h */

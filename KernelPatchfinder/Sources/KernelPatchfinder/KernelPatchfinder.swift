@@ -1157,11 +1157,12 @@ open class KernelPatchfinder {
     }()
     
     public lazy var ktrr: UInt64? = {
-        guard let addr1 = textExec.addrOf([0xD538D083, 0x12800002, 0xB901A462, 0xD5034FDF, 0xF940A864, 0xB9404C80]) else {
-            return nil
+        var addr = textExec.addrOf([0xD538D083, 0x12800002, 0xB901A462, 0xD5034FDF, 0xF940A864, 0xB9404C80])
+        if(addr == nil) {
+            addr = textExec.addrOf([0xD538D083, 0x12800002, 0xB9019C62, 0xD5034FDF, 0xF940A464, 0xB9404C80])
         }
-        
-        guard let ret = textExec.addrOf([0x79800080], startAt: addr1) else {
+            
+        guard let ret = textExec.addrOf([0x79800080], startAt: addr ?? 0) else {
             return nil
         }
         

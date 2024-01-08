@@ -491,7 +491,7 @@ int test_pplrw(void)
     return 0;
 }
 
-int test_kttr(void)
+int test_ktrr(void)
 {
     objcbridge *obj = [[objcbridge alloc] init];
     uint64_t target = [obj find_ktrr];
