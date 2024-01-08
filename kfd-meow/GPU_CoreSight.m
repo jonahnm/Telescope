@@ -165,9 +165,7 @@ void ml_dbgwrap_halt_cpu(uint64_t coresight_base_utt) {
     write_qword(coresight_base_utt, dbgWrapReg | DBGWRAP_DBGHALT);// Clear all other writable bits besides dbgHalt; none of the power-down or reset bits must be set.
     printf("ml_dbgwrap_halt_cpu  new value: %llx\n", *(uint64_t *)coresight_base_utt);
     while (1) {
-        usleep(50000);
         if ((read_qword(coresight_base_utt) & DBGWRAP_DBGACK) != 0) {
-            printf("%llx\n", read_qword(coresight_base_utt) & DBGWRAP_DBGACK);
             break;
         }
     }
@@ -180,9 +178,7 @@ void ml_dbgwrap_unhalt_cpu(uint64_t coresight_base_utt) {
     write_qword(coresight_base_utt, dbgWrapReg);
     printf("ml_dbgwrap_unhalt_cpu  back value: %llx\n", *(uint64_t *)coresight_base_utt);
     while (1) {
-        usleep(50000);
         if ((read_qword(coresight_base_utt) & DBGWRAP_DBGACK) == 0) {
-            printf("%llx\n", read_qword(coresight_base_utt) & DBGWRAP_DBGACK);
             break;
         }
     }
@@ -376,7 +372,6 @@ void pplwrite_test(void) {
         uint64_t test_p = pmap + value;
         write_data_with_mmio(test_p, base6150000, mask, i, 0x4141414141414141);
         
-        sleep(2);
         dma_done(base6140008, base6140108, original_value_0x206140108);
         ml_dbgwrap_unhalt_cpu(base6040000);
         
