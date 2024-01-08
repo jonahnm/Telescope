@@ -148,6 +148,7 @@ void kclose(uint64_t kfd);
 void kreadbuf_kfd(uint64_t va, void* ua, size_t size);
 void kwritebuf_kfd(uint64_t va, const void* ua, size_t size);
 uint64_t kread64_kfd(uint64_t va);
+uint64_t kread64_ptr_kfd(uint64_t kaddr);
 uint32_t kread32_kfd(uint64_t va);
 uint16_t kread16_kfd(uint64_t va);
 uint8_t kread8_kfd(uint64_t va);

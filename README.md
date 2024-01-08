@@ -5,7 +5,7 @@ tested on arm64e 15.1 and 16.5.1
 
 ## credits
  - felix-pb : kfd
- - opa334 : IOSurface kwrite method
+ - opa334 : IOSurface kwrite method, pplrw and IOSurface_primitives
  - checkra1n : pongoOS
  - wh1te4ever : offsets
  - LinusHenze : Fugu15_Rootful KPF

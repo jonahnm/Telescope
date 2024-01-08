@@ -150,6 +150,16 @@ uint64_t kread64_kfd(uint64_t va) {
     return u;
 }
 
+uint64_t kread64_ptr_kfd(uint64_t kaddr) {
+    uint64_t ptr = kread64_kfd(kaddr);
+    if ((ptr >> 55) & 1) {
+        return ptr | 0xffffff8000000000;
+    }
+
+    return ptr;
+}
+
+
 uint32_t kread32_kfd(uint64_t va) {
     union {
         uint32_t u32[2];

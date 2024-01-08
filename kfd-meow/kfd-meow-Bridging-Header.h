@@ -6,7 +6,7 @@
 #include "libgrabkernel.h"
 #include "libkfd.h"
 #include "libmeow.h"
-#include "GPU_CoreSight.h"
+#include "pplrw.h"
 
 uint64_t _kfd = 0;
 
@@ -16,7 +16,7 @@ uint64_t kpoen_bridge(uint64_t puaf_method, uint64_t pplrw) {
     if(isarm64e()){
         offset_exporter();
         if(pplrw == 0)
-            pplwrite_test();
+            test_pplrw();
     }
     if(_kfd != 0)
         return _kfd;
