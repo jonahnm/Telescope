@@ -41,7 +41,7 @@ struct ContentView: View {
                             if (result != 0) {
                                 message = "[*] kopening\n[*] kslide: " + String(get_kaslr_slide(), radix:16) + "\n"
                                 if(pplrw_toggle == 0) {
-                                    message = message + "\n[*] ppl bypassed!"
+                                    message = message + "[*] ppl bypassed!\n"
                                 }
                             }
                         }.disabled(result != 0).frame(minWidth: 0, maxWidth: .infinity)
