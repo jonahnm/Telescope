@@ -23,6 +23,24 @@ static const struct proc proc_versions[] = {
         .p_list_le_prev = 0x8,
         .task           = 0x10,
         .p_pid          = 0x68,
+        .p_fd_fd_ofiles = 0xf8,
+        .object_size    = 0x4b0
+    }, // iOS 14.0 - 14.4 arm64/arm64e
+    
+    {
+        .p_list_le_next = 0x0,
+        .p_list_le_prev = 0x8,
+        .task           = 0x10,
+        .p_pid          = 0x68,
+        .p_fd_fd_ofiles = 0xf8,
+        .object_size    = 0x4b0
+    }, // iOS 14.5 - 14.8 arm64/arm64e
+
+    {
+        .p_list_le_next = 0x0,
+        .p_list_le_prev = 0x8,
+        .task           = 0x10,
+        .p_pid          = 0x68,
         .p_fd_fd_ofiles = 0x110,
         .object_size    = 0x4B0
     }, // iOS 15.0 - 15.1 arm64

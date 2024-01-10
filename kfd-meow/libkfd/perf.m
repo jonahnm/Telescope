@@ -41,7 +41,7 @@ void perf_init(struct kfd* kfd)
         kaddr_gPhysBase = [obj find_gPhysBase];
         kaddr_gPhysSize = [obj find_gPhysSize];
         kaddr_gVirtBase = [obj find_gVirtBase];
-        if(kfd->info.env.vid >= 6) {
+        if(kfd->info.env.vid >= 8) {
             kaddr_base = [obj find_base];
             kaddr_vn_kqfilter = [obj find_vn_kqfilter];
             kaddr_vm_pages = [obj find_vm_pages];

@@ -162,7 +162,7 @@ void dma_ctrl_1(void)
     physwrite64_mapped(ctrl, value | 0x8000000000000001);
     sleep(1);
 
-    while ((~physread64_mapped(ctrl) & 0x8000000000000001) != 0) { sleep(1); }
+    while ((~physread64_mapped(ctrl) & 0x8000000000000001) != 0) { /*sleep(1);*/ }
 }
 
 void dma_ctrl_2(bool flag)
@@ -191,7 +191,7 @@ void dma_ctrl_3(uint64_t value)
 
     physwrite64_mapped(ctrl, physread64_mapped(ctrl) & value);
 
-    while ((physread64_mapped(ctrl) & 0x8000000000000001) != 0) { sleep(1); }
+    while ((physread64_mapped(ctrl) & 0x8000000000000001) != 0) { /*sleep(1);*/ }
 }
 
 void dma_init(uint64_t orig)
@@ -270,18 +270,15 @@ void dma_writephys512(uint64_t targetPA, uint64_t *value)
 
     uint32_t i = 0;
     uint64_t mask = 0;
-    bool isa15a16 = false;
 
     switch (cpuFamily) {
         case 0x8765EDEA: // A16
         i = 8;
         mask = 0x7FFFFFF;
-        isa15a16=true;
         break;
         case 0xDA33D83D: // A15
         i = 8;
         mask = 0x3FFFFF;
-        isa15a16=true;
         break;
         case 0x1B588BB3: // A14
         i = 0x28;
@@ -480,6 +477,7 @@ int test_pplrw(void)
         return -1;
     }
     
+    sleep(3);
     if (test_pplrw_virt()) {
         printf("test_pplrw_virt: success!\n");
     }
@@ -489,6 +487,8 @@ int test_pplrw(void)
     }
     
     return 0;
+    
+    kread64_kfd("");
 }
 
 int test_ktrr(void)

@@ -34,36 +34,42 @@ int isAvailable(void) {
     size_t len = sizeof(ptrAuthVal);
     assert(sysctlbyname("hw.optional.arm.FEAT_PAuth", &ptrAuthVal, &len, NULL, 0) != -1);
     if (@available(iOS 17.0, *)) {
-        return 12;
+        return 13;
     }
     if (@available(iOS 16.4, *)) {
+        if (isarm64e())
+            return 12;
+        return 11;
+    }
+    if (@available(iOS 16.2, *)) {
         if (isarm64e())
             return 11;
         return 10;
     }
-    if (@available(iOS 16.2, *)) {
+    if (@available(iOS 16.0, *)) {
         if (isarm64e())
             return 9;
         return 8;
     }
-    if (@available(iOS 16.0, *)) {
+    if (@available(iOS 15.4, *)) {
         if (isarm64e())
             return 7;
         return 6;
     }
-    if (@available(iOS 15.4, *)) {
+    if (@available(iOS 15.2, *)) {
         if (isarm64e())
             return 5;
         return 4;
     }
-    if (@available(iOS 15.2, *)) {
+    if (@available(iOS 15.1, *)) {
         if (isarm64e())
             return 3;
         return 2;
     }
-    if (@available(iOS 15.1, *)) {
-        if (isarm64e())
-            return 1;
+    if (@available(iOS 14.5, *)) {
+        return 1;
+    }
+    if (@available(iOS 14.0, *)) {
         return 0;
     }
     return -1;
@@ -344,71 +350,20 @@ uint64_t get_proc(pid_t target) {
 
 uint64_t off_pmap_tte = 0;
 
-uint64_t off_p_pfd    = 0;
-uint64_t off_p_textvp = 0;
-
-uint64_t off_fp_glob = 0;
-uint64_t off_fg_data = 0;
-uint64_t off_fg_flag = 0;
-
 uint64_t off_task_itk_space = 0;
 
 uint64_t off_ipc_port_ip_kobject = 0x48;
 uint64_t off_ipc_space_is_table  = 0;
 uint64_t off_ipc_entry_ie_object = 0;
 
-uint64_t off_fd_cdir = 0x20;
-
-uint64_t off_namecache_nc_child_tqe_prev = 0;
-uint64_t off_namecache_nc_vp             = 0x48;
-
-uint64_t off_mount_mnt_devvp = 0x980;
-uint64_t off_mount_mnt_flag = 0x70;
-
-uint64_t off_vnode_v_ncchildren_tqh_first   = 0x30;
-uint64_t off_vnode_v_iocount                = 0x64;
-uint64_t off_vnode_v_usecount               = 0x60;
-uint64_t off_vnode_v_flag                   = 0x54;
-uint64_t off_vnode_v_name                   = 0xb8;
-uint64_t off_vnode_v_mount                  = 0xd8;
-uint64_t off_vnode_v_data                   = 0xe0;
-uint64_t off_vnode_v_kusecount              = 0x5c;
-uint64_t off_vnode_v_references             = 0x5b;
-uint64_t off_vnode_v_parent                 = 0xc0;
-uint64_t off_vnode_v_label                  = 0xe8;
-uint64_t off_vnode_v_cred                   = 0x98;
-uint64_t off_vnode_v_writecount             = 0xb0;
-uint64_t off_vnode_v_type                   = 0x70;
-
 void offset_exporter(void) {
     struct kfd* kfd = ((struct kfd*)_kfd);
     off_pmap_tte = static_offsetof(pmap, tte);
-    
-    off_p_pfd = dynamic_offsetof(proc, p_fd_fd_ofiles);
     off_task_itk_space = dynamic_offsetof(task, itk_space);
-    
-    off_fp_glob = static_offsetof(fileproc, fp_glob);
-    off_fg_data = static_offsetof(fileglob, fg_data);
-    off_fg_flag = static_offsetof(fileglob, fg_flag);
-    
     off_ipc_space_is_table  = static_offsetof(ipc_space, is_table);
     off_ipc_entry_ie_object = static_offsetof(ipc_entry, ie_object);
     
-    if(kfd->info.env.vid >= 10) {
-        off_p_textvp = 0x548;
-        off_namecache_nc_child_tqe_prev = 0x0;
-    }
-    
-    if(kfd->info.env.vid <= 9) {
-        off_p_textvp = 0x350;
-        off_namecache_nc_child_tqe_prev = 0x10;
-    }
-    
-    if(kfd->info.env.vid <= 5) {
+    if(kfd->info.env.vid <= 7) {
         off_ipc_port_ip_kobject = 0x58;
-    }
-    
-    if(kfd->info.env.vid <= 3) {
-        off_p_textvp = 0x2a8;
     }
 }

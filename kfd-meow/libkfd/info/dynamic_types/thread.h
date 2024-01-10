@@ -23,6 +23,22 @@ static const struct thread thread_versions[] = {
         .map               = 0x438,
         .thread_id         = 0x578,
         .object_size       = 0x610
+    }, // iOS 14.0 - 14.4 arm64/arm64e
+    
+    {
+        .task_threads_next = 0x420,
+        .task_threads_prev = 0x428,
+        .map               = 0x438,
+        .thread_id         = 0x578,
+        .object_size       = 0x610
+    }, // iOS 15.0 - 15.1 arm64/arm64e
+
+    {
+        .task_threads_next = 0x420,
+        .task_threads_prev = 0x428,
+        .map               = 0x438,
+        .thread_id         = 0x578,
+        .object_size       = 0x610
     }, // iOS 15.0 - 15.1 arm64
     
     {

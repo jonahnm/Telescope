@@ -24,6 +24,22 @@ static const struct kqworkloop kqworkloop_versions[] = {
         .kqwl_owner     = 0xd0,
         .kqwl_dynamicid = 0xe8,
         .object_size    = 0x108
+    }, // iOS 14.0 - 14.5 arm64/arm64e
+    
+    {
+        .kqwl_state     = 0x10,
+        .kqwl_p         = 0x18,
+        .kqwl_owner     = 0xd0,
+        .kqwl_dynamicid = 0xe8,
+        .object_size    = 0x108
+    }, // iOS 14.5 - 14.8 arm64/arm64e
+    
+    {
+        .kqwl_state     = 0x10,
+        .kqwl_p         = 0x18,
+        .kqwl_owner     = 0xd0,
+        .kqwl_dynamicid = 0xe8,
+        .object_size    = 0x108
     }, // iOS 15.0 - 15.1 arm64
     
     {

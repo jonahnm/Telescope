@@ -180,41 +180,11 @@ uint64_t vtophys_kfd(uint64_t va);
 
 extern uint64_t off_pmap_tte;
 
-extern uint64_t off_p_pfd;
-extern uint64_t off_p_textvp;
-
-extern uint64_t off_fp_glob;
-extern uint64_t off_fg_data;
-extern uint64_t off_fg_flag;
-
 extern uint64_t off_task_itk_space;
 
 extern uint64_t off_ipc_port_ip_kobject;
 extern uint64_t off_ipc_space_is_table;
 extern uint64_t off_ipc_entry_ie_object;
-
-extern uint64_t off_fd_cdir;
-
-extern uint64_t off_namecache_nc_child_tqe_prev;
-extern uint64_t off_namecache_nc_vp;
-
-extern uint64_t off_mount_mnt_devvp;
-extern uint64_t off_mount_mnt_flag;
-
-extern uint64_t off_vnode_v_ncchildren_tqh_first;
-extern uint64_t off_vnode_v_iocount;
-extern uint64_t off_vnode_v_usecount;
-extern uint64_t off_vnode_v_flag;
-extern uint64_t off_vnode_v_name;
-extern uint64_t off_vnode_v_mount;
-extern uint64_t off_vnode_v_data;
-extern uint64_t off_vnode_v_kusecount;
-extern uint64_t off_vnode_v_references;
-extern uint64_t off_vnode_v_parent;
-extern uint64_t off_vnode_v_label;
-extern uint64_t off_vnode_v_cred;
-extern uint64_t off_vnode_v_writecount;
-extern uint64_t off_vnode_v_type;
 
 void offset_exporter(void);
 

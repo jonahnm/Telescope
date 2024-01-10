@@ -27,6 +27,24 @@ static const struct IOSurface IOSurface_versions[] = {
         .UseCountPtr            = 0xC0,
         .IndexedTimestampPtr    = 0x360,
         .ReadDisplacement       = 0x14
+    }, // iOS 14.0 - 14.4 arm64/arm64e
+    
+    {
+        .isa                    = 0x0,
+        .PixelFormat            = 0xA4,
+        .AllocSize              = 0xAC,
+        .UseCountPtr            = 0xC0,
+        .IndexedTimestampPtr    = 0x360,
+        .ReadDisplacement       = 0x14
+    }, // iOS 14.5 - 14.8 arm64/arm64e
+    
+    {
+        .isa                    = 0x0,
+        .PixelFormat            = 0xA4,
+        .AllocSize              = 0xAC,
+        .UseCountPtr            = 0xC0,
+        .IndexedTimestampPtr    = 0x360,
+        .ReadDisplacement       = 0x14
     }, // iOS 15.0 - 15.1 arm64
     
     {

@@ -23,6 +23,35 @@ struct vm_map {
 };
 
 static const struct vm_map vm_map_versions[] = {
+    {
+        .hdr_links_prev             = 0x10,
+        .hdr_links_next             = 0x18,
+        .min_offset                 = 0x20,
+        .max_offset                 = 0x28,
+        .hdr_nentries               = 0x30,
+        .hdr_nentries_u64           = 0x30,
+        .hdr_rb_head_store_rbh_root = 0x40,
+        .pmap                       = 0x48,
+        .hint                       = 0xf0,
+        .hole_hint                  = 0xf8,
+        .holes_list                 = 0x100,
+        .object_size                = 0x120,
+    }, // iOS 14.0 - 14.4 arm64/arm64e
+    
+    {
+        .hdr_links_prev             = 0x10,
+        .hdr_links_next             = 0x18,
+        .min_offset                 = 0x20,
+        .max_offset                 = 0x28,
+        .hdr_nentries               = 0x30,
+        .hdr_nentries_u64           = 0x30,
+        .hdr_rb_head_store_rbh_root = 0x40,
+        .pmap                       = 0x48,
+        .hint                       = 0xf0,
+        .hole_hint                  = 0xf8,
+        .holes_list                 = 0x100,
+        .object_size                = 0x120,
+    }, // iOS 14.5 - 14.8 arm64/arm64e
     
     {
         .hdr_links_prev             = 0x10,

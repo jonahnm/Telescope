@@ -23,6 +23,22 @@ static const struct task task_versions[] = {
         .threads_prev   = 0x60,
         .itk_space      = 0x330,
         .object_size    = 0x6B0
+    }, // iOS 14.0 - 14.4 arm64/arm64e
+    
+    {
+        .map            = 0x20,
+        .threads_next   = 0x50,
+        .threads_prev   = 0x58,
+        .itk_space      = 0x338,
+        .object_size    = 0x6B0
+    }, // iOS 14.5 - 14.8 arm64/arm64e
+    
+    {
+        .map            = 0x28,
+        .threads_next   = 0x58,
+        .threads_prev   = 0x60,
+        .itk_space      = 0x330,
+        .object_size    = 0x6B0
     }, // iOS 15.0 - 15.1 arm64
     
     {

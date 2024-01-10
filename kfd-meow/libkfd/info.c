@@ -76,7 +76,7 @@ void info_run(struct kfd* kfd)
     kfd_assert(kfd->info.kernel.current_proc);
     uint64_t signed_task_kaddr = 0;
     
-    if(kfd->info.env.vid <= 5) {
+    if(kfd->info.env.vid <= 7) {
         signed_task_kaddr = dynamic_kget(proc, task, kfd->info.kernel.current_proc);
     } else {
         signed_task_kaddr = kfd->info.kernel.current_proc + dynamic_offsetof(proc, object_size);
@@ -128,7 +128,7 @@ void info_run(struct kfd* kfd)
          */
         uint64_t signed_kernel_task = 0;
         
-        if(kfd->info.env.vid <= 5) {
+        if(kfd->info.env.vid <= 7) {
             signed_kernel_task = dynamic_kget(proc, task, kfd->info.kernel.kernel_proc);
         } else {
             signed_kernel_task = kfd->info.kernel.kernel_proc + dynamic_offsetof(proc, object_size);
