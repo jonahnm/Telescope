@@ -7,6 +7,7 @@
 #include "libkfd.h"
 #include "libmeow.h"
 #include "pplrw.h"
+#include "overwrite/overwrite.h"
 
 uint64_t _kfd = 0;
 
@@ -17,8 +18,6 @@ uint64_t kpoen_bridge(uint64_t puaf_method, uint64_t pplrw) {
         offset_exporter();
         if(pplrw == 0) {
             test_pplrw();
-            sleep(2);
-            test_ktrr();
         }
     }
     if(_kfd != 0)
@@ -28,7 +27,7 @@ uint64_t kpoen_bridge(uint64_t puaf_method, uint64_t pplrw) {
 }
 
 uint64_t meow_and_kclose(uint64_t _kfd) {
-    if(!isarm64e())
+    if(!isarm64e() && ((struct kfd*)_kfd)->info.env.vid >= 8)
         meow();
     kclose(_kfd);
     return 0;

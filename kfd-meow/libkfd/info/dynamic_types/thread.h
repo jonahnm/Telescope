@@ -31,7 +31,7 @@ static const struct thread thread_versions[] = {
         .map               = 0x438,
         .thread_id         = 0x578,
         .object_size       = 0x610
-    }, // iOS 15.0 - 15.1 arm64/arm64e
+    }, // iOS 14.5 - 14.8 arm64/arm64e
 
     {
         .task_threads_next = 0x420,

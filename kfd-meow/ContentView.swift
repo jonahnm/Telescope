@@ -13,6 +13,8 @@ struct ContentView: View {
     private var pplrw_options = ["on", "off"]
     @State private var pplrw_toggle = 1
     @State private var message = ""
+    @State private var action = "overwrite"
+    @State private var overwritten = false
 
     var body: some View {
         NavigationView {
@@ -39,7 +41,8 @@ struct ContentView: View {
                             message = ""
                             result = kpoen_bridge(UInt64(puaf_method), UInt64(pplrw_toggle))
                             if (result != 0) {
-                                message = "[*] kopening\n[*] kslide: " + String(get_kaslr_slide(), radix:16) + "\n"
+                                sleep(1)
+                                message = "[*] kopening\n[*] kslide: " + String(get_kernel_slide(), radix:16) + "\n"
                                 if(pplrw_toggle == 0) {
                                     message = message + "[*] ppl bypassed!\n"
                                     result = meow_and_kclose(result)
@@ -77,14 +80,20 @@ struct ContentView: View {
                             } else {
                                 message = "[-] couldn't find kernel"
                             }
-                        }.disabled(result != 0).frame(minWidth: 0, maxWidth: .infinity)
-                        Button("overwrite") {
+                        }.disabled(result != 0 || overwritten).frame(minWidth: 0, maxWidth: .infinity)
+                        Button(action) {
+                            if(overwritten) {
+                                userspaceReboot()
+                            }
+                            overwrite()
                             message = message + "[*] overwritten!\n"
                             result = meow_and_kclose(result)
+                            overwritten = true
+                            action = "uspreboot"
                             if (result == 0) {
                                 message = message + "[*] kclosed"
                             }
-                        }.disabled(result == 0).frame(minWidth: 0, maxWidth: .infinity)
+                        }.disabled(result == 0 && !overwritten).frame(minWidth: 0, maxWidth: .infinity)
                     }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
             }

@@ -487,8 +487,6 @@ int test_pplrw(void)
     }
     
     return 0;
-    
-    kread64_kfd("");
 }
 
 int test_ktrr(void)
@@ -496,7 +494,7 @@ int test_ktrr(void)
     objcbridge *obj = [[objcbridge alloc] init];
     uint64_t target = [obj find_ktrr];
     dma_perform(^{
-        dma_writevirt32(get_kaslr_slide() + target, 0x37c3);
+        dma_writevirt32(get_kernel_slide() + target, 0x37c3);
     });
     return 0;
 }

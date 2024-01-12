@@ -23,6 +23,14 @@ extern uint64_t kaddr_ptov_table;
 extern uint64_t kaddr_gPhysBase;
 extern uint64_t kaddr_gPhysSize;
 extern uint64_t kaddr_gVirtBase;
+extern uint64_t kaddr_vn_kqfilter;
+extern uint64_t kaddr_vm_pages;
+extern uint64_t kaddr_vm_page_array_beginning;
+extern uint64_t kaddr_vm_page_array_ending;
+extern uint64_t kaddr_vm_first_phys_ppnum;
+extern uint64_t kaddr_cdevsw;
+extern uint64_t kaddr_perfmon_dev_open;
+extern uint64_t kaddr_perfmon_devices;
 
 uint64_t phystokv(struct kfd* kfd, uint64_t pa);
 uint64_t vtophys(struct kfd* kfd, uint64_t va);

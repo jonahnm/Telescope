@@ -20,7 +20,6 @@
 #define KERNEL_BASE_ADDRESS     0xFFFFFFF007004000
 
 #include "libkfd/common.h"
-#include "GPU_CoreSight.h"
 
 /*
  * The private API of libkfd.
@@ -138,6 +137,7 @@ extern uint64_t _kfd;
 
 bool isarm64e(void);
 int isAvailable(void);
+int ischip(void);
 
 struct kfd* kfd_init(uint64_t exploit_type);
 void kfd_free(struct kfd* kfd);
@@ -156,7 +156,6 @@ void kwrite64_kfd(uint64_t va, uint64_t val);
 void kwrite32_kfd(uint64_t va, uint32_t val);
 void kwrite16_kfd(uint64_t va, uint16_t val);
 void kwrite8_kfd(uint64_t va, uint8_t val);
-uint64_t get_kaslr_slide(void);
 uint64_t get_kernel_proc(void);
 uint64_t get_kernel_task(void);
 uint64_t get_current_proc(void);
@@ -179,12 +178,23 @@ uint64_t vtophys_kfd(uint64_t va);
 #include "libkfd/info/static_types/ipc_entry.h"
 
 extern uint64_t off_pmap_tte;
+extern uint64_t off_proc_pfd;
+
+extern uint64_t off_fp_glob;
+extern uint64_t off_fg_data;
+extern uint64_t off_fd_cdir;
 
 extern uint64_t off_task_itk_space;
-
 extern uint64_t off_ipc_port_ip_kobject;
 extern uint64_t off_ipc_space_is_table;
 extern uint64_t off_ipc_entry_ie_object;
+
+extern uint64_t off_vnode_v_nclinks_lh_first;
+extern uint64_t off_vnode_v_name;
+extern uint64_t off_vnode_v_ncchildren_tqh_first;
+
+extern uint64_t off_namecache_nc_child_tqe_prev;
+extern uint64_t off_namecache_nc_vp;
 
 void offset_exporter(void);
 

@@ -56,7 +56,9 @@ int krkw_run(struct kfd* kfd)
         return -1;
 
     krkw_helper_run_allocate(kfd, &kfd->kread);
+    usleep(1000);
     krkw_helper_run_allocate(kfd, &kfd->kwrite);
+    usleep(1000);
     krkw_helper_run_deallocate(kfd, &kfd->kread);
     krkw_helper_run_deallocate(kfd, &kfd->kwrite);
     return 0;

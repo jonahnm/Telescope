@@ -51,6 +51,10 @@ void info_init(struct kfd* kfd)
 
     uintptr_t size1 = sizeof(kfd->info.env.maxfilesperproc);
     assert_bsd(sysctlbyname("kern.maxfilesperproc", &kfd->info.env.maxfilesperproc, &size1, NULL, 0));
+    
+    char osversion[16] = {};
+    uintptr_t size2 = sizeof(osversion);
+    assert_bsd(sysctlbyname("kern.osversion", &osversion, &size2, NULL, 0));
 
     struct rlimit rlim = {
         .rlim_cur = kfd->info.env.maxfilesperproc,
@@ -66,6 +70,7 @@ void info_init(struct kfd* kfd)
     print_u64(kfd->info.env.vid);
     print_bool(kfd->info.env.ios);
     print_u64(kfd->info.env.maxfilesperproc);
+    print_string(osversion);
 }
 
 void info_run(struct kfd* kfd)

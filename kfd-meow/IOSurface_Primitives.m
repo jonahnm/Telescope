@@ -96,14 +96,16 @@ static mach_port_t IOSurface_map_getSurfacePort(uint64_t magic)
 }
 
 //Thanks @jmpews
-uint64_t kread64_smr_kfd(uint64_t where) {
+uint64_t kread64_smr_kfd(uint64_t where)
+{
     uint64_t value = kread64_kfd(where) | 0xffffff8000000000;
     if((value & 0x400000000000) != 0)
         value &= 0xFFFFFFFFFFFFFFE0;
     return value;
 }
 
-uint64_t ipc_entry_lookup(mach_port_name_t port_name) {
+uint64_t ipc_entry_lookup(mach_port_name_t port_name)
+{
     uint64_t pr_task = get_current_task();
     uint64_t itk_space_pac = kread64_kfd(pr_task + off_task_itk_space);
     uint64_t itk_space = itk_space_pac | 0xffffff8000000000;

