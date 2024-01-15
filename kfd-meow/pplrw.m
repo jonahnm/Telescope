@@ -11,7 +11,7 @@
 #import <sys/sysctl.h>
 #include "IOSurface_Primitives.h"
 #include "libkfd.h"
-#include "kfd_meow-Swift.h"
+#include "Telescope-Swift.h"
 
 struct shit_map {
     uint64_t pa;

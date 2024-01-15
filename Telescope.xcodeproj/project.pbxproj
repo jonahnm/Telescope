@@ -27,7 +27,6 @@
 		D56FB6A02B499B0C00A48CA4 /* kfd-meow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56FB69F2B499B0C00A48CA4 /* kfd-meow.swift */; };
 		D56FB6A22B499B7000A48CA4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56FB6A12B499B7000A48CA4 /* ContentView.swift */; };
 		D5BF82AC2B4FF7E200C02D17 /* overwrite.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BF829D2B4F83D100C02D17 /* overwrite.m */; };
-		D5BF82B12B4FFAF600C02D17 /* files in Resources */ = {isa = PBXBuildFile; fileRef = D5BF82B02B4FFAF600C02D17 /* files */; };
 		D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BF82C22B50242F00C02D17 /* patchfinder.m */; };
 		D5BF82C62B50242F00C02D17 /* libdimentio.c in Sources */ = {isa = PBXBuildFile; fileRef = D5BF82C32B50242F00C02D17 /* libdimentio.c */; };
 		D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDA32B4726D500B62BED /* kwrite_sem_open.c */; };
@@ -50,7 +49,7 @@
 		868BDAB22B2E14410017CB10 /* libmeow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libmeow.h; sourceTree = "<group>"; };
 		868BDAB82B2E1A840017CB10 /* meowfinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = meowfinder.h; sourceTree = "<group>"; };
 		868BDAB92B2E1A890017CB10 /* meowfinder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = meowfinder.c; sourceTree = "<group>"; };
-		86A48A6B2B2B49CD005D1639 /* kfd-meow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kfd-meow.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		86A48A6B2B2B49CD005D1639 /* Telescope.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Telescope.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86A48A7A2B2B49CE005D1639 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		86A48A7F2B2B49CE005D1639 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86A48A872B2B4A0A005D1639 /* libkfd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libkfd.h; sourceTree = "<group>"; };
@@ -176,7 +175,7 @@
 		86A48A6C2B2B49CD005D1639 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				86A48A6B2B2B49CD005D1639 /* kfd-meow.app */,
+				86A48A6B2B2B49CD005D1639 /* Telescope.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -398,9 +397,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		86A48A6A2B2B49CD005D1639 /* kfd-meow */ = {
+		86A48A6A2B2B49CD005D1639 /* Telescope */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 86A48A842B2B49CE005D1639 /* Build configuration list for PBXNativeTarget "kfd-meow" */;
+			buildConfigurationList = 86A48A842B2B49CE005D1639 /* Build configuration list for PBXNativeTarget "Telescope" */;
 			buildPhases = (
 				86A48A672B2B49CD005D1639 /* Sources */,
 				86A48A682B2B49CD005D1639 /* Frameworks */,
@@ -410,12 +409,12 @@
 			);
 			dependencies = (
 			);
-			name = "kfd-meow";
+			name = Telescope;
 			packageProductDependencies = (
 				D5D2DDB42B4832B600B62BED /* KernelPatchfinder */,
 			);
 			productName = "kfd-meow";
-			productReference = 86A48A6B2B2B49CD005D1639 /* kfd-meow.app */;
+			productReference = 86A48A6B2B2B49CD005D1639 /* Telescope.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -433,7 +432,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 86A48A662B2B49CD005D1639 /* Build configuration list for PBXProject "kfd-meow" */;
+			buildConfigurationList = 86A48A662B2B49CD005D1639 /* Build configuration list for PBXProject "Telescope" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -449,7 +448,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				86A48A6A2B2B49CD005D1639 /* kfd-meow */,
+				86A48A6A2B2B49CD005D1639 /* Telescope */,
 			);
 		};
 /* End PBXProject section */
@@ -459,7 +458,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5BF82B12B4FFAF600C02D17 /* files in Resources */,
 				86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -718,7 +716,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		86A48A662B2B49CD005D1639 /* Build configuration list for PBXProject "kfd-meow" */ = {
+		86A48A662B2B49CD005D1639 /* Build configuration list for PBXProject "Telescope" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				86A48A822B2B49CE005D1639 /* Debug */,
@@ -727,7 +725,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		86A48A842B2B49CE005D1639 /* Build configuration list for PBXNativeTarget "kfd-meow" */ = {
+		86A48A842B2B49CE005D1639 /* Build configuration list for PBXNativeTarget "Telescope" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				86A48A852B2B49CE005D1639 /* Debug */,
