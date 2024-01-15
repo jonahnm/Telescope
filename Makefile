@@ -7,7 +7,7 @@ all: clean
 	ln -sf build/Build/Products/Debug-iphoneos Payload
 	rm -rf Payload/kfd.app/Frameworks
 	ldid -Sent.xml Payload/Telescope.app/Telescope
-	zip -r9 Telescope.ipa Payload/Telescope.app
+	zip -r9 Telescope.tipa Payload/Telescope.app
 
 clean:
-	rm -rf build Payload Telescope.ipa
+	rm -rf build Payload Telescope.tipa
