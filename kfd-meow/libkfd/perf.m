@@ -16,7 +16,7 @@ uint64_t kaddr_gPhysBase = 0;
 uint64_t kaddr_gPhysSize = 0;
 uint64_t kaddr_gVirtBase = 0;
 uint64_t kaddr_perfmon_devices = 0;
-
+void *fugufinderbridge = 0;
 void perf_init(struct kfd* kfd)
 {
     char hw_model[16] = {};
@@ -35,6 +35,7 @@ void perf_init(struct kfd* kfd)
     kfd->perf.shared_page.size = shared_page_size;
     
     objcbridge *obj = [[objcbridge alloc] init];
+    fugufinderbridge = (__bridge void *)obj;
     if(isarm64e() && kfd->info.env.vid <= 7) {
         kaddr_ptov_table = [obj find_ptov_table];
         kaddr_gPhysBase = [obj find_gPhysBase];

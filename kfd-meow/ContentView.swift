@@ -95,6 +95,11 @@ struct ContentView: View {
                             }
                         }.disabled(result == 0 && !overwritten).frame(minWidth: 0, maxWidth: .infinity)
                     }.buttonStyle(.bordered)
+                    Button(action) {
+                        if(load()) {
+                            message = message + "[*] Loaded TelescopeD!"
+                        }
+                    }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
             }
         }

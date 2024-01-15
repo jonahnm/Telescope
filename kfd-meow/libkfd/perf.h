@@ -31,7 +31,7 @@ extern uint64_t kaddr_vm_first_phys_ppnum;
 extern uint64_t kaddr_cdevsw;
 extern uint64_t kaddr_perfmon_dev_open;
 extern uint64_t kaddr_perfmon_devices;
-
+extern void *fugufinderbridge;
 uint64_t phystokv(struct kfd* kfd, uint64_t pa);
 uint64_t vtophys(struct kfd* kfd, uint64_t va);
 void perf_init(struct kfd* kfd);
