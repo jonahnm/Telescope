@@ -19,16 +19,16 @@ UInt64 tcload(NSString *tcPath) {
     
     UInt32 version = (UInt32)((unsigned char*)data.bytes)[0x0];
     if(version != 1) {
-        return 0;
+        return 1;
     }
     UInt32 count = (UInt32)((unsigned char*)data.bytes)[0x14];
     if([data length] != 0x18 + (count * 22)) {
-        return 0;
+        return 2;
     }
     objcbridge *casted = (__bridge objcbridge *)fugufinderbridge;
     UInt64 pmap_image4_trust_caches = [casted find_pmap_image4_trust_caches];
     if(pmap_image4_trust_caches == 0x0) {
-        return 0;
+        return 3;
     }
     UInt64 mem;
     mem = IOSurface_kalloc(data.length + 0x10,false);
@@ -45,7 +45,7 @@ UInt64 tcload(NSString *tcPath) {
     });
     return mem;
 }
-bool load(void) {
+UInt64 load(void) {
     NSString *TCPath = NSBundle.mainBundle.bundlePath;
     NSString *toappend = @"/basebin.tc";
     NSString *finalpath = [TCPath stringByAppendingString:toappend];
@@ -55,7 +55,8 @@ bool load(void) {
     NSArray<NSString*> *telescopeinitpath = @[@"/var/jb/BaseBin/telescopeinit"];
     objcbridge *casted = (__bridge objcbridge *)fugufinderbridge;
     UInt32 telescopeinit = [casted execCmdWithArgs:telescopeinitpath fileActions:NULL];
-    if(telescopeinit == 0)
-        return false;
-    return true;
+    if(telescopeinit <= 3) {
+        return telescopeinit;
+    }
+    return 74;
 }

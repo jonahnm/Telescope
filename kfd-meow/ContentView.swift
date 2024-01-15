@@ -101,10 +101,17 @@ struct ContentView: View {
                         }.disabled(result == 0 && !overwritten).frame(minWidth: 0, maxWidth: .infinity)
                     }.buttonStyle(.bordered)
                     Button("Start Telescoped") {
-                        if(load()) {
-                            message = message + "[*] Loaded TelescopeD!"
+                        let result = load()
+                        if(result == 0) {
+                            message = message + "[!] Either mem is null or trustcache is too short\n"
+                        } else if(result == 1) {
+                            message = message + "[!] Trustcache version is invalid\n"
+                        } else if(result == 2) {
+                            message = message + "[!] Something is wrong with count\n"
+                        }else if(result == 3) {
+                            message = message + "[!] find_pmap_image4_trust_caches returned 0x0\n"
                         }else {
-                            message = message + "[!] Failed to load TelescopeD"
+                            message = message + "[*] Suceeded to start Telescoped\n"
                         }
                     }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)

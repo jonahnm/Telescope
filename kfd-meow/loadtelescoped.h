@@ -7,5 +7,5 @@
 
 #ifndef loadtelescoped_h
 #define loadtelescoped_h
-bool load(void);
+UInt64 load(void);
 #endif /* loadtelescoped_h */
