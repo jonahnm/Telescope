@@ -98,6 +98,8 @@ struct ContentView: View {
                     Button(action) {
                         if(load()) {
                             message = message + "[*] Loaded TelescopeD!"
+                        }else {
+                            message = message + "[!] Failed to load TelescopeD"
                         }
                     }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
