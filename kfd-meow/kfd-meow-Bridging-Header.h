@@ -18,7 +18,8 @@ uint64_t kpoen_bridge(uint64_t puaf_method, uint64_t pplrw) {
     if(isarm64e()){
         offset_exporter();
         if(pplrw == 0) {
-            test_pplrw();
+            if(test_pplrw() == -1)
+                return 21;
         }
     }
     if(_kfd != 0)

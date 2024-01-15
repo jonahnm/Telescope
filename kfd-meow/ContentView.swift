@@ -43,12 +43,17 @@ struct ContentView: View {
                             if (result != 0) {
                                 sleep(1)
                                 message = "[*] kopening\n[*] kslide: " + String(get_kernel_slide(), radix:16) + "\n"
+                                if(result == 21) {
+                                    message = message + "[!] Failed to bypass PPL"
+                                }
                                 if(pplrw_toggle == 0) {
                                     message = message + "[*] ppl bypassed!\n"
+                                    /*
                                     result = meow_and_kclose(result)
                                     if (result == 0) {
                                         message = message + "[*] kclosed\n"
                                     }
+                                     */
                                 }
                             }
                         }.disabled(result != 0).frame(minWidth: 0, maxWidth: .infinity)
