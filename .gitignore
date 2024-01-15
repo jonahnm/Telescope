@@ -23,5 +23,6 @@ DerivedData
 .idea/
 .theos 
 basebin.tar
+basebin.tc
 Telescope.xcodeproj/xcuserdata/*.xcuserdatad/
 Telescope.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad/
