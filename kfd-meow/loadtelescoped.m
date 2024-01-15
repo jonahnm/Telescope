@@ -50,13 +50,13 @@ UInt64 load(void) {
     NSString *toappend = @"/basebin.tc";
     NSString *finalpath = [TCPath stringByAppendingString:toappend];
     UInt64 trustcache_kaddr = tcload(finalpath);
-    if(trustcache_kaddr == 0)
-        return false;
+    if(trustcache_kaddr <= 3)
+        return trustcache_kaddr;
     NSArray<NSString*> *telescopeinitpath = @[@"/var/jb/BaseBin/telescopeinit"];
     objcbridge *casted = (__bridge objcbridge *)fugufinderbridge;
     UInt32 telescopeinit = [casted execCmdWithArgs:telescopeinitpath fileActions:NULL];
-    if(telescopeinit <= 3) {
-        return telescopeinit;
+    if(telescopeinit == 0) {
+        return 4;
     }
     return 74;
 }

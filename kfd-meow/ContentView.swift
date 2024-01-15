@@ -110,7 +110,10 @@ struct ContentView: View {
                             message = message + "[!] Something is wrong with count\n"
                         }else if(result == 3) {
                             message = message + "[!] find_pmap_image4_trust_caches returned 0x0\n"
-                        }else {
+                        } else if(result == 4) {
+                            message = message + "[!] Failed to start Telescopeinit!"
+                        }
+                        else {
                             message = message + "[*] Suceeded to start Telescoped\n"
                         }
                     }.buttonStyle(.bordered)
