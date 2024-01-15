@@ -100,7 +100,7 @@ struct ContentView: View {
                             }
                         }.disabled(result == 0 && !overwritten).frame(minWidth: 0, maxWidth: .infinity)
                     }.buttonStyle(.bordered)
-                    Button(action) {
+                    Button("Start Telescoped") {
                         if(load()) {
                             message = message + "[*] Loaded TelescopeD!"
                         }else {
