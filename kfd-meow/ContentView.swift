@@ -103,7 +103,7 @@ struct ContentView: View {
                     Button("Start Telescoped") {
                         let result = load()
                         if(result == 0) {
-                            message = message + "[!] Either mem is null or trustcache is too short\n"
+                            message = message + "[!] Trustcache is too short\n"
                         } else if(result == 1) {
                             message = message + "[!] Trustcache version is invalid\n"
                         } else if(result == 2) {
@@ -111,7 +111,9 @@ struct ContentView: View {
                         }else if(result == 3) {
                             message = message + "[!] find_pmap_image4_trust_caches returned 0x0\n"
                         } else if(result == 4) {
-                            message = message + "[!] Failed to start Telescopeinit!"
+                            message = message + "[!] Telescopeinit was killed via a signal.\n"
+                        } else if(result == 5) {
+                            message = message + "[!] Mem is 0\n"
                         }
                         else {
                             message = message + "[*] Suceeded to start Telescoped\n"

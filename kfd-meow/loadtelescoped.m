@@ -11,7 +11,7 @@
 #import "IOSurface_Primitives.h"
 #import "libkfd/perf.h"
 
-UInt64 tcload(NSString *tcPath) {
+UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     NSData *data = [[NSData alloc] initWithContentsOfFile:tcPath];
     if([data length] <= 0x18) {
         return 0;
@@ -43,19 +43,24 @@ UInt64 tcload(NSString *tcPath) {
         kwrite64_kfd(next, cur);
         dma_writevirt64(pitc, mem);
     });
-    return mem;
+    *ret = mem;
+    return 4;
 }
 UInt64 load(void) {
     NSString *TCPath = NSBundle.mainBundle.bundlePath;
     NSString *toappend = @"/basebin.tc";
     NSString *finalpath = [TCPath stringByAppendingString:toappend];
-    UInt64 trustcache_kaddr = tcload(finalpath);
-    if(trustcache_kaddr <= 3)
+    UInt64 ret;
+    UInt64 trustcache_kaddr = tcload(finalpath,&ret);
+    if(trustcache_kaddr <= 3) {
         return trustcache_kaddr;
+    } else if(ret == 0) {
+        return 5;
+    }
     NSArray<NSString*> *telescopeinitpath = @[@"/var/jb/BaseBin/telescopeinit"];
     objcbridge *casted = (__bridge objcbridge *)fugufinderbridge;
     UInt32 telescopeinit = [casted execCmdWithArgs:telescopeinitpath fileActions:NULL];
-    if(telescopeinit == 0) {
+    if(WIFSIGNALED(telescopeinit)) {
         return 4;
     }
     return 74;
