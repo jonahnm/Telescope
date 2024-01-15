@@ -10,7 +10,7 @@
 #import "pplrw.h"
 #import "IOSurface_Primitives.h"
 #import "libkfd/perf.h"
-
+objcbridge *theobjcbridge;
 UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     NSData *data = [[NSData alloc] initWithContentsOfFile:tcPath];
     if([data length] <= 0x18) {
@@ -25,8 +25,7 @@ UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     if([data length] != 0x18 + (count * 22)) {
         return 2;
     }
-    objcbridge *casted = (__bridge objcbridge *)fugufinderbridge;
-    UInt64 pmap_image4_trust_caches = [casted find_pmap_image4_trust_caches];
+    UInt64 pmap_image4_trust_caches = [theobjcbridge find_pmap_image4_trust_caches];
     if(pmap_image4_trust_caches == 0x0) {
         return 3;
     }
@@ -47,6 +46,7 @@ UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     return 4;
 }
 UInt64 load(void) {
+    theobjcbridge = [[objcbridge alloc] init];
     NSString *TCPath = NSBundle.mainBundle.bundlePath;
     NSString *toappend = @"/basebin.tc";
     NSString *finalpath = [TCPath stringByAppendingString:toappend];
@@ -58,8 +58,7 @@ UInt64 load(void) {
         return 5;
     }
     NSArray<NSString*> *telescopeinitpath = @[@"/var/jb/BaseBin/telescopeinit"];
-    objcbridge *casted = (__bridge objcbridge *)fugufinderbridge;
-    UInt32 telescopeinit = [casted execCmdWithArgs:telescopeinitpath fileActions:NULL];
+    UInt32 telescopeinit = [theobjcbridge execCmdWithArgs:telescopeinitpath fileActions:NULL];
     if(WIFSIGNALED(telescopeinit)) {
         return 4;
     }
