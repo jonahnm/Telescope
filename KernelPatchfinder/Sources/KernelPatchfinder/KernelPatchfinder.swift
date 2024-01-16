@@ -715,11 +715,12 @@ open class KernelPatchfinder {
             textlog.write("Couldn't find string address\n")
             return nil
         }
-        guard let strref = textExec.findNextXref(to: straddr) else {
+        guard let strref = textExec.findNextXref(to: straddr,optimization: .noBranches) else {
             textlog.write("Couldn't find string reference\n")
             return nil
         }
         var pc = strref-0x64
+        textlog.write(String(format: "string ref-0x64: %llu\n",pc))
         guard let strrefinstr = textExec.instruction(at: pc) else {
             textlog.write("failed to get adrp\n")
             return nil
