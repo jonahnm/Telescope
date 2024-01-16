@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		650016D92B56086F003BF0E3 /* TelescopeFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 650016D82B56086F003BF0E3 /* TelescopeFinder.m */; };
 		65586DE72B55C900006DC1CC /* basebin.tar in Resources */ = {isa = PBXBuildFile; fileRef = 65586DE62B55C900006DC1CC /* basebin.tar */; };
 		868BDAB12B2E14260017CB10 /* libmeow.m in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB02B2E14260017CB10 /* libmeow.m */; };
 		868BDABA2B2E1A890017CB10 /* meowfinder.c in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB92B2E1A890017CB10 /* meowfinder.c */; };
@@ -48,7 +47,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		650016D82B56086F003BF0E3 /* TelescopeFinder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TelescopeFinder.m; sourceTree = "<group>"; };
 		65586DE62B55C900006DC1CC /* basebin.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = basebin.tar; sourceTree = "<group>"; };
 		868BDAB02B2E14260017CB10 /* libmeow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libmeow.m; sourceTree = "<group>"; };
 		868BDAB22B2E14410017CB10 /* libmeow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libmeow.h; sourceTree = "<group>"; };
@@ -196,7 +194,6 @@
 				D5BF829B2B4F83D100C02D17 /* overwrite */,
 				D5D2DDB92B48341400B62BED /* libgrabkernel */,
 				86A48A882B2B4A0A005D1639 /* libkfd */,
-				650016D82B56086F003BF0E3 /* TelescopeFinder.m */,
 				86A48A872B2B4A0A005D1639 /* libkfd.h */,
 				86A48ABB2B2B4A0A005D1639 /* libkfd.m */,
 				868BDAB22B2E14410017CB10 /* libmeow.h */,
@@ -483,7 +480,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				650016D92B56086F003BF0E3 /* TelescopeFinder.m in Sources */,
 				D5BF82AC2B4FF7E200C02D17 /* overwrite.m in Sources */,
 				D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */,
 				D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */,

@@ -14,5 +14,8 @@
 #include "libmeow.h"
 
 void offsetfinder64_kread(void);
-
+static unsigned char header[0x4000];
+typedef unsigned long long addr_t;
+int InitPatchfinder(addr_t, const char*);
+addr_t Find_trustcache(void);
 #endif /* meowfinder_h */

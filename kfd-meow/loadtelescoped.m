@@ -11,9 +11,9 @@
 #import "pplrw.h"
 #import "IOSurface_Primitives.h"
 #import "libkfd/perf.h"
+#import "meowfinder.h"
+#import "libgrabkernel/include/libgrabkernel.h"
 objcbridge *theobjcbridge;
-
-extern uint64_t GetTrustCacheAddress(struct kfd* kfd);
 
 UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     NSData *data = [[NSData alloc] initWithContentsOfFile:tcPath];
@@ -29,7 +29,7 @@ UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     if([data length] != 0x18 + (count * 22)) {
         return 2;
     }
-    UInt64 pmap_image4_trust_caches = GetTrustCacheAddress((struct kfd*)_kfd);
+    UInt64 pmap_image4_trust_caches = Find_trustcache();
     if(pmap_image4_trust_caches == 0x0) {
         return 3;
     }
@@ -50,6 +50,12 @@ UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     return 4;
 }
 UInt64 load(void) {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths firstObject];
+    NSString *kernel = @"/kernel.img4";
+    const char *cpath = [[path stringByAppendingString: kernel] UTF8String];
+    grabkernel(cpath);
+    InitPatchfinder(KERNEL_BASE_ADDRESS, cpath);
     theobjcbridge = [[objcbridge alloc] init];
     NSString *TCPath = NSBundle.mainBundle.bundlePath;
     NSString *toappend = @"/basebin.tc";
