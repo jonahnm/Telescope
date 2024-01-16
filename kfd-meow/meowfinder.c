@@ -7,8 +7,6 @@
 
 #include "meowfinder.h"
 
-static unsigned char header[0x4000];
-
 static uint64_t find_prev_insn_kread(uint64_t vaddr, uint32_t num, uint32_t insn, uint32_t mask) {
     uint32_t from = 0;
     while(num) {

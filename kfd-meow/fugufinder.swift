@@ -7,6 +7,7 @@
 
 import Foundation
 import KernelPatchfinder
+import SwiftMachO
 public func prepare_kpf() -> Bool {
     guard KernelPatchfinder.running != nil else {
         let status = grabkernel(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path + "/kernel.img4")
@@ -20,7 +21,6 @@ public func prepare_kpf() -> Bool {
 }
 
 @objc class objcbridge: NSObject {
-    
     @objc public func find_base() -> UInt64 {
         return KernelPatchfinder.running?.baseAddress ?? 0x0
     }
@@ -69,6 +69,12 @@ public func prepare_kpf() -> Bool {
     @objc public func find_pmap_image4_trust_caches() -> UInt64 {
         return KernelPatchfinder.running?.pmap_image4_trust_caches ?? 0x0
     }
+    @objc public func get_kernel_exe_text_section() -> UInt64 {
+        return KernelPatchfinder.running?.textExec.subSegments[0].baseAddress ?? 0x0;
+    }
+    @objc public func get_kernel_exe_text_size() -> UInt64 {
+        return (KernelPatchfinder.running?.textExec.subSegments[0].endAddress ?? 0x0) - (KernelPatchfinder.running?.textExec.subSegments[0].baseAddress ?? 0x0);
+    }
     @objc public func execCmd(args: [String], fileActions: posix_spawn_file_actions_t? = nil) -> Int32 {
         var fileActions = fileActions
         
@@ -99,5 +105,8 @@ public func prepare_kpf() -> Bool {
         waitpid(pid, &status, 0)
         
         return status
+    }
+    @objc public func printtoui(messageout:String) {
+        ContentView.instance.message = ContentView.instance.message + messageout;
     }
 }

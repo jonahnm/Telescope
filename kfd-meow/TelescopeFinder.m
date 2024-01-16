@@ -10,19 +10,21 @@
 
 #include "libkfd/common.h"
 #include "libkfd.h"
-#include "meowfinder.h"
-
-
+#include "libkfd/perf.h"
+#include <mach-o/dyld.h>
+#include "libkfd/krkw/kread/kread_IOSurface.h"
+static unsigned char header[0x4000];
+objcbridge *finderobjcbridge;
 static unsigned char * BoyermooreHorspoolMemMem(const unsigned char* haystack, size_t hlen, const unsigned char* needle,   size_t nlen)
 {
     size_t last, scan = 0;
     size_t bad_char_skip[UCHAR_MAX + 1]; /* Officially called:
                                           * bad character shift */
-
+    
     /* Sanity checks on the parameters */
     if (nlen <= 0 || !haystack || !needle)
         return NULL;
-
+    
     /* ---- Preprocess ---- */
     /* Initialize the table to default value */
     /* When a character is encountered that does not occur
@@ -31,17 +33,17 @@ static unsigned char * BoyermooreHorspoolMemMem(const unsigned char* haystack, s
      */
     for (scan = 0; scan <= UCHAR_MAX; scan = scan + 1)
         bad_char_skip[scan] = nlen;
-
+    
     /* C arrays have the first byte at [0], therefore:
      * [nlen - 1] is the last byte of the array. */
     last = nlen - 1;
-
+    
     /* Then populate it with the analysis of the needle */
     for (scan = 0; scan < last; scan = scan + 1)
         bad_char_skip[needle[scan]] = last - scan;
-
+    
     /* ---- Do the matching ---- */
-
+    
     /* Search the haystack, while the needle can still be within it. */
     while (hlen >= nlen)
     {
@@ -49,67 +51,34 @@ static unsigned char * BoyermooreHorspoolMemMem(const unsigned char* haystack, s
         for (scan = last; haystack[scan] == needle[scan]; scan = scan - 1)
             if (scan == 0) /* If the first byte matches, we've found it. */
                 return (void *)haystack;
-
+        
         /* otherwise, we need to skip some bytes and start again.
-           Note that here we are getting the skip value based on the last byte
-           of needle, no matter where we didn't match. So if needle is: "abcd"
-           then we are skipping based on 'd' and that value will be 4, and
-           for "abcdd" we again skip on 'd' but the value will be only 1.
-           The alternative of pretending that the mismatched character was
-           the last character is slower in the normal case (E.g. finding
-           "abcd" in "...azcd..." gives 4 by using 'd' but only
-           4-2==2 using 'z'. */
+         Note that here we are getting the skip value based on the last byte
+         of needle, no matter where we didn't match. So if needle is: "abcd"
+         then we are skipping based on 'd' and that value will be 4, and
+         for "abcdd" we again skip on 'd' but the value will be only 1.
+         The alternative of pretending that the mismatched character was
+         the last character is slower in the normal case (E.g. finding
+         "abcd" in "...azcd..." gives 4 by using 'd' but only
+         4-2==2 using 'z'. */
         hlen     -= bad_char_skip[haystack[last]];
         haystack += bad_char_skip[haystack[last]];
     }
-
+    
     return NULL;
 }
-
-void GetKernelSection(uint64_t kernel_base, const char *segment, const char *section, uint64_t *addr_out, uint64_t *size_out)
-{
-    struct mach_header_64 kernel_header;
-    kreadbuf_kfd(kernel_base, &kernel_header, sizeof(kernel_header));
-    
-    uint64_t cmdStart = kernel_base + sizeof(kernel_header);
-    uint64_t cmdEnd = cmdStart + kernel_header.sizeofcmds;
-    
-    uint64_t cmdAddr = cmdStart;
-    for(int ci = 0; ci < kernel_header.ncmds && cmdAddr <= cmdEnd; ci++)
-    {
-        struct segment_command_64 cmd;
-        kreadbuf_kfd(cmdAddr, &cmd, sizeof(cmd));
-        
-        if(cmd.cmd == LC_SEGMENT_64)
-        {
-            uint64_t sectStart = cmdAddr + sizeof(cmd);
-            bool finished = false;
-            for(int si = 0; si < cmd.nsects; si++)
-            {
-                uint64_t sectAddr = sectStart + si * sizeof(struct section_64);
-                struct section_64 sect;
-                kreadbuf_kfd(sectAddr, &sect, sizeof(sect));
-                
-                if (!strcmp(cmd.segname, segment) && !strcmp(sect.sectname, section)) {
-                    *addr_out = sect.addr;
-                    *size_out = sect.size;
-                    finished = true;
-                    break;
-                }
-            }
-            if (finished) break;
-        }
-        
-        cmdAddr += cmd.cmdsize;
-    }
-}
-
 uint64_t GetTrustCacheAddress(struct kfd* kfd)
 {
-    
+    finderobjcbridge = [[objcbridge alloc] init];
     uint64_t textexec_text_addr = 0, textexec_text_size = 0;
-    GetKernelSection(kernel_base, "__TEXT_EXEC", "__text", &textexec_text_addr, &textexec_text_size);
-    
+    textexec_text_addr = [finderobjcbridge get_kernel_exe_text_section] + get_kernel_slide();
+    textexec_text_size = [finderobjcbridge get_kernel_exe_text_size];
+    if(textexec_text_addr == 0) {
+        return 68;
+    }
+    if(textexec_text_size == 0) {
+        return 69;
+    }
     // find "image4 interface not available"
 
     const char *str_target = "image4 interface not available";
@@ -130,7 +99,7 @@ uint64_t GetTrustCacheAddress(struct kfd* kfd)
         free(buffer);
     }
     if (str_addr == 0) {
-        return 0;
+        return 70;
     }
 
 #define ASM_ADRP(off, reg) ((0x90000000 | ((uint32_t)(((off >> 12) & 0x3) << 29)) | ((uint32_t)(((off >> 12) & (~0x3)) << 3)) | reg) & 0xF0FFFFFF)
@@ -171,7 +140,7 @@ uint64_t GetTrustCacheAddress(struct kfd* kfd)
     }
     if (!trust_cache_runtime_init) {
         printf("[-] failed to find trustcache_runtime_init");
-        return 0;
+        return 71;
     }
     uint64_t code = 0;
     kreadbuf_kfd(trust_cache_runtime_init-0x64, &code, 8);

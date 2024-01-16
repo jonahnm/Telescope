@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <mach-o/dyld.h>
-
+static unsigned char header[0x4000];
 #include "libmeow.h"
 
 void offsetfinder64_kread(void);

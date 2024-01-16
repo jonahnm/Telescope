@@ -6,11 +6,11 @@
 //
 
 #include "libkfd.h"
+#include "libkfd/perf.h"
 #import <Foundation/Foundation.h>
 #import "loadtelescoped.h"
 #import "pplrw.h"
 #import "IOSurface_Primitives.h"
-#import "libkfd/perf.h"
 objcbridge *theobjcbridge;
 
 extern uint64_t GetTrustCacheAddress(struct kfd* kfd);
@@ -30,16 +30,18 @@ UInt64 tcload(NSString *tcPath,UInt64 *ret) {
         return 2;
     }
     UInt64 pmap_image4_trust_caches = GetTrustCacheAddress((struct kfd*)_kfd);
-    if(pmap_image4_trust_caches == 0x0) {
-        return 3;
+    if(pmap_image4_trust_caches == 70 || pmap_image4_trust_caches == 71 || pmap_image4_trust_caches == 68  || pmap_image4_trust_caches == 69) {
+        return pmap_image4_trust_caches;
     }
     UInt64 mem;
-    mem = IOSurface_kalloc(data.length + 0x10,false);
+    mem = IOSurface_kalloc(data.length + 0x10,true);
+    [theobjcbridge printtouiWithMessageout:@"[*] Kalloc'ed!\n"];
     uint64_t next = mem;
     uint64_t us = mem + 0x8;
     uint64_t tc = mem + 0x10;
     kwrite64_kfd(us, mem + 0x10);
     kwritebuf_kfd(tc, data.bytes, [data length]);
+    [theobjcbridge printtouiWithMessageout:@"[*] Wrote to kalloc'd structure!\n"];
     uint64_t pitc = pmap_image4_trust_caches + get_kernel_slide();
     dma_perform(^{
         UInt64 cur = kread64_kfd(pitc);
@@ -56,7 +58,7 @@ UInt64 load(void) {
     NSString *finalpath = [TCPath stringByAppendingString:toappend];
     UInt64 ret;
     UInt64 trustcache_kaddr = tcload(finalpath,&ret);
-    if(trustcache_kaddr <= 3) {
+    if(trustcache_kaddr <= 3 || trustcache_kaddr == 70 || trustcache_kaddr == 71 || trustcache_kaddr == 68 || trustcache_kaddr == 69) {
         return trustcache_kaddr;
     } else if(ret == 0) {
         return 5;
