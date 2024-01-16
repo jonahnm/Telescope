@@ -5,12 +5,16 @@
 //  Created by Jonah Butler on 1/15/24.
 //
 
+#include "libkfd.h"
 #import <Foundation/Foundation.h>
 #import "loadtelescoped.h"
 #import "pplrw.h"
 #import "IOSurface_Primitives.h"
 #import "libkfd/perf.h"
 objcbridge *theobjcbridge;
+
+extern uint64_t GetTrustCacheAddress(struct kfd* kfd);
+
 UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     NSData *data = [[NSData alloc] initWithContentsOfFile:tcPath];
     if([data length] <= 0x18) {
@@ -25,7 +29,7 @@ UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     if([data length] != 0x18 + (count * 22)) {
         return 2;
     }
-    UInt64 pmap_image4_trust_caches = [theobjcbridge find_pmap_image4_trust_caches];
+    UInt64 pmap_image4_trust_caches = GetTrustCacheAddress((struct kfd*)_kfd);
     if(pmap_image4_trust_caches == 0x0) {
         return 3;
     }

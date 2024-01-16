@@ -105,3 +105,4 @@ void offsetfinder64_kread(void)
     func__proc_set_ucred = search_proc_set_ucred_kread(text_exec_addr, text_exec_size);
     printf("func__proc_set_ucred : %016llx\n", func__proc_set_ucred);
 }
+
