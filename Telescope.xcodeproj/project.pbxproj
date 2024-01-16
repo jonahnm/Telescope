@@ -24,6 +24,7 @@
 		86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A48AC72B2B4A89005D1639 /* IOKit.framework */; };
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
 		9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */ = {isa = PBXBuildFile; fileRef = 9732F8E52B55A6ED00762F31 /* loadtelescoped.m */; };
+		975597E72B56DCF10057616A /* TextLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975597E62B56DCF10057616A /* TextLog.swift */; };
 		D5123A022B4C40B10040BF9D /* pplrw.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A012B4C40B10040BF9D /* pplrw.m */; };
 		D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A052B4C41040040BF9D /* IOSurface_Primitives.m */; };
 		D54990D72B42C7C3003B3486 /* landa.c in Sources */ = {isa = PBXBuildFile; fileRef = D54990D62B42C7C3003B3486 /* landa.c */; };
@@ -106,6 +107,7 @@
 		9732F8E42B55A50C00762F31 /* loadtelescoped.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = loadtelescoped.h; sourceTree = "<group>"; };
 		9732F8E52B55A6ED00762F31 /* loadtelescoped.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = loadtelescoped.m; sourceTree = "<group>"; };
 		9732F8E72B55BBD800762F31 /* posix_spawn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = posix_spawn.h; sourceTree = "<group>"; };
+		975597E62B56DCF10057616A /* TextLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLog.swift; sourceTree = "<group>"; };
 		D5123A012B4C40B10040BF9D /* pplrw.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pplrw.m; sourceTree = "<group>"; };
 		D5123A032B4C40BD0040BF9D /* pplrw.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pplrw.h; sourceTree = "<group>"; };
 		D5123A042B4C41040040BF9D /* IOSurface_Primitives.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOSurface_Primitives.h; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				D5D2DDB62B4832E500B62BED /* kfd-meow-Bridging-Header.h */,
 				9732F8E42B55A50C00762F31 /* loadtelescoped.h */,
 				9732F8E52B55A6ED00762F31 /* loadtelescoped.m */,
+				975597E62B56DCF10057616A /* TextLog.swift */,
 			);
 			path = "kfd-meow";
 			sourceTree = "<group>";
@@ -483,6 +486,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				975597E72B56DCF10057616A /* TextLog.swift in Sources */,
 				650016D92B56086F003BF0E3 /* TelescopeFinder.m in Sources */,
 				D5BF82AC2B4FF7E200C02D17 /* overwrite.m in Sources */,
 				D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */,

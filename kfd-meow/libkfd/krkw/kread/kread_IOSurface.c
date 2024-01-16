@@ -57,8 +57,8 @@ void kread_IOSurface_kread(struct kfd* kfd, uint64_t kaddr, void* uaddr, uint64_
 void get_kernel_section(struct kfd* kfd, uint64_t kernel_base, const char *segment, const char *section, uint64_t *addr_out, uint64_t *size_out)
 {
     struct mach_header_64 kernel_header;
-    kread_kfd((uint64_t)kfd, kernel_base, &kernel_header, sizeof(kernel_header));
-    
+    kreadbuf_kfd(kernel_base, &kernel_header, sizeof(kernel_header));
+
     uint64_t cmdStart = kernel_base + sizeof(kernel_header);
     uint64_t cmdEnd = cmdStart + kernel_header.sizeofcmds;
     
@@ -66,7 +66,7 @@ void get_kernel_section(struct kfd* kfd, uint64_t kernel_base, const char *segme
     for(int ci = 0; ci < kernel_header.ncmds && cmdAddr <= cmdEnd; ci++)
     {
         struct segment_command_64 cmd;
-        kread_kfd((uint64_t)kfd, cmdAddr, &cmd, sizeof(cmd));
+        kreadbuf_kfd(cmdAddr, &cmd, sizeof(cmd));
         
         if(cmd.cmd == LC_SEGMENT_64)
         {
@@ -76,7 +76,7 @@ void get_kernel_section(struct kfd* kfd, uint64_t kernel_base, const char *segme
             {
                 uint64_t sectAddr = sectStart + si * sizeof(struct section_64);
                 struct section_64 sect;
-                kread_kfd((uint64_t)kfd, sectAddr, &sect, sizeof(sect));
+                kreadbuf_kfd(sectAddr, &sect, sizeof(sect));
                 
                 if (!strcmp(cmd.segname, segment) && !strcmp(sect.sectname, section)) {
                     *addr_out = sect.addr;

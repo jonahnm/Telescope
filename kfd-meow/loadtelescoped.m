@@ -29,19 +29,19 @@ UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     if([data length] != 0x18 + (count * 22)) {
         return 2;
     }
-    UInt64 pmap_image4_trust_caches = GetTrustCacheAddress((struct kfd*)_kfd);
-    if(pmap_image4_trust_caches == 70 || pmap_image4_trust_caches == 71 || pmap_image4_trust_caches == 68  || pmap_image4_trust_caches == 69) {
-        return pmap_image4_trust_caches;
+    UInt64 pmap_image4_trust_caches = [theobjcbridge find_pmap_image4_trust_caches];
+    if(pmap_image4_trust_caches == 0x0) {
+        return 3;
     }
     UInt64 mem;
     mem = IOSurface_kalloc(data.length + 0x10,true);
-    [theobjcbridge printtouiWithMessageout:@"[*] Kalloc'ed!\n"];
+    [objcbridge printtologfileWithMessageout:@"[*] Kalloc'd"];
     uint64_t next = mem;
     uint64_t us = mem + 0x8;
     uint64_t tc = mem + 0x10;
     kwrite64_kfd(us, mem + 0x10);
     kwritebuf_kfd(tc, data.bytes, [data length]);
-    [theobjcbridge printtouiWithMessageout:@"[*] Wrote to kalloc'd structure!\n"];
+    [objcbridge printtologfileWithMessageout:[NSString stringWithFormat:@"Wrote to kalloc'd structure, structure addr: %llu",mem]];
     uint64_t pitc = pmap_image4_trust_caches + get_kernel_slide();
     dma_perform(^{
         UInt64 cur = kread64_kfd(pitc);

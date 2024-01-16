@@ -71,8 +71,7 @@ uint64_t GetTrustCacheAddress(struct kfd* kfd)
 {
     finderobjcbridge = [[objcbridge alloc] init];
     uint64_t textexec_text_addr = 0, textexec_text_size = 0;
-    textexec_text_addr = [finderobjcbridge get_kernel_exe_text_section] + get_kernel_slide();
-    textexec_text_size = [finderobjcbridge get_kernel_exe_text_size];
+    get_kernel_section((struct kfd*)_kfd, KERNEL_BASE_ADDRESS + get_kernel_slide(), "__TEXT_EXEC", "__text", &textexec_text_addr, &textexec_text_size);
     if(textexec_text_addr == 0) {
         return 68;
     }

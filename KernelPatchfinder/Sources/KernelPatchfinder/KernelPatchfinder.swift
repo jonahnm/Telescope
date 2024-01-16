@@ -10,6 +10,31 @@ import Foundation
 import SwiftMachO
 import PatchfinderUtils
 import Darwin
+private struct TextLog: TextOutputStream {
+
+    /// Appends the given string to the stream.
+    mutating func write(_ string: String) {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)
+        let documentDirectoryPath = paths.first!
+        let log = documentDirectoryPath.appendingPathComponent("telescopelog.txt")
+
+        do {
+            let handle = try FileHandle(forWritingTo: log)
+            handle.seekToEndOfFile()
+            handle.write(string.data(using: .utf8)!)
+            handle.closeFile()
+        } catch {
+            print(error.localizedDescription)
+            do {
+                try string.data(using: .utf8)?.write(to: log)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+
+    }
+
+}
 
 open class KernelPatchfinder {
     public let kernel: MachO!
@@ -165,7 +190,25 @@ open class KernelPatchfinder {
         
         return gxf_ppl_enter_start
     }()
-    
+    @objc public static func printtologfile(messageout:String) {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)
+                let documentDirectoryPath = paths.first!
+                let log = documentDirectoryPath.appendingPathComponent("TelescopeLog.txt")
+
+                do {
+                    let handle = try FileHandle(forWritingTo: log)
+                    handle.seekToEndOfFile()
+                    handle.write(messageout.data(using: .utf8)!)
+                    handle.closeFile()
+                } catch {
+                    print(error.localizedDescription)
+                    do {
+                        try messageout.data(using: .utf8)?.write(to: log)
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+    }
     /// Address of the `pmap_enter_options_addr` function
     public lazy var pmap_enter_options_addr: UInt64? = {
         if cachedResults != nil {
@@ -565,7 +608,26 @@ open class KernelPatchfinder {
         
         return terminateDriversForModule
     }()
-    
+    private func adrpImm(_ instruction: UInt32, pc: UInt64) -> UInt64? {
+        // Check that this is an adrp instruction
+        if (instruction & 0x9F000000) != 0x90000000 {
+            return nil
+        }
+        
+        // Calculate imm from hi and lo
+        var imm_hi_lo = UInt64((instruction >> 3)  & 0x1FFFFC)
+        imm_hi_lo    |= UInt64((instruction >> 29) & 0x3)
+        if (instruction & 0x800000) != 0 {
+            // Sign extend
+            imm_hi_lo |= 0xFFFFFFFFFFE00000
+        }
+        
+        // Build real imm
+        let imm = imm_hi_lo << 12
+        
+        // Emulate
+        return imm;
+    }
     /// Address of the `kalloc_data_external` function
     public lazy var kalloc_data_external: UInt64? = {
         if cachedResults != nil {
@@ -644,10 +706,37 @@ open class KernelPatchfinder {
     
     /// Address of `pmap_image4_trust_caches`
     public lazy var pmap_image4_trust_caches: UInt64? = {
+        var textlog = TextLog();
         if cachedResults != nil {
+            textlog.write("cachedResults isn't null?!!")
             return cachedResults.unsafelyUnwrapped["pmap_image4_trust_caches"]
         }
+        guard let straddr = cStrSect.addrOf("image4 interface not available @%s:%d") else {
+            textlog.write("Couldn't find string address\n")
+            return nil
+        }
+        guard let strref = textExec.findNextXref(to: straddr) else {
+            textlog.write("Couldn't find string reference\n")
+            return nil
+        }
+        var pc = strref-0x64
+        guard let strrefinstr = textExec.instruction(at: pc) else {
+            textlog.write("failed to get adrp\n")
+            return nil
+        }
+        guard let addstrrefinstr = textExec.instruction(at: pc+0x4) else {
+            textlog.write("failed to get add\n")
+            return nil
+        }
+        guard var toreturn = AArch64Instr.Emulate.adrpAdd(adrp: strrefinstr, add: addstrrefinstr, pc: pc) else {
+            textlog.write("Failed to emulate adrpAdd\n")
+            return nil
+        }
+        toreturn = toreturn + 0x20;
         
+        textlog.write(String(format: "pmap_image4_trust_caches: %llu\n", toreturn))
+        return toreturn;
+            /*
         guard let ppl_handler_table = ppl_handler_table else {
             return nil
         }
@@ -675,8 +764,7 @@ open class KernelPatchfinder {
                 break
             }
         }
-        
-        return pmap_image4_trust_caches
+        */
     }()
     
     /// Get the EL level the kernel runs at

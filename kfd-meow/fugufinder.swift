@@ -106,7 +106,8 @@ public func prepare_kpf() -> Bool {
         
         return status
     }
-    @objc public func printtoui(messageout:String) {
-        ContentView.instance.message = ContentView.instance.message + messageout;
+    @objc public static func printtologfile(messageout:String) {
+        var textlog = TextLog()
+        textlog.write(messageout)
     }
 }
