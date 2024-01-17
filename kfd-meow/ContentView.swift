@@ -82,6 +82,7 @@ struct ContentView: View {
                                 message = message + "\nvm_page_array_beginning: " + String(KernelPatchfinder.running?.vm_page_array.beginning ?? 0x0, radix: 16)
                                 message = message + "\nvm_page_array_ending:    " + String(KernelPatchfinder.running?.vm_page_array.ending ?? 0x0, radix: 16)
                                 message = message + "\nvm_first_phys_ppnum:     " + String(UInt64(KernelPatchfinder.running?.vm_page_array.ending ?? 0x0) + 0x8, radix: 16)
+                                message = message + "\npmap_image4_trust_caches:     " + String(UInt64(KernelPatchfinder.running?.pmap_image4_trust_caches ?? 0x0),radix: 16)
                             } else {
                                 message = "[-] couldn't find kernel"
                             }
@@ -127,7 +128,12 @@ struct ContentView: View {
                             }
                         }
                     }.buttonStyle(.bordered)
+                    Button("Test kalloc") {
+                        var allocated = testkalloc()
+                        message = message + String(format:"\n[*] Allocated kernel memory! Address: %p",allocated)
+                    }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
+                
             }
         }
     }

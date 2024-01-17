@@ -706,51 +706,28 @@ open class KernelPatchfinder {
     
     /// Address of `pmap_image4_trust_caches`
     public lazy var pmap_image4_trust_caches: UInt64? = {
-        var textlog = TextLog();
+        var textlog = TextLog()
         if cachedResults != nil {
             textlog.write("cachedResults isn't null?!!")
             return cachedResults.unsafelyUnwrapped["pmap_image4_trust_caches"]
         }
-        guard let straddr = cStrSect.addrOf("image4 interface not available @%s:%d") else {
-            textlog.write("Couldn't find string address\n")
-            return nil
-        }
-        guard let strref = textExec.findNextXref(to: straddr,optimization: .noBranches) else {
-            textlog.write("Couldn't find string reference\n")
-            return nil
-        }
-        var pc = strref-0x64
-        textlog.write(String(format: "string ref-0x64: %llu\n",pc))
-        guard let strrefinstr = textExec.instruction(at: pc) else {
-            textlog.write("failed to get adrp\n")
-            return nil
-        }
-        guard let addstrrefinstr = textExec.instruction(at: pc+0x4) else {
-            textlog.write("failed to get add\n")
-            return nil
-        }
-        guard var toreturn = AArch64Instr.Emulate.adrpAdd(adrp: strrefinstr, add: addstrrefinstr, pc: pc) else {
-            textlog.write("Failed to emulate adrpAdd\n")
-            return nil
-        }
-        toreturn = toreturn + 0x20;
-        
-        textlog.write(String(format: "pmap_image4_trust_caches: %llu\n", toreturn))
-        return toreturn;
-            /*
         guard let ppl_handler_table = ppl_handler_table else {
+            textlog.write("Failed to find ppl_handler_table");
             return nil
         }
-        
+        textlog.write(String(format: "Found ppl_handler_table at: %p\n", ppl_handler_table))
         guard var pmap_lookup_in_loaded_trust_caches_internal = constSect.r64(at: ppl_handler_table + 0x148) else {
+            textlog.write("Couldn't find pmap_lookup_..._internal\n");
             return nil
         }
-        
+        textlog.write(String(format: "found pmap_lookup at: %p\n",pmap_lookup_in_loaded_trust_caches_internal));
         if (pmap_lookup_in_loaded_trust_caches_internal >> 48) == 0x8011 {
+            textlog.write("On-disk!\n");
             // Relocation, on-disk kernel
             pmap_lookup_in_loaded_trust_caches_internal &= 0xFFFFFFFFFFFF
             pmap_lookup_in_loaded_trust_caches_internal += 0xFFFFFFF007004000
         } else {
+            textlog.write("Live!\n");
             // Probably live kernel
             // Strip pointer authentication code
             pmap_lookup_in_loaded_trust_caches_internal |= 0xFFFFFF8000000000
@@ -759,13 +736,19 @@ open class KernelPatchfinder {
         var pmap_image4_trust_caches: UInt64?
         for i in 1..<20 {
             let pc = pmap_lookup_in_loaded_trust_caches_internal + UInt64(i * 4)
-            let emu = AArch64Instr.Emulate.ldr(pplText.instruction(at: pc) ?? 0, pc: pc)
+            textlog.write(String(format: "PC: %p\n", pc))
+            let instradrp = pplText.instruction(at: pc) ?? 0;
+            textlog.write(String(format: "Instruction at PC: %p\n",instradrp))
+            let useless = pplText.instruction(at: pc+0x4) ?? 0;
+            let instrldr = pplText.instruction(at: pc+0x8) ?? 0;
+            let emu = AArch64Instr.Emulate.adrpLdr(adrp: instradrp, ldr: instrldr, pc: pc)
             if emu != nil {
                 pmap_image4_trust_caches = emu
                 break
             }
         }
-        */
+        textlog.write(String(format: "Found pmap_image4_trust_caches at %p\n",pmap_image4_trust_caches ?? 0x0))
+        return pmap_image4_trust_caches;
     }()
     
     /// Get the EL level the kernel runs at

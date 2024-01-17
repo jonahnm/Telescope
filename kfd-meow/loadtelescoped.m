@@ -34,7 +34,7 @@ UInt64 tcload(NSString *tcPath,UInt64 *ret) {
         return 3;
     }
     UInt64 mem;
-    mem = IOSurface_kalloc(data.length + 0x10,true);
+    mem = IOSurface_kalloc(data.length + 0x10, false);
     [objcbridge printtologfileWithMessageout:@"[*] Kalloc'd"];
     uint64_t next = mem;
     uint64_t us = mem + 0x8;
@@ -69,4 +69,12 @@ UInt64 load(void) {
         return 4;
     }
     return 74;
+}
+static uint64_t kalloc(vm_size_t size){
+    mach_vm_address_t address = 0;
+    mach_vm_allocate(tfpzero, (mach_vm_address_t *)&address, size, VM_FLAGS_ANYWHERE);
+    return address;
+}
+UInt64 testkalloc(void) {
+    
 }

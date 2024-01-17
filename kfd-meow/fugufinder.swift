@@ -73,7 +73,10 @@ public func prepare_kpf() -> Bool {
         return KernelPatchfinder.running?.textExec.subSegments[0].baseAddress ?? 0x0;
     }
     @objc public func get_kernel_exe_text_size() -> UInt64 {
-        return (KernelPatchfinder.running?.textExec.subSegments[0].endAddress ?? 0x0) - (KernelPatchfinder.running?.textExec.subSegments[0].baseAddress ?? 0x0);
+        return (KernelPatchfinder.running?.textExec.subSegments[0].endAddress ?? 0x0) - (KernelPatchfinder.running?.textExec.subSegments[0].baseAddress ?? 0x0)
+    }
+    @objc public func get_kalloc() -> UInt64 {
+        return KernelPatchfinder.running?.kalloc_data_external ?? 0x0
     }
     @objc public func execCmd(args: [String], fileActions: posix_spawn_file_actions_t? = nil) -> Int32 {
         var fileActions = fileActions
@@ -89,7 +92,6 @@ public func prepare_kpf() -> Bool {
         for arg in args {
             argv.append(strdup(arg))
         }
-        
         argv.append(nil)
         
         let result = posix_spawn(&pid, argv[0], &fileActions, &attr, &argv, environ)

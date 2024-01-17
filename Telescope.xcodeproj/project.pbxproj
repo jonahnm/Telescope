@@ -664,6 +664,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/kfd-meow/libgrabkernel",
+					"$(PROJECT_DIR)/kfd-meow/IOKit",
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-Os";
@@ -713,6 +714,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/kfd-meow/libgrabkernel",
+					"$(PROJECT_DIR)/kfd-meow/IOKit",
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-Os";
