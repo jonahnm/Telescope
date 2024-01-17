@@ -14,42 +14,79 @@
 objcbridge *theobjcbridge;
 
 extern uint64_t GetTrustCacheAddress(struct kfd* kfd);
-
-UInt64 tcload(NSString *tcPath,UInt64 *ret) {
-    NSData *data = [[NSData alloc] initWithContentsOfFile:tcPath];
-    if([data length] <= 0x18) {
-        return 0;
+UInt64 kalloc(UInt64 size) {
+    vm_address_t addr = 0;
+    assert_mach(vm_allocate(mach_task_self(), &addr, size, VM_FLAGS_ANYWHERE));
+    memset((void*)(addr), 0, size);
+    NSLog(@"VM_ALLOCATE TO: %p",addr);
+    UInt64 paddr = vtophys_kfd(addr);
+    return phystokv_kfd(paddr);
+}
+BOOL insert_trustcache(uint64_t tcaddr) {
+    uint64_t pmap_image4_trustcaches = [theobjcbridge find_pmap_image4_trust_caches] + get_kernel_slide();
+    uint64_t trustcache = kread64_kfd(pmap_image4_trustcaches);
+    syslog(LOG_INFO,"[*] trustcache: 0x%llx", trustcache);
+    if (!trustcache) {
+        kwrite64_kfd(pmap_image4_trustcaches, tcaddr);
+        return YES;
+    }
+    uint64_t prev = 0;
+    while (trustcache) {
+        prev = trustcache;
+        trustcache = kread64_kfd(trustcache);
     }
     
-    UInt32 version = (UInt32)((unsigned char*)data.bytes)[0x0];
-    if(version != 1) {
-        return 1;
+    if (@available(iOS 16, *)) {
+        kwrite64_kfd(prev, tcaddr);
+        kwrite64_kfd(tcaddr+8, prev);
+        return YES;
     }
-    UInt32 count = (UInt32)((unsigned char*)data.bytes)[0x14];
-    if([data length] != 0x18 + (count * 22)) {
-        return 2;
+    
+    kwrite64_kfd(prev, tcaddr);
+    return YES;
+}
+
+uint64_t load_trustcache(NSString *path, uint64_t *back_addr) {
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (data == nil) {
+        NSLog(@"[-] Failed to load trustcache, no trustcache buffer provided");
+        return 0;
     }
-    UInt64 pmap_image4_trust_caches = [theobjcbridge find_pmap_image4_trust_caches];
-    if(pmap_image4_trust_caches == 0x0) {
-        return 3;
+
+    trustcache_file *tc = (trustcache_file *)data.bytes;
+    
+    uint64_t alloc_size = sizeof(trustcache_page) + data.length + 0x8;
+        
+    if (@available(iOS 16, *)) {
+        alloc_size = sizeof(trustcache_module) + data.length + 0x8;
     }
-    UInt64 mem;
-    mem = IOSurface_kalloc(data.length + 0x10, false);
-    syslog(LOG_INFO, "Kalloc'd");
-    uint64_t next = mem;
-    uint64_t us = mem + 0x8;
-    uint64_t tc = mem + 0x10;
-    kwrite64_kfd(us, mem + 0x10);
-    kwritebuf_kfd(tc, data.bytes, [data length]);
-    syslog(LOG_INFO, "Wrote to kalloc'd structure, structure addr: %p",mem);
-    uint64_t pitc = pmap_image4_trust_caches + get_kernel_slide();
-    dma_perform(^{
-        UInt64 cur = kread64_kfd(pitc);
-        kwrite64_kfd(next, cur);
-        dma_writevirt64(pitc, mem);
-    });
-    *ret = mem;
-    return 4;
+    uint64_t tcaddr = kalloc(alloc_size);
+    uint64_t payload = kalloc(alloc_size);
+
+    if (!tcaddr) {
+        NSLog(@"[-] Failed to allocate trustcache");
+        return 0;
+    }
+
+    if (@available(iOS 16, *)) {
+        for (int i = 0; i < data.length; ++i) {
+            kwrite8_kfd(payload + i, ((uint8_t *)data.bytes)[i]);
+        }
+        kwrite64_kfd(tcaddr + offsetof(trustcache_module, fileptr), payload);
+        kwrite64_kfd(tcaddr + offsetof(trustcache_module, module_size), data.length);
+    } else {
+        kwrite64_kfd(tcaddr + offsetof(trustcache_page, selfptr), tcaddr + offsetof(trustcache_page, file));
+
+        for (int i = 0; i < data.length; ++i) {
+            kwrite8_kfd(tcaddr + offsetof(trustcache_page, file) + i, ((uint8_t *)data.bytes)[i]);
+        }
+    }
+
+    if (!insert_trustcache(tcaddr)) {
+        return 0;
+    }
+    *back_addr = tcaddr;
+    return alloc_size;
 }
 UInt64 load(void) {
     theobjcbridge = [[objcbridge alloc] init];
@@ -57,7 +94,7 @@ UInt64 load(void) {
     NSString *toappend = @"/basebin.tc";
     NSString *finalpath = [TCPath stringByAppendingString:toappend];
     UInt64 ret;
-    UInt64 trustcache_kaddr = tcload(finalpath,&ret);
+    UInt64 trustcache_kaddr = load_trustcache(finalpath, &ret);
     if(trustcache_kaddr <= 3 || trustcache_kaddr == 70 || trustcache_kaddr == 71 || trustcache_kaddr == 68 || trustcache_kaddr == 69) {
         return trustcache_kaddr;
     } else if(ret == 0) {
@@ -71,5 +108,5 @@ UInt64 load(void) {
     return 74;
 }
 UInt64 testkalloc(void) {
-    return IOSurface_kalloc(0x4000, false);
+    return kalloc(0x4000);
 }
