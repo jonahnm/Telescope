@@ -171,14 +171,14 @@ static mach_port_t IOSurface_kalloc_getSurfacePort(uint64_t size)
 
 uint64_t IOSurface_kalloc(uint64_t size, bool leak)
 {
-    [objcbridge printtologfileWithMessageout:@"Kalloc'ing!\n"];
+    syslog(LOG_NOTICE, "Kalloc'ing!");
     while (true) {
         mach_port_t surfaceMachPort = IOSurface_kalloc_getSurfacePort(size);
-        [objcbridge printtologfileWithMessageout:@"Got SurfacePort!\n"];
+        syslog(LOG_NOTICE,"Got surface port!");
         uint64_t surfaceSendRight = ipc_entry_lookup(surfaceMachPort);
-        [objcbridge printtologfileWithMessageout:@"Got kObject!\n"];
+        syslog(LOG_NOTICE,"Got kObject!");
         uint64_t surface = IOSurfaceSendRight_get_surface(surfaceSendRight);
-        [objcbridge printtologfileWithMessageout:@"Got SendRight surface!\n"];
+        syslog(LOG_NOTICE,"Got SendRight Surface!");
         uint64_t va = IOSurface_get_ranges(surface);
 
         if (va == 0) continue;

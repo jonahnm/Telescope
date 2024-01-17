@@ -35,13 +35,13 @@ UInt64 tcload(NSString *tcPath,UInt64 *ret) {
     }
     UInt64 mem;
     mem = IOSurface_kalloc(data.length + 0x10, false);
-    [objcbridge printtologfileWithMessageout:@"[*] Kalloc'd"];
+    syslog(LOG_INFO, "Kalloc'd");
     uint64_t next = mem;
     uint64_t us = mem + 0x8;
     uint64_t tc = mem + 0x10;
     kwrite64_kfd(us, mem + 0x10);
     kwritebuf_kfd(tc, data.bytes, [data length]);
-    [objcbridge printtologfileWithMessageout:[NSString stringWithFormat:@"Wrote to kalloc'd structure, structure addr: %llu",mem]];
+    syslog(LOG_INFO, "Wrote to kalloc'd structure, structure addr: %p",mem);
     uint64_t pitc = pmap_image4_trust_caches + get_kernel_slide();
     dma_perform(^{
         UInt64 cur = kread64_kfd(pitc);

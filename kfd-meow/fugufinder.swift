@@ -108,8 +108,4 @@ public func prepare_kpf() -> Bool {
         
         return status
     }
-    static var textlog = TextLog()
-    @objc public static func printtologfile(messageout:String) {
-        textlog.write(messageout)
-    }
 }
