@@ -12,10 +12,10 @@ struct ContentView: View {
     @State private var puaf_method = 2
     private var pplrw_options = ["on", "off"]
     @State private var pplrw_toggle = 1
-    @State public var message = ""
+    @State private var message = ""
     @State private var action = "overwrite"
     @State private var overwritten = false
-    public static let instance = ContentView();
+
     var body: some View {
         NavigationView {
             Form {
@@ -82,7 +82,6 @@ struct ContentView: View {
                                 message = message + "\nvm_page_array_beginning: " + String(KernelPatchfinder.running?.vm_page_array.beginning ?? 0x0, radix: 16)
                                 message = message + "\nvm_page_array_ending:    " + String(KernelPatchfinder.running?.vm_page_array.ending ?? 0x0, radix: 16)
                                 message = message + "\nvm_first_phys_ppnum:     " + String(UInt64(KernelPatchfinder.running?.vm_page_array.ending ?? 0x0) + 0x8, radix: 16)
-                                message = message + "\npmap_image4_trust_caches:     " + String(UInt64(KernelPatchfinder.running?.pmap_image4_trust_caches ?? 0x0),radix: 16)
                             } else {
                                 message = "[-] couldn't find kernel"
                             }
@@ -102,38 +101,25 @@ struct ContentView: View {
                         }.disabled(result == 0 && !overwritten).frame(minWidth: 0, maxWidth: .infinity)
                     }.buttonStyle(.bordered)
                     Button("Start Telescoped") {
-                        DispatchQueue.global(qos: .default).async {
-                            let result = load()
-                            if(result == 0) {
-                                message = message + "[!] Trustcache is too short\n"
-                            } else if(result == 1) {
-                                message = message + "[!] Trustcache version is invalid\n"
-                            } else if(result == 2) {
-                                message = message + "[!] Something is wrong with count\n"
-                            }else if(result == 3) {
-                                message = message + "[!] find_pmap_image4_trust_caches returned 0x0\n"
-                            } else if(result == 4) {
-                                message = message + "[!] Telescopeinit was killed via a signal.\n"
-                            } else if(result == 5) {
-                                message = message + "[!] Mem is 0\n"
-                            }else if(result == 70) {
-                                message = message + "[!] Straddr is 0\n"
-                            } else if(result == 71) {
-                                message = message + "[!] failed to find trustcache_runtime_init\n"
-                            }else if(result == 68 || result == 69) {
-                                message = message + "[!] Failed to get kernel section\n"
-                            }
-                            else {
-                                message = message + "[*] Suceeded to start Telescoped\n"
-                            }
+                        let result = load()
+                        if(result == 0) {
+                            message = message + "[!] Trustcache is too short\n"
+                        } else if(result == 1) {
+                            message = message + "[!] Trustcache version is invalid\n"
+                        } else if(result == 2) {
+                            message = message + "[!] Something is wrong with count\n"
+                        }else if(result == 3) {
+                            message = message + "[!] find_pmap_image4_trust_caches returned 0x0\n"
+                        } else if(result == 4) {
+                            message = message + "[!] Telescopeinit was killed via a signal.\n"
+                        } else if(result == 5) {
+                            message = message + "[!] Mem is 0\n"
+                        }
+                        else {
+                            message = message + "[*] Suceeded to start Telescoped\n"
                         }
                     }.buttonStyle(.bordered)
-                    Button("Test kalloc") {
-                        var allocated = testkalloc()
-                        message = message + String(format:"\n[*] Allocated kernel memory! Address: %p",allocated)
-                    }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
-                
             }
         }
     }

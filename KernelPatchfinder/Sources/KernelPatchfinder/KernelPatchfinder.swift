@@ -10,31 +10,6 @@ import Foundation
 import SwiftMachO
 import PatchfinderUtils
 import Darwin
-private struct TextLog: TextOutputStream {
-
-    /// Appends the given string to the stream.
-    mutating func write(_ string: String) {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)
-        let documentDirectoryPath = paths.first!
-        let log = documentDirectoryPath.appendingPathComponent("telescopelog.txt")
-
-        do {
-            let handle = try FileHandle(forWritingTo: log)
-            handle.seekToEndOfFile()
-            handle.write(string.data(using: .utf8)!)
-            handle.closeFile()
-        } catch {
-            print(error.localizedDescription)
-            do {
-                try string.data(using: .utf8)?.write(to: log)
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-
-    }
-
-}
 
 open class KernelPatchfinder {
     public let kernel: MachO!
@@ -190,25 +165,7 @@ open class KernelPatchfinder {
         
         return gxf_ppl_enter_start
     }()
-    @objc public static func printtologfile(messageout:String) {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)
-                let documentDirectoryPath = paths.first!
-                let log = documentDirectoryPath.appendingPathComponent("TelescopeLog.txt")
-
-                do {
-                    let handle = try FileHandle(forWritingTo: log)
-                    handle.seekToEndOfFile()
-                    handle.write(messageout.data(using: .utf8)!)
-                    handle.closeFile()
-                } catch {
-                    print(error.localizedDescription)
-                    do {
-                        try messageout.data(using: .utf8)?.write(to: log)
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                }
-    }
+    
     /// Address of the `pmap_enter_options_addr` function
     public lazy var pmap_enter_options_addr: UInt64? = {
         if cachedResults != nil {
@@ -608,26 +565,7 @@ open class KernelPatchfinder {
         
         return terminateDriversForModule
     }()
-    private func adrpImm(_ instruction: UInt32, pc: UInt64) -> UInt64? {
-        // Check that this is an adrp instruction
-        if (instruction & 0x9F000000) != 0x90000000 {
-            return nil
-        }
-        
-        // Calculate imm from hi and lo
-        var imm_hi_lo = UInt64((instruction >> 3)  & 0x1FFFFC)
-        imm_hi_lo    |= UInt64((instruction >> 29) & 0x3)
-        if (instruction & 0x800000) != 0 {
-            // Sign extend
-            imm_hi_lo |= 0xFFFFFFFFFFE00000
-        }
-        
-        // Build real imm
-        let imm = imm_hi_lo << 12
-        
-        // Emulate
-        return imm;
-    }
+    
     /// Address of the `kalloc_data_external` function
     public lazy var kalloc_data_external: UInt64? = {
         if cachedResults != nil {
@@ -706,28 +644,23 @@ open class KernelPatchfinder {
     
     /// Address of `pmap_image4_trust_caches`
     public lazy var pmap_image4_trust_caches: UInt64? = {
-        var textlog = TextLog()
         if cachedResults != nil {
-            textlog.write("cachedResults isn't null?!!")
             return cachedResults.unsafelyUnwrapped["pmap_image4_trust_caches"]
         }
+        
         guard let ppl_handler_table = ppl_handler_table else {
-            textlog.write("Failed to find ppl_handler_table");
             return nil
         }
-        textlog.write(String(format: "Found ppl_handler_table at: %p\n", ppl_handler_table))
+        
         guard var pmap_lookup_in_loaded_trust_caches_internal = constSect.r64(at: ppl_handler_table + 0x148) else {
-            textlog.write("Couldn't find pmap_lookup_..._internal\n");
             return nil
         }
-        textlog.write(String(format: "found pmap_lookup at: %p\n",pmap_lookup_in_loaded_trust_caches_internal));
+        
         if (pmap_lookup_in_loaded_trust_caches_internal >> 48) == 0x8011 {
-            textlog.write("On-disk!\n");
             // Relocation, on-disk kernel
             pmap_lookup_in_loaded_trust_caches_internal &= 0xFFFFFFFFFFFF
             pmap_lookup_in_loaded_trust_caches_internal += 0xFFFFFFF007004000
         } else {
-            textlog.write("Live!\n");
             // Probably live kernel
             // Strip pointer authentication code
             pmap_lookup_in_loaded_trust_caches_internal |= 0xFFFFFF8000000000
@@ -736,19 +669,14 @@ open class KernelPatchfinder {
         var pmap_image4_trust_caches: UInt64?
         for i in 1..<20 {
             let pc = pmap_lookup_in_loaded_trust_caches_internal + UInt64(i * 4)
-            textlog.write(String(format: "PC: %p\n", pc))
-            let instradrp = pplText.instruction(at: pc) ?? 0;
-            textlog.write(String(format: "Instruction at PC: %p\n",instradrp))
-            let useless = pplText.instruction(at: pc+0x4) ?? 0;
-            let instrldr = pplText.instruction(at: pc+0x8) ?? 0;
-            let emu = AArch64Instr.Emulate.adrpLdr(adrp: instradrp, ldr: instrldr, pc: pc)
+            let emu = AArch64Instr.Emulate.ldr(pplText.instruction(at: pc) ?? 0, pc: pc)
             if emu != nil {
                 pmap_image4_trust_caches = emu
                 break
             }
         }
-        textlog.write(String(format: "Found pmap_image4_trust_caches at %p\n",pmap_image4_trust_caches ?? 0x0))
-        return pmap_image4_trust_caches;
+        
+        return pmap_image4_trust_caches
     }()
     
     /// Get the EL level the kernel runs at

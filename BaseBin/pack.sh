@@ -38,7 +38,7 @@ cp -r ./_external/* .tmp/basebin/
 
 # Create TrustCache, for basebinaries
 rm -rf "./basebin.tc"
-./TrustCache_x86_64 create "./basebin.tc" "./.tmp/basebin"
+./TrustCache create "./basebin.tc" "./.tmp/basebin"
 cp "./basebin.tc" "./.tmp/basebin"
 
 # Tar /tmp to basebin.tar

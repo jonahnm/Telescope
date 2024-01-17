@@ -4,7 +4,7 @@
 #include <os/log.h>
 #include "IOSurface_Primitives.h"
 #include "libkfd.h"
-#include "Telescope-Swift.h"
+
 uint64_t IOSurfaceRootUserClient_get_surfaceClientById(uint64_t rootUserClient, uint32_t surfaceId)
 {
     uint64_t surfaceClientsArray = kread64_ptr_kfd(rootUserClient + 0x118);
@@ -171,14 +171,11 @@ static mach_port_t IOSurface_kalloc_getSurfacePort(uint64_t size)
 
 uint64_t IOSurface_kalloc(uint64_t size, bool leak)
 {
-    syslog(LOG_NOTICE, "Kalloc'ing!");
     while (true) {
         mach_port_t surfaceMachPort = IOSurface_kalloc_getSurfacePort(size);
-        syslog(LOG_NOTICE,"Got surface port!");
+
         uint64_t surfaceSendRight = ipc_entry_lookup(surfaceMachPort);
-        syslog(LOG_NOTICE,"Got kObject!");
         uint64_t surface = IOSurfaceSendRight_get_surface(surfaceSendRight);
-        syslog(LOG_NOTICE,"Got SendRight Surface!");
         uint64_t va = IOSurface_get_ranges(surface);
 
         if (va == 0) continue;
