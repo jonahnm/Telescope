@@ -70,11 +70,6 @@ UInt64 load(void) {
     }
     return 74;
 }
-static uint64_t kalloc(vm_size_t size){
-    mach_vm_address_t address = 0;
-    mach_vm_allocate(tfpzero, (mach_vm_address_t *)&address, size, VM_FLAGS_ANYWHERE);
-    return address;
-}
 UInt64 testkalloc(void) {
-    
+    return IOSurface_kalloc(0x4000, false);
 }
