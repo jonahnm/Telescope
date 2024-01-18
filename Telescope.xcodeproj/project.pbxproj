@@ -30,6 +30,30 @@
 		86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A48AC72B2B4A89005D1639 /* IOKit.framework */; };
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
 		9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */ = {isa = PBXBuildFile; fileRef = 9732F8E52B55A6ED00762F31 /* loadtelescoped.m */; };
+		9745AAD42B59523C00323D11 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 9745AAB02B59523C00323D11 /* Makefile */; };
+		9745AAD52B59523C00323D11 /* amfidpatch.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9745AAB12B59523C00323D11 /* amfidpatch.dylib */; };
+		9745AAD62B59523C00323D11 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 9745AAB42B59523C00323D11 /* fishhook.c */; };
+		9745AAD72B59523C00323D11 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9745AAB52B59523C00323D11 /* main.m */; };
+		9745AAD82B59523C00323D11 /* launchdhook.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9745AAB82B59523C00323D11 /* launchdhook.dylib */; };
+		9745AAD92B59523C00323D11 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 9745AAB92B59523C00323D11 /* Makefile */; };
+		9745AADA2B59523C00323D11 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 9745AABB2B59523C00323D11 /* fishhook.c */; };
+		9745AADB2B59523C00323D11 /* TSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9745AABC2B59523C00323D11 /* TSUtil.m */; };
+		9745AADC2B59523C00323D11 /* envbuf.m in Sources */ = {isa = PBXBuildFile; fileRef = 9745AABD2B59523C00323D11 /* envbuf.m */; };
+		9745AADD2B59523C00323D11 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9745AABE2B59523C00323D11 /* main.m */; };
+		9745AADE2B59523C00323D11 /* entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9745AAC22B59523C00323D11 /* entitlements.plist */; };
+		9745AADF2B59523C00323D11 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 9745AAC32B59523C00323D11 /* fishhook.c */; };
+		9745AAE02B59523C00323D11 /* build.sh in Resources */ = {isa = PBXBuildFile; fileRef = 9745AAC42B59523C00323D11 /* build.sh */; };
+		9745AAE12B59523C00323D11 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 9745AAC52B59523C00323D11 /* main.c */; };
+		9745AAE22B59523C00323D11 /* forkfix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9745AAC72B59523C00323D11 /* forkfix.dylib */; };
+		9745AAE32B59523C00323D11 /* entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9745AAC92B59523C00323D11 /* entitlements.plist */; };
+		9745AAE42B59523C00323D11 /* build.sh in Resources */ = {isa = PBXBuildFile; fileRef = 9745AACA2B59523C00323D11 /* build.sh */; };
+		9745AAE52B59523C00323D11 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 9745AACB2B59523C00323D11 /* main.c */; };
+		9745AAE62B59523C00323D11 /* insert_dylib in Resources */ = {isa = PBXBuildFile; fileRef = 9745AACC2B59523C00323D11 /* insert_dylib */; };
+		9745AAE72B59523C00323D11 /* entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9745AACF2B59523C00323D11 /* entitlements.plist */; };
+		9745AAE82B59523C00323D11 /* TSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9745AAD02B59523C00323D11 /* TSUtil.m */; };
+		9745AAE92B59523C00323D11 /* helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9745AAD12B59523C00323D11 /* helper.m */; };
+		9745AAEA2B59523C00323D11 /* build.sh in Resources */ = {isa = PBXBuildFile; fileRef = 9745AAD22B59523C00323D11 /* build.sh */; };
+		9745AAEB2B59523C00323D11 /* helper in Resources */ = {isa = PBXBuildFile; fileRef = 9745AAD32B59523C00323D11 /* helper */; };
 		D5123A022B4C40B10040BF9D /* pplrw.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A012B4C40B10040BF9D /* pplrw.m */; };
 		D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A052B4C41040040BF9D /* IOSurface_Primitives.m */; };
 		D54990D72B42C7C3003B3486 /* landa.c in Sources */ = {isa = PBXBuildFile; fileRef = D54990D62B42C7C3003B3486 /* landa.c */; };
@@ -118,6 +142,36 @@
 		9732F8E42B55A50C00762F31 /* loadtelescoped.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = loadtelescoped.h; sourceTree = "<group>"; };
 		9732F8E52B55A6ED00762F31 /* loadtelescoped.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = loadtelescoped.m; sourceTree = "<group>"; };
 		9732F8E72B55BBD800762F31 /* posix_spawn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = posix_spawn.h; sourceTree = "<group>"; };
+		9745AAB02B59523C00323D11 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		9745AAB12B59523C00323D11 /* amfidpatch.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = amfidpatch.dylib; sourceTree = "<group>"; };
+		9745AAB32B59523C00323D11 /* cs_blobs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cs_blobs.h; sourceTree = "<group>"; };
+		9745AAB42B59523C00323D11 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
+		9745AAB52B59523C00323D11 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9745AAB62B59523C00323D11 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
+		9745AAB82B59523C00323D11 /* launchdhook.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = launchdhook.dylib; sourceTree = "<group>"; };
+		9745AAB92B59523C00323D11 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		9745AABB2B59523C00323D11 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
+		9745AABC2B59523C00323D11 /* TSUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSUtil.m; sourceTree = "<group>"; };
+		9745AABD2B59523C00323D11 /* envbuf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = envbuf.m; sourceTree = "<group>"; };
+		9745AABE2B59523C00323D11 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9745AABF2B59523C00323D11 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
+		9745AAC02B59523C00323D11 /* envbuf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = envbuf.h; sourceTree = "<group>"; };
+		9745AAC22B59523C00323D11 /* entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = entitlements.plist; sourceTree = "<group>"; };
+		9745AAC32B59523C00323D11 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
+		9745AAC42B59523C00323D11 /* build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build.sh; sourceTree = "<group>"; };
+		9745AAC52B59523C00323D11 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		9745AAC62B59523C00323D11 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
+		9745AAC72B59523C00323D11 /* forkfix.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = forkfix.dylib; sourceTree = "<group>"; };
+		9745AAC92B59523C00323D11 /* entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = entitlements.plist; sourceTree = "<group>"; };
+		9745AACA2B59523C00323D11 /* build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build.sh; sourceTree = "<group>"; };
+		9745AACB2B59523C00323D11 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		9745AACC2B59523C00323D11 /* insert_dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = insert_dylib; sourceTree = "<group>"; };
+		9745AACE2B59523C00323D11 /* helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helper.h; sourceTree = "<group>"; };
+		9745AACF2B59523C00323D11 /* entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = entitlements.plist; sourceTree = "<group>"; };
+		9745AAD02B59523C00323D11 /* TSUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSUtil.m; sourceTree = "<group>"; };
+		9745AAD12B59523C00323D11 /* helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = helper.m; sourceTree = "<group>"; };
+		9745AAD22B59523C00323D11 /* build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build.sh; sourceTree = "<group>"; };
+		9745AAD32B59523C00323D11 /* helper */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = helper; sourceTree = "<group>"; };
 		D5123A012B4C40B10040BF9D /* pplrw.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pplrw.m; sourceTree = "<group>"; };
 		D5123A032B4C40BD0040BF9D /* pplrw.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pplrw.h; sourceTree = "<group>"; };
 		D5123A042B4C41040040BF9D /* IOSurface_Primitives.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOSurface_Primitives.h; sourceTree = "<group>"; };
@@ -173,10 +227,13 @@
 				86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */,
 				D5D2DDD02B4835E800B62BED /* libMobileGestalt.tbd in Frameworks */,
 				D5D2DDCE2B4835E000B62BED /* libz.tbd in Frameworks */,
+				9745AAE22B59523C00323D11 /* forkfix.dylib in Frameworks */,
 				D5D2DDB52B4832B600B62BED /* KernelPatchfinder in Frameworks */,
 				D5D2DDC22B48341400B62BED /* libcurl.a in Frameworks */,
 				D5D2DDC12B48341400B62BED /* libgrabkernel.a in Frameworks */,
+				9745AAD82B59523C00323D11 /* launchdhook.dylib in Frameworks */,
 				D5D2DDC32B48341400B62BED /* libfragmentzip.a in Frameworks */,
+				9745AAD52B59523C00323D11 /* amfidpatch.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,6 +257,7 @@
 		86A48A622B2B49CD005D1639 = {
 			isa = PBXGroup;
 			children = (
+				9745AAAE2B59523C00323D11 /* TelescopeBin */,
 				65D806E52B58E0F000823CC4 /* BundleRes */,
 				86A48A6D2B2B49CD005D1639 /* kfd-meow */,
 				86A48A6C2B2B49CD005D1639 /* Products */,
@@ -373,6 +431,99 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9745AAAE2B59523C00323D11 /* TelescopeBin */ = {
+			isa = PBXGroup;
+			children = (
+				9745AAAF2B59523C00323D11 /* amfidpatch */,
+				9745AAB72B59523C00323D11 /* launchdhook */,
+				9745AAC12B59523C00323D11 /* forkfix */,
+				9745AAC82B59523C00323D11 /* insert_dylib */,
+				9745AACD2B59523C00323D11 /* helper */,
+			);
+			path = TelescopeBin;
+			sourceTree = "<group>";
+		};
+		9745AAAF2B59523C00323D11 /* amfidpatch */ = {
+			isa = PBXGroup;
+			children = (
+				9745AAB02B59523C00323D11 /* Makefile */,
+				9745AAB12B59523C00323D11 /* amfidpatch.dylib */,
+				9745AAB22B59523C00323D11 /* src */,
+			);
+			path = amfidpatch;
+			sourceTree = "<group>";
+		};
+		9745AAB22B59523C00323D11 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				9745AAB32B59523C00323D11 /* cs_blobs.h */,
+				9745AAB42B59523C00323D11 /* fishhook.c */,
+				9745AAB52B59523C00323D11 /* main.m */,
+				9745AAB62B59523C00323D11 /* fishhook.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		9745AAB72B59523C00323D11 /* launchdhook */ = {
+			isa = PBXGroup;
+			children = (
+				9745AAB82B59523C00323D11 /* launchdhook.dylib */,
+				9745AAB92B59523C00323D11 /* Makefile */,
+				9745AABA2B59523C00323D11 /* src */,
+			);
+			path = launchdhook;
+			sourceTree = "<group>";
+		};
+		9745AABA2B59523C00323D11 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				9745AABB2B59523C00323D11 /* fishhook.c */,
+				9745AABC2B59523C00323D11 /* TSUtil.m */,
+				9745AABD2B59523C00323D11 /* envbuf.m */,
+				9745AABE2B59523C00323D11 /* main.m */,
+				9745AABF2B59523C00323D11 /* fishhook.h */,
+				9745AAC02B59523C00323D11 /* envbuf.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		9745AAC12B59523C00323D11 /* forkfix */ = {
+			isa = PBXGroup;
+			children = (
+				9745AAC22B59523C00323D11 /* entitlements.plist */,
+				9745AAC32B59523C00323D11 /* fishhook.c */,
+				9745AAC42B59523C00323D11 /* build.sh */,
+				9745AAC52B59523C00323D11 /* main.c */,
+				9745AAC62B59523C00323D11 /* fishhook.h */,
+				9745AAC72B59523C00323D11 /* forkfix.dylib */,
+			);
+			path = forkfix;
+			sourceTree = "<group>";
+		};
+		9745AAC82B59523C00323D11 /* insert_dylib */ = {
+			isa = PBXGroup;
+			children = (
+				9745AAC92B59523C00323D11 /* entitlements.plist */,
+				9745AACA2B59523C00323D11 /* build.sh */,
+				9745AACB2B59523C00323D11 /* main.c */,
+				9745AACC2B59523C00323D11 /* insert_dylib */,
+			);
+			path = insert_dylib;
+			sourceTree = "<group>";
+		};
+		9745AACD2B59523C00323D11 /* helper */ = {
+			isa = PBXGroup;
+			children = (
+				9745AACE2B59523C00323D11 /* helper.h */,
+				9745AACF2B59523C00323D11 /* entitlements.plist */,
+				9745AAD02B59523C00323D11 /* TSUtil.m */,
+				9745AAD12B59523C00323D11 /* helper.m */,
+				9745AAD22B59523C00323D11 /* build.sh */,
+				9745AAD32B59523C00323D11 /* helper */,
+			);
+			path = helper;
+			sourceTree = "<group>";
+		};
 		D5BF829B2B4F83D100C02D17 /* overwrite */ = {
 			isa = PBXGroup;
 			children = (
@@ -497,14 +648,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9745AADE2B59523C00323D11 /* entitlements.plist in Resources */,
+				9745AAE32B59523C00323D11 /* entitlements.plist in Resources */,
 				65D806F22B58E50A00823CC4 /* launchdhook.dylib in Resources */,
 				65D806F52B58EC9600823CC4 /* amfidpatch.dylib in Resources */,
 				65D806EF2B58E26200823CC4 /* insert_dylib in Resources */,
 				65D806ED2B58E1BE00823CC4 /* helper in Resources */,
+				9745AAEB2B59523C00323D11 /* helper in Resources */,
+				9745AAE72B59523C00323D11 /* entitlements.plist in Resources */,
 				65D806EB2B58E16F00823CC4 /* fastPathSign in Resources */,
 				86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */,
+				9745AAEA2B59523C00323D11 /* build.sh in Resources */,
 				65D806E82B58E14800823CC4 /* ldid in Resources */,
+				9745AAE62B59523C00323D11 /* insert_dylib in Resources */,
+				9745AAE42B59523C00323D11 /* build.sh in Resources */,
 				65D806E92B58E14800823CC4 /* launchd.plist in Resources */,
+				9745AAE02B59523C00323D11 /* build.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,12 +674,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9745AAE82B59523C00323D11 /* TSUtil.m in Sources */,
 				D5BF82AC2B4FF7E200C02D17 /* overwrite.m in Sources */,
 				D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */,
 				D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */,
+				9745AADF2B59523C00323D11 /* fishhook.c in Sources */,
+				9745AAE92B59523C00323D11 /* helper.m in Sources */,
+				9745AAE12B59523C00323D11 /* main.c in Sources */,
 				D5123A022B4C40B10040BF9D /* pplrw.m in Sources */,
+				9745AADA2B59523C00323D11 /* fishhook.c in Sources */,
 				D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */,
 				D56FB6A22B499B7000A48CA4 /* ContentView.swift in Sources */,
+				9745AAD92B59523C00323D11 /* Makefile in Sources */,
+				9745AADC2B59523C00323D11 /* envbuf.m in Sources */,
+				9745AADB2B59523C00323D11 /* TSUtil.m in Sources */,
 				D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */,
 				D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */,
 				65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */,
@@ -528,11 +695,14 @@
 				86A48AC42B2B4A0A005D1639 /* krkw.c in Sources */,
 				86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */,
 				D5D2DDB82B4832E600B62BED /* fugufinder.swift in Sources */,
+				9745AAD72B59523C00323D11 /* main.m in Sources */,
 				D5BF82C62B50242F00C02D17 /* libdimentio.c in Sources */,
 				9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */,
 				86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */,
+				9745AAD62B59523C00323D11 /* fishhook.c in Sources */,
 				D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */,
 				86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */,
+				9745AAE52B59523C00323D11 /* main.c in Sources */,
 				86A48AC32B2B4A0A005D1639 /* physpuppet.c in Sources */,
 				D5D2DDA82B47B85F00B62BED /* kread_IOSurface.c in Sources */,
 				D54990D72B42C7C3003B3486 /* landa.c in Sources */,
@@ -543,6 +713,8 @@
 				86A48AC52B2B4A0A005D1639 /* libkfd.m in Sources */,
 				86A48ABE2B2B4A0A005D1639 /* info.c in Sources */,
 				86A48AC02B2B4A0A005D1639 /* IOSurface_shared.c in Sources */,
+				9745AADD2B59523C00323D11 /* main.m in Sources */,
+				9745AAD42B59523C00323D11 /* Makefile in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,6 +866,7 @@
 					"$(PROJECT_DIR)/kfd-meow/libgrabkernel",
 					"$(PROJECT_DIR)/TelescopeBin/launchdhook",
 					"$(PROJECT_DIR)/TelescopeBin/amfidpatch",
+					"$(PROJECT_DIR)/TelescopeBin/forkfix",
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-Os";
@@ -745,6 +918,7 @@
 					"$(PROJECT_DIR)/kfd-meow/libgrabkernel",
 					"$(PROJECT_DIR)/TelescopeBin/launchdhook",
 					"$(PROJECT_DIR)/TelescopeBin/amfidpatch",
+					"$(PROJECT_DIR)/TelescopeBin/forkfix",
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-Os";

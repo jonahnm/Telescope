@@ -179,7 +179,6 @@ uint64_t IOSurface_kalloc(uint64_t size, bool leak)
         uint64_t va = IOSurface_get_ranges(surface);
 
         if (va == 0) continue;
-
         if (leak) {
             IOSurface_set_ranges(surface, 0);
             IOSurface_set_rangeCount(surface, 0);

