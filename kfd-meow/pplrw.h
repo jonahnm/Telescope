@@ -7,8 +7,8 @@
 
 #ifndef pplrw_h
 #define pplrw_h
-
 int test_pplrw(void);
 int test_ktrr(void);
-
+void dma_perform(void (^block)(void));
+void dma_writevirt64(uint64_t, uint64_t);
 #endif /* pplrw_h */

@@ -21,5 +21,10 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+.theos 
+.tmp
+basebin.tar
+basebin.tc
+Telescope.tipa
 Telescope.xcodeproj/xcuserdata/*.xcuserdatad/
 Telescope.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad/

@@ -41,15 +41,7 @@ struct ContentView: View {
                             message = ""
                             result = kpoen_bridge(UInt64(puaf_method), UInt64(pplrw_toggle))
                             if (result != 0) {
-                                sleep(1)
-                                message = "[*] kopening\n[*] kslide: " + String(get_kernel_slide(), radix:16) + "\n"
-                                if(pplrw_toggle == 0) {
-                                    message = message + "[*] ppl bypassed!\n"
-                                    result = meow_and_kclose(result)
-                                    if (result == 0) {
-                                        message = message + "[*] kclosed\n"
-                                    }
-                                }
+                                message = "[*] kopened\n[*] kslide: " + String(get_kernel_slide(), radix:16) + "\n"
                             }
                         }.disabled(result != 0).frame(minWidth: 0, maxWidth: .infinity)
                         Button("kclose") {
@@ -60,40 +52,26 @@ struct ContentView: View {
                         }.disabled(result == 0).frame(minWidth: 0, maxWidth: .infinity)
                     }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
-                Section {
-                    HStack {
-                        Button("finder") {
-                            if(prepare_kpf()) {
-                                message = "kttr:                    " + String(KernelPatchfinder.running?.ktrr ?? 0x0, radix: 16)
-                                message = message + "\ncdevsw:                  " + String(KernelPatchfinder.running?.cdevsw ?? 0x0, radix: 16)
-                                message = message + "\nptov_table:              " + String(KernelPatchfinder.running?.ptov_data?.table ?? 0x0, radix: 16)
-                                message = message + "\nphysBase:                " + String(KernelPatchfinder.running?.ptov_data?.physBase ?? 0x0, radix: 16)
-                                message = message + "\nphysSize:                " + String(UInt64(KernelPatchfinder.running?.ptov_data?.physBase ?? 0x0) + 0x8, radix: 16)
-                                message = message + "\nvirtBase:                " + String(KernelPatchfinder.running?.ptov_data?.virtBase ?? 0x0, radix: 16)
-                                message = message + "\nvn_kqfilter:             " + String(KernelPatchfinder.running?.vn_kqfilter ?? 0x0, radix: 16)
-                                message = message + "\nperf_devices:            " + String(KernelPatchfinder.running?.perfmon_devices ?? 0x0, radix: 16)
-                                message = message + "\nperf_dev_open:           " + String(KernelPatchfinder.running?.perfmon_dev_open ?? 0x0, radix: 16)
-                                message = message + "\nvm_pages:                " + String(KernelPatchfinder.running?.vm_pages ?? 0x0, radix: 16)
-                                message = message + "\nvm_page_array_beginning: " + String(KernelPatchfinder.running?.vm_page_array.beginning ?? 0x0, radix: 16)
-                                message = message + "\nvm_page_array_ending:    " + String(KernelPatchfinder.running?.vm_page_array.ending ?? 0x0, radix: 16)
-                                message = message + "\nvm_first_phys_ppnum:     " + String(UInt64(KernelPatchfinder.running?.vm_page_array.ending ?? 0x0) + 0x8, radix: 16)
-                            } else {
-                                message = "[-] couldn't find kernel"
-                            }
-                        }.disabled(result != 0 || overwritten).frame(minWidth: 0, maxWidth: .infinity)
-                        Button(action) {
-                            if(overwritten) {
-                                userspaceReboot()
-                            }
-                            overwrite()
-                            message = message + "[*] overwritten!\n"
-                            result = meow_and_kclose(result)
-                            overwritten = true
-                            action = "uspreboot"
-                            if (result == 0) {
-                                message = message + "[*] kclosed"
-                            }
-                        }.disabled(result == 0 && !overwritten).frame(minWidth: 0, maxWidth: .infinity)
+                Section 
+                {
+                    Button("Start Telescope") {
+                        let result = load_telescope()
+                        if(result == 0) {
+                            message = message + "[!] Trustcache is too short\n"
+                        } else if(result == 1) {
+                            message = message + "[!] Trustcache version is invalid\n"
+                        } else if(result == 2) {
+                            message = message + "[!] Something is wrong with count\n"
+                        }else if(result == 3) {
+                            message = message + "[!] find_pmap_image4_trust_caches returned 0x0\n"
+                        } else if(result == 4) {
+                            message = message + "[!] Telescopeinit was killed via a signal.\n"
+                        } else if(result == 5) {
+                            message = message + "[!] Mem is 0\n"
+                        }
+                        else {
+                            message = message + "[*] Suceeded to start Telescoped\n"
+                        }
                     }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
             }

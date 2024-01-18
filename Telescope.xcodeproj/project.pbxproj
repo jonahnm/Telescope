@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D806E32B58DBE400823CC4 /* TSUtil.m */; };
+		65D806E82B58E14800823CC4 /* ldid in Resources */ = {isa = PBXBuildFile; fileRef = 65D806E62B58E14800823CC4 /* ldid */; };
+		65D806E92B58E14800823CC4 /* launchd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65D806E72B58E14800823CC4 /* launchd.plist */; };
+		65D806EB2B58E16F00823CC4 /* fastPathSign in Resources */ = {isa = PBXBuildFile; fileRef = 65D806EA2B58E16F00823CC4 /* fastPathSign */; };
+		65D806ED2B58E1BE00823CC4 /* helper in Resources */ = {isa = PBXBuildFile; fileRef = 65D806EC2B58E1BE00823CC4 /* helper */; };
+		65D806EF2B58E26200823CC4 /* insert_dylib in Resources */ = {isa = PBXBuildFile; fileRef = 65D806EE2B58E26200823CC4 /* insert_dylib */; };
+		65D806F22B58E50A00823CC4 /* launchdhook.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 65D806F02B58E50500823CC4 /* launchdhook.dylib */; };
+		65D806F52B58EC9600823CC4 /* amfidpatch.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 65D806F32B58EC9200823CC4 /* amfidpatch.dylib */; };
 		868BDAB12B2E14260017CB10 /* libmeow.m in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB02B2E14260017CB10 /* libmeow.m */; };
 		868BDABA2B2E1A890017CB10 /* meowfinder.c in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB92B2E1A890017CB10 /* meowfinder.c */; };
 		86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A48A7A2B2B49CE005D1639 /* Assets.xcassets */; };
@@ -21,6 +29,7 @@
 		86A48AC52B2B4A0A005D1639 /* libkfd.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A48ABB2B2B4A0A005D1639 /* libkfd.m */; };
 		86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A48AC72B2B4A89005D1639 /* IOKit.framework */; };
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
+		9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */ = {isa = PBXBuildFile; fileRef = 9732F8E52B55A6ED00762F31 /* loadtelescoped.m */; };
 		D5123A022B4C40B10040BF9D /* pplrw.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A012B4C40B10040BF9D /* pplrw.m */; };
 		D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A052B4C41040040BF9D /* IOSurface_Primitives.m */; };
 		D54990D72B42C7C3003B3486 /* landa.c in Sources */ = {isa = PBXBuildFile; fileRef = D54990D62B42C7C3003B3486 /* landa.c */; };
@@ -45,6 +54,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		65D806E32B58DBE400823CC4 /* TSUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSUtil.m; sourceTree = "<group>"; };
+		65D806E62B58E14800823CC4 /* ldid */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = ldid; path = BundleResources/ldid; sourceTree = "<group>"; };
+		65D806E72B58E14800823CC4 /* launchd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = launchd.plist; path = BundleResources/launchd.plist; sourceTree = "<group>"; };
+		65D806EA2B58E16F00823CC4 /* fastPathSign */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = fastPathSign; path = BundleResources/fastPathSign; sourceTree = "<group>"; };
+		65D806EC2B58E1BE00823CC4 /* helper */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = helper; path = TelescopeBin/helper/helper; sourceTree = "<group>"; };
+		65D806EE2B58E26200823CC4 /* insert_dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = insert_dylib; path = TelescopeBin/insert_dylib/insert_dylib; sourceTree = "<group>"; };
+		65D806F02B58E50500823CC4 /* launchdhook.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = launchdhook.dylib; path = TelescopeBin/launchdhook/launchdhook.dylib; sourceTree = "<group>"; };
+		65D806F32B58EC9200823CC4 /* amfidpatch.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = amfidpatch.dylib; path = TelescopeBin/amfidpatch/amfidpatch.dylib; sourceTree = "<group>"; };
 		868BDAB02B2E14260017CB10 /* libmeow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libmeow.m; sourceTree = "<group>"; };
 		868BDAB22B2E14410017CB10 /* libmeow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libmeow.h; sourceTree = "<group>"; };
 		868BDAB82B2E1A840017CB10 /* meowfinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = meowfinder.h; sourceTree = "<group>"; };
@@ -98,6 +115,9 @@
 		86A48AC72B2B4A89005D1639 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		86A48AC92B2B5451005D1639 /* kread_sem_open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kread_sem_open.c; sourceTree = "<group>"; };
 		86A48ACA2B2B5451005D1639 /* kread_sem_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kread_sem_open.h; sourceTree = "<group>"; };
+		9732F8E42B55A50C00762F31 /* loadtelescoped.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = loadtelescoped.h; sourceTree = "<group>"; };
+		9732F8E52B55A6ED00762F31 /* loadtelescoped.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = loadtelescoped.m; sourceTree = "<group>"; };
+		9732F8E72B55BBD800762F31 /* posix_spawn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = posix_spawn.h; sourceTree = "<group>"; };
 		D5123A012B4C40B10040BF9D /* pplrw.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pplrw.m; sourceTree = "<group>"; };
 		D5123A032B4C40BD0040BF9D /* pplrw.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pplrw.h; sourceTree = "<group>"; };
 		D5123A042B4C41040040BF9D /* IOSurface_Primitives.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOSurface_Primitives.h; sourceTree = "<group>"; };
@@ -163,9 +183,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		65D806E52B58E0F000823CC4 /* BundleRes */ = {
+			isa = PBXGroup;
+			children = (
+				65D806E72B58E14800823CC4 /* launchd.plist */,
+				65D806EC2B58E1BE00823CC4 /* helper */,
+				65D806E62B58E14800823CC4 /* ldid */,
+				65D806EA2B58E16F00823CC4 /* fastPathSign */,
+				65D806EE2B58E26200823CC4 /* insert_dylib */,
+				65D806F02B58E50500823CC4 /* launchdhook.dylib */,
+				65D806F32B58EC9200823CC4 /* amfidpatch.dylib */,
+			);
+			name = BundleRes;
+			sourceTree = "<group>";
+		};
 		86A48A622B2B49CD005D1639 = {
 			isa = PBXGroup;
 			children = (
+				65D806E52B58E0F000823CC4 /* BundleRes */,
 				86A48A6D2B2B49CD005D1639 /* kfd-meow */,
 				86A48A6C2B2B49CD005D1639 /* Products */,
 				86A48AC62B2B4A89005D1639 /* Frameworks */,
@@ -187,6 +222,7 @@
 				D5BF829B2B4F83D100C02D17 /* overwrite */,
 				D5D2DDB92B48341400B62BED /* libgrabkernel */,
 				86A48A882B2B4A0A005D1639 /* libkfd */,
+				65D806E32B58DBE400823CC4 /* TSUtil.m */,
 				86A48A872B2B4A0A005D1639 /* libkfd.h */,
 				86A48ABB2B2B4A0A005D1639 /* libkfd.m */,
 				868BDAB22B2E14410017CB10 /* libmeow.h */,
@@ -205,6 +241,8 @@
 				86A48A7A2B2B49CE005D1639 /* Assets.xcassets */,
 				86A48A7F2B2B49CE005D1639 /* Info.plist */,
 				D5D2DDB62B4832E500B62BED /* kfd-meow-Bridging-Header.h */,
+				9732F8E42B55A50C00762F31 /* loadtelescoped.h */,
+				9732F8E52B55A6ED00762F31 /* loadtelescoped.m */,
 			);
 			path = "kfd-meow";
 			sourceTree = "<group>";
@@ -212,6 +250,7 @@
 		86A48A882B2B4A0A005D1639 /* libkfd */ = {
 			isa = PBXGroup;
 			children = (
+				9732F8E72B55BBD800762F31 /* posix_spawn.h */,
 				86A48A962B2B4A0A005D1639 /* info */,
 				86A48A8D2B2B4A0A005D1639 /* krkw */,
 				86A48AB32B2B4A0A005D1639 /* puaf */,
@@ -458,7 +497,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65D806F22B58E50A00823CC4 /* launchdhook.dylib in Resources */,
+				65D806F52B58EC9600823CC4 /* amfidpatch.dylib in Resources */,
+				65D806EF2B58E26200823CC4 /* insert_dylib in Resources */,
+				65D806ED2B58E1BE00823CC4 /* helper in Resources */,
+				65D806EB2B58E16F00823CC4 /* fastPathSign in Resources */,
 				86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */,
+				65D806E82B58E14800823CC4 /* ldid in Resources */,
+				65D806E92B58E14800823CC4 /* launchd.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,11 +523,13 @@
 				D56FB6A22B499B7000A48CA4 /* ContentView.swift in Sources */,
 				D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */,
 				D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */,
+				65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */,
 				D56FB6A02B499B0C00A48CA4 /* kfd-meow.swift in Sources */,
 				86A48AC42B2B4A0A005D1639 /* krkw.c in Sources */,
 				86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */,
 				D5D2DDB82B4832E600B62BED /* fugufinder.swift in Sources */,
 				D5BF82C62B50242F00C02D17 /* libdimentio.c in Sources */,
+				9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */,
 				86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */,
 				D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */,
 				86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */,
@@ -644,6 +692,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/kfd-meow/libgrabkernel",
+					"$(PROJECT_DIR)/TelescopeBin/launchdhook",
+					"$(PROJECT_DIR)/TelescopeBin/amfidpatch",
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-Os";
@@ -693,6 +743,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/kfd-meow/libgrabkernel",
+					"$(PROJECT_DIR)/TelescopeBin/launchdhook",
+					"$(PROJECT_DIR)/TelescopeBin/amfidpatch",
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-Os";
