@@ -596,7 +596,7 @@ void tcinjecttest(void) {
     NSLog(@"Writing in tc: %p",tc);
     kwrite32_kfd(tc, 0x1); // version
     NSLog(@"Wrote version.");
-    kwritebuf_tcinject(tc + 0x4, @"blackbathingsuit", @"blackbathingsuit".length + 1); // don't ask
+    kwritebuf_kfd(tc + 0x4, &"blackbathingsuit", 17); // don't ask
     NSLog(@"Wrote blackbathingsuit.");
     kwrite32_kfd(tc + 0x14, 22 * 100); // full page of entries
     NSLog(@"Wrote full page of entries");
