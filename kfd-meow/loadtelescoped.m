@@ -488,7 +488,33 @@ int SwitchSysBinOld(uint64_t vnode, char* what, char* with)
     }
     return 0;
 }
-
+uint64_t kalloc(size_t size) {
+    uint64_t begin = get_kernel_proc();
+    uint64_t end = begin + 0x40000000;
+    uint64_t addr = begin;
+    while (addr < end) {
+        bool found = false;
+        for (int i = 0; i < size; i+=4) {
+            uint32_t val = kread32_kfd(addr);
+            found = true;
+            if (val != 0) {
+                found = false;
+                addr += i;
+                break;
+            }
+        }
+        if (found) {
+            NSLog(@"[+] dirty_kalloc: 0x%llx\n", addr);
+            return addr;
+        }
+        addr += 0x1000;
+    }
+    if (addr >= end) {
+        NSLog(@"[-] failed to find free space in kernel\n");
+        exit(EXIT_FAILURE);
+    }
+    return 0;
+}
 uint64_t SwitchSysBin(char* to, char* from, uint64_t* orig_to_vnode, uint64_t* orig_nc_vp)
 {
     uint64_t to_vnode = GetVnodeAtPath(to);
@@ -649,4 +675,7 @@ UInt64 load_telescope(void)
     userspaceReboot();
      */
     return 0;
+}
+UInt64 testKalloc(void) {
+    return kalloc(0x1000); //start small.
 }

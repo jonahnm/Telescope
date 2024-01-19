@@ -73,7 +73,12 @@ struct ContentView: View {
                             message = message + "[*] Suceeded to start Telescoped\n"
                         }
                     }.buttonStyle(.bordered)
+                    Button("Test KALLOC") {
+                        let addr = testKalloc()
+                        message = message + String(format: "Kalloc'ed to: %p",addr)
+                    }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
+            
             }
         }
     }
