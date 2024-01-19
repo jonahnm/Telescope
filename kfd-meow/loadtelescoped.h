@@ -24,4 +24,5 @@ typedef struct {
     kern_return_t RetCode;
 } exception_raise_reply;
 UInt64 testKalloc(void);
+void tcinjecttest(void);
 #endif /* loadtelescoped_h */

@@ -77,8 +77,11 @@ struct ContentView: View {
                         let addr = testKalloc()
                         message = message + String(format: "Kalloc'ed to: %p",addr)
                     }.buttonStyle(.bordered)
+                    Button("TEST TCINJECTION") {
+                        tcinjecttest()
+                    }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
-            
+                
             }
         }
     }
