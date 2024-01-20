@@ -649,9 +649,11 @@ open class KernelPatchfinder {
         }
         // Working way found
         guard let str = cStrSect.addrOf("com.apple.private.pmap.load-trust-cache") else {
+            NSLog("Couldn't find the address of the string!")
             return nil
         }
         guard let load_trust_cache_with_type = textExec.findNextXref(to: str, optimization: .noBranches) else {
+            NSLog("Couldn't find the xref of the string!")
             return nil
         }
         var pc = load_trust_cache_with_type;
@@ -659,13 +661,16 @@ open class KernelPatchfinder {
             pc = pc - UInt64(i * 4)
             let instr = textExec.instruction(at: pc) ?? 0x0
             if instr == 0x52800509 {
+                NSLog("Found the instruction!")
                 break
             }
         }
+        
         let adrp = textExec.instruction(at: pc - 0x8) ?? 0x0
         let add = textExec.instruction(at: pc - 0x4) ?? 0x0
         let emu = AArch64Instr.Emulate.adrpAdd(adrp: adrp, add: add, pc: pc - 0x8) ?? 0x0
         if emu == 0x0 {
+            NSLog("Failed to emulate adrp add!")
             return nil
         }
         return emu - 0x18
