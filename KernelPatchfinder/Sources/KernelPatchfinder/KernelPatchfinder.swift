@@ -657,8 +657,8 @@ open class KernelPatchfinder {
             return nil
         }
         var pc = load_trust_cache_with_type;
-        for i in 1..<20 {
-            pc = pc - UInt64(i * 4)
+        while(true) {
+            pc = pc - 4
             let instr = textExec.instruction(at: pc) ?? 0x0
             guard let args = AArch64Instr.Args.movz(instr) else {
                 continue
