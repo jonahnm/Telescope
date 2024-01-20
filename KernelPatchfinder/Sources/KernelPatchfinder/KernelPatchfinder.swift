@@ -655,7 +655,7 @@ open class KernelPatchfinder {
             return nil
         }
         var pc = load_trust_cache_with_type;
-        for i in 1..<7 {
+        for i in 1..<20 {
             pc = pc - UInt64(i * 4)
             let instr = textExec.instruction(at: pc) ?? 0x0
             if instr == 0x52800509 {
