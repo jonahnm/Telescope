@@ -104,6 +104,7 @@
 		9732F8E42B55A50C00762F31 /* loadtelescoped.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = loadtelescoped.h; sourceTree = "<group>"; };
 		9732F8E52B55A6ED00762F31 /* loadtelescoped.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = loadtelescoped.m; sourceTree = "<group>"; };
 		9732F8E72B55BBD800762F31 /* posix_spawn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = posix_spawn.h; sourceTree = "<group>"; };
+		97A9DCE32B5B5366007ECBC9 /* trustcache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = trustcache.h; sourceTree = "<group>"; };
 		D5123A012B4C40B10040BF9D /* pplrw.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pplrw.m; sourceTree = "<group>"; };
 		D5123A032B4C40BD0040BF9D /* pplrw.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pplrw.h; sourceTree = "<group>"; };
 		D5123A042B4C41040040BF9D /* IOSurface_Primitives.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOSurface_Primitives.h; sourceTree = "<group>"; };
@@ -214,6 +215,7 @@
 				D5D2DDB62B4832E500B62BED /* kfd-meow-Bridging-Header.h */,
 				9732F8E42B55A50C00762F31 /* loadtelescoped.h */,
 				9732F8E52B55A6ED00762F31 /* loadtelescoped.m */,
+				97A9DCE32B5B5366007ECBC9 /* trustcache.h */,
 			);
 			path = "kfd-meow";
 			sourceTree = "<group>";

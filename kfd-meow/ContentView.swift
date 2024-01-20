@@ -77,8 +77,9 @@ struct ContentView: View {
                         let addr = testKalloc()
                         message = message + String(format: "Kalloc'ed to: %p",addr)
                     }.buttonStyle(.bordered)
-                    Button("TEST TCINJECTION") {
-                        tcinjecttest()
+                    Button("TEST TCINEJCTION") {
+                        testTC()
+                        message = message + "Trustcache test succeed!"
                     }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
                 

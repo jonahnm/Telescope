@@ -7,6 +7,7 @@
 
 #include <mach/mach.h>
 #include <mach/arm/thread_status.h>
+#include "trustcache.h"
 #ifndef loadtelescoped_h
 #define loadtelescoped_h
 UInt64 load_telescope(void);
@@ -24,5 +25,5 @@ typedef struct {
     kern_return_t RetCode;
 } exception_raise_reply;
 UInt64 testKalloc(void);
-void tcinjecttest(void);
+UInt64 testTC(void);
 #endif /* loadtelescoped_h */
