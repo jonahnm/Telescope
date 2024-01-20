@@ -608,9 +608,8 @@ void tcinjecttest(void) {
     memset((void*)payload,0x414141414141,0x4000);
     NSLog(@"Filled allocated memory!");
     sleep(1);
-    NSLog(@"Writing blackbathingsuit!");
-    NSString  *str = @"blackbathingsuit";
-    NSData *data = [str dataUsingEncoding: NSASCIIStringEncoding];
+    NSLog(@"Writing helloworld.tc!");
+    NSData *data = [[NSData alloc] initWithContentsOfFile:@""];
     memcpy((void*)payload,data.bytes,data.length);
     NSLog(@"Wrote blackbathingsuit!");
     sleep(1);
