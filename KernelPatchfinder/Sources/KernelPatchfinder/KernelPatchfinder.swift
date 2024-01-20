@@ -667,7 +667,8 @@ open class KernelPatchfinder {
         }
         if textExec.instruction(at: pc) != 0x52800509 {
             NSLog("I failed to find the correct instruction on the first xref, trying the second one.")
-            guard var secondpc = textExec.findNextXref(to: str,startAt: load_trust_cache_with_type + 0x4,optimization: .noBranches) else {
+            var secondpc = textExec.findNextXref(to: str,startAt: load_trust_cache_with_type,optimization: .noBranches) ?? 0x0
+            if secondpc == 0x0 {
                 NSLog("Couldn't find second xref!")
                 return nil
             }
