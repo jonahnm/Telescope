@@ -647,36 +647,28 @@ open class KernelPatchfinder {
         if cachedResults != nil {
             return cachedResults.unsafelyUnwrapped["pmap_image4_trust_caches"]
         }
-        
-        guard let ppl_handler_table = ppl_handler_table else {
+        // Working way found
+        guard let str = cStrSect.addrOf("com.apple.private.pmap.load-trust-cache") else {
             return nil
         }
-        
-        guard var pmap_lookup_in_loaded_trust_caches_internal = constSect.r64(at: ppl_handler_table + 0x148) else {
+        guard let load_trust_cache_with_type = textExec.findNextXref(to: str, optimization: .noBranches) else {
             return nil
         }
-        
-        if (pmap_lookup_in_loaded_trust_caches_internal >> 48) == 0x8011 {
-            // Relocation, on-disk kernel
-            pmap_lookup_in_loaded_trust_caches_internal &= 0xFFFFFFFFFFFF
-            pmap_lookup_in_loaded_trust_caches_internal += 0xFFFFFFF007004000
-        } else {
-            // Probably live kernel
-            // Strip pointer authentication code
-            pmap_lookup_in_loaded_trust_caches_internal |= 0xFFFFFF8000000000
-        }
-        
-        var pmap_image4_trust_caches: UInt64?
-        for i in 1..<20 {
-            let pc = pmap_lookup_in_loaded_trust_caches_internal + UInt64(i * 4)
-            let emu = AArch64Instr.Emulate.ldr(pplText.instruction(at: pc) ?? 0, pc: pc)
-            if emu != nil {
-                pmap_image4_trust_caches = emu
+        var pc = load_trust_cache_with_type;
+        for i in 1..<7 {
+            pc = pc - UInt64(i * 4)
+            let instr = textExec.instruction(at: pc) ?? 0x0
+            if instr == 0x52800509 {
                 break
             }
         }
-        
-        return pmap_image4_trust_caches
+        let adrp = textExec.instruction(at: pc - 0x8) ?? 0x0
+        let add = textExec.instruction(at: pc - 0x4) ?? 0x0
+        let emu = AArch64Instr.Emulate.adrpAdd(adrp: adrp, add: add, pc: pc - 0x8) ?? 0x0
+        if emu == 0x0 {
+            return nil
+        }
+        return emu - 0x18
     }()
     
     /// Get the EL level the kernel runs at

