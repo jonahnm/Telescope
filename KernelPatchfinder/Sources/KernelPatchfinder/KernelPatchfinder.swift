@@ -657,30 +657,16 @@ open class KernelPatchfinder {
             return nil
         }
         var pc = load_trust_cache_with_type;
-        for i in 1..<7 {
+        for i in 1..<20 {
             pc = pc - UInt64(i * 4)
             let instr = textExec.instruction(at: pc) ?? 0x0
-            if instr == 0x52800509 {
+            guard let args = AArch64Instr.Args.movz(instr) else {
+                continue
+            }
+            if args.regDst == 9 && args.imm == 0x28 {
                 NSLog("Found the instruction!")
                 break
             }
-        }
-        if textExec.instruction(at: pc) != 0x52800509 {
-            NSLog("I failed to find the correct instruction on the first xref, trying the second one.")
-            var secondpc = textExec.findNextXref(to: str,startAt: load_trust_cache_with_type,optimization: .noBranches) ?? 0x0
-            if secondpc == 0x0 {
-                NSLog("Couldn't find second xref!")
-                return nil
-            }
-            for i in 1..<7 {
-                secondpc = secondpc - UInt64(i * 4)
-                let instr = textExec.instruction(at: secondpc) ?? 0x0
-                if instr == 0x52800509 {
-                    NSLog("Found the instruction on the second xref!")
-                    break
-                }
-            }
-            pc = secondpc
         }
         let adrp = textExec.instruction(at: pc - 0x8) ?? 0x0
         let add = textExec.instruction(at: pc - 0x4) ?? 0x0
