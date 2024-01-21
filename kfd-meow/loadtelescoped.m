@@ -44,7 +44,11 @@ size_t kwritebuf_tcinject(uint64_t where, const void *p, size_t size) {
     }
     return size;
 }
-
+void *alloc(UInt64 size) {
+    UInt64 toret = 0;
+    vm_allocate(mach_task_self(), &toret, size, VM_FLAGS_ANYWHERE | VM_FLAGS_PERMANENT);
+    return (void*)toret;
+}
 void tcinjecttest(void) {
     NSString  *str = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/helloworld.tc"];
     NSData *data = [NSData dataWithContentsOfFile:str];
@@ -55,8 +59,8 @@ void tcinjecttest(void) {
     pmap_image4_trust_caches += get_kernel_slide();
     NSLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
     UInt64 alloc_size = sizeof(trustcache_module) + data.length + 0x8;
-    UInt64 mem = KnivesKernelAlloc(alloc_size, false);
-    UInt64 payload = KnivesKernelAlloc(alloc_size, false);
+    void *mem = alloc(alloc_size);
+    void *payload = alloc(alloc_size);
     if(mem == 0) {
         NSLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
@@ -134,7 +138,7 @@ UInt64 helloworldtest(void) {
 }
 
 UInt64 testKalloc(void) {
-    return KnivesKernelAlloc(0x100, false);
+    return (UInt64)alloc(0x100);
 }
 UInt64 testTC(void) {
     tcinjecttest();

