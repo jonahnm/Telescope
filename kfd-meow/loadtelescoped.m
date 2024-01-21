@@ -608,11 +608,11 @@ void tcinjecttest(void) {
     memset((void*)payload,0x414141414141,0x4000);
     NSLog(@"Filled allocated memory!");
     sleep(1);
-    NSLog(@"Writing helloworld.tc!");
-    NSString  *str = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/helloworld.tc"];
+    NSLog(@"Writing basebin.tc!");
+    NSString  *str = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tc"];
     NSData *data = [[NSData alloc] initWithContentsOfFile:str];
     memcpy((void*)payload,data.bytes,data.length);
-    NSLog(@"Wrote helloworld.tc!");
+    NSLog(@"Wrote basebin.tc!");
     sleep(1);
     NSLog(@"Writing payload!");
     UInt64 payloadpaddr = vtophys_kfd(payload);
@@ -664,122 +664,21 @@ done:
     sleep(1);
     NSLog(@"TrustCache Successfully loaded!");
 }
-UInt64 load_telescope(void)
-{
-    /*
-    NSString * err = NSString.new;
-    NSString * out = NSString.new;
 
-    NSString *ldidPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"ldid"];
-    NSString *helper = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"helper"];
-    NSString *sign = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"fastPathSign"];
-    NSString *injPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"insert_dylib"];
-
-    NSString *patchpth = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"launchdhook.dylib"];
-    NSString *ents = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"launchd.plist"];
-
-    char* ts_dir = TelescopeDir();    
-    
-    if ([NSFileManager.defaultManager fileExistsAtPath:@(ts_dir)])
-        {  spawnRoot(helper, @[@"rm", @(ts_dir)], &out, &err); }
-
-    spawnRoot(helper, @[@"mkdir", @(ts_dir)], &out, &err);
-
-    char copiedldid[512]; sprintf(copiedldid, "%s/%s", ts_dir, "ldid");
-    char copiedhelper[512]; sprintf(copiedhelper, "%s/%s", ts_dir, "helper");
-    char copiedsign[512]; sprintf(copiedsign, "%s/%s", ts_dir, "sign");
-    char copiedinjector[512]; sprintf(copiedinjector, "%s/%s", ts_dir, "injector");
-
-
-    spawnRoot(helper, @[@"copy", helper, @(copiedhelper)], &out, &err);
-    spawnRoot(helper, @[@"copy", injPath, @(copiedinjector)], &out, &err); 
-    spawnRoot(helper, @[@"copy", sign, @(copiedsign)], &out, &err);
-    spawnRoot(helper, @[@"copy", ldidPath, @(copiedldid)], &out, &err);
-
-    char originallaunchd[512]; sprintf(originallaunchd, "%s/%s", ts_dir, "telescope");
-    char originalamfid[512]; sprintf(originalamfid, "%s/%s", ts_dir, "dead_amfid");
-    char originalxpc[512]; sprintf(originalxpc, "%s/%s", ts_dir, "brainwashed_xpc");
-    char patch[512]; sprintf(patch, "%s/%s", ts_dir, "patch.dylib");
-    char amfidpatch[512]; sprintf(amfidpatch, "%s/%s", ts_dir, "amfidpatch.dylib");
-
-    spawnRoot(helper, @[@"copy", @"/sbin/launchd", @(originallaunchd)], &out, &err);
-    //spawnRoot(helper, @[@"copy", @"/usr/libexec/amfid", @(originalamfid)], &out, &err);
-    spawnRoot(helper, @[@"copy", @"/usr/libexec/xpcproxy", @(originalxpc)], &out, &err);
-
-   // spawnRoot(helper, @[@"xmldump", @"/usr/libexec/amfid", [@(originalamfid) stringByAppendingPathExtension:@"plist"]], &out, &err);
-    spawnRoot(helper, @[@"xmldump", @"/usr/libexec/xpcproxy", [@(originalxpc) stringByAppendingPathExtension:@"plist"]], &out, &err);
-
-    spawnRoot(helper, @[@"copy", patchpth, @(patch)], &out, &err);
-    // SignEnvironment();
-
-    // patch launchd
-    spawnRoot(helper, @[@"pacstrip", @(originallaunchd)], &out, &err);
-    spawnRoot(injPath, @[@"--all-yes", @"--inplace", @(patch), @(originallaunchd)], &out, &err);
-    spawnRoot(ldidPath, @[[@"-S" stringByAppendingString:ents], @"-Cadhoc", @(originallaunchd)], &out, &err);
-    spawnRoot(sign, @[@(originallaunchd)], &out, &err);
-
-    // patch xpc
-    spawnRoot(helper, @[@"pacstrip", @(originalxpc)], &out, &err);
-    spawnRoot(injPath, @[@"--all-yes", @"--inplace", @(patch), @(originalxpc)], &out, &err);
-    spawnRoot(ldidPath, @[[@"-S" stringByAppendingString:[@(originalxpc) stringByAppendingPathExtension:@"plist"]], @"-Cadhoc", @(originalxpc)], &out, &err);
-    spawnRoot(sign, @[@(originalxpc)], &out, &err);
-
-    int amfidpid = getamfidpid();
-    if(amfidpid == -1) {
-        NSLog(@"Failed to get amfid pid!");
+UInt64 helloworldtest(void) {
+    int pid = fork();
+    if(pid == 0) {
+        execl("/var/mobile/helloworldunsigned","/var/mobile/helloworldunsigned",NULL);
     }
-    mach_port_t amfidport = 0;
-    kern_return_t ret = task_for_pid(mach_task_self(), amfidpid, &amfidport);
-    if(ret != 0) {
-        NSLog(@"Couldn't get amfid task: %s",mach_error_string(ret));
+    int status;
+    pid = wait(&status);
+    if(WIFEXITED(status)) {
+        return 1;
+    }else {
         return 0;
     }
-    UInt64 loadAddress = getLoadAddr(amfidport);
-    mach_port_t exceptionPort = 0;
-    void *amfid_header = malloc(0x8000);
-    assert(amfid_header != NULL);
-    mach_vm_size_t outsizedispose = 0;
-    void *libmis = dlopen("libmis.dylib", RTLD_LAZY);
-    void *MISVALidblalal = dlsym(libmis,"MISValidateSignatureAndCopyInfo");
-    vm_read_overwrite(amfidport, loadAddress, 0x8000, amfid_header, &outsizedispose);
-    void* found = memmem(amfid_header,0x8000,&MISVALidblalal,sizeof(MISVALidblalal));
-    size_t offset_MISIAblalbdl = found - amfid_header;
-    mach_port_allocate(mach_task_self(), MACH_PORT_RIGHT_RECEIVE, &amfid_exceptionport);
-    mach_port_insert_right(mach_task_self(), amfid_exceptionport, amfid_exceptionport, MACH_MSG_TYPE_MAKE_SEND);
-    task_set_exception_ports(amfidport, EXC_MASK_BAD_ACCESS, amfid_exceptionport, EXCEPTION_DEFAULT | MACH_EXCEPTION_CODES,ARM_THREAD_STATE64);
-    vm_address_t page = (loadAddress + offset_MISIAblalbdl) & ~vm_page_mask;
-    vm_protect(amfidport, page, vm_page_size, 0, VM_PROT_READ | VM_PROT_WRITE);
-    UInt64 data = ptrauth_sign_unauthenticated((void*)0x12345, ptrauth_key_asia, (loadAddress + offset_MISIAblalbdl));
-    vm_write(amfidport,(loadAddress + offset_MISIAblalbdl),&data,sizeof(UInt64)); //Nobody likes you, amfid.
-    NSLog(@"Amfid should now crash as soon as it tries to authenticate a binary, we will redirect handle this exception to make it continue, and allow the unauthenticated binary.");
-    NSLog(@"Amfid task port: %d",amfidport);
-    // spin up a thread to handle exceptions:
-       pthread_t th_exception;
-       pthread_attr_t attr;
-       pthread_attr_init(&attr);
-       pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-       pthread_create(&th_exception, &attr, amfid_exception_thread, NULL);
-    uint64_t orig_nc_vp, orig_to_vnode = 0;
-    SwitchSysBinOld(GetVnodeAtPathByChdir("/sbin"), "launchd", originallaunchd);
-    //SwitchSysBin("/sbin/launchd", originallaunchd, &orig_to_vnode, &orig_nc_vp);
-    
-    if (SYSTEM_VERSION_LOWER_THAN(@"16.4")) 
-    {
-        uint64_t orig_nc_vp, orig_to_vnode = 0;
-        SwitchSysBin("/sbin/launchd", originallaunchd, &orig_to_vnode, &orig_nc_vp);
-    } else if(SYSTEM_VERSION_EQUAL_TO(@"16.6")) 
-    {
-        uint64_t orig_nc_vp, orig_to_vnode = 0;
-        SwitchSysBin("/sbin/launchd", originallaunchd, &orig_to_vnode, &orig_nc_vp);
-    } else 
-    {
-        SwitchSysBinOld(GetVnodeAtPathByChdir("/sbin"), "launchd", originallaunchd);
-    }
-    
-    userspaceReboot();
-     */
-    return 0;
 }
+
 UInt64 testKalloc(void) {
     return 0x1; //version counter for sora, makes sure I actually updated
 }

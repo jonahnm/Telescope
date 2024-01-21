@@ -39,7 +39,7 @@ struct ContentView: View {
                     HStack {
                         Button("kopen") {
                             message = ""
-                            result = kpoen_bridge(UInt64(puaf_method), UInt64(pplrw_toggle))
+                            result = kpoen_bridge(UInt64(puaf_method), 0)
                             if (result != 0) {
                                 message = "[*] kopened\n[*] kslide: " + String(get_kernel_slide(), radix:16) + "\n"
                             }
@@ -54,40 +54,13 @@ struct ContentView: View {
                 }.listRowBackground(Color.clear)
                 Section 
                 {
-                    Button("Start Telescope") {
-                        let result = load_telescope()
-                        if(result == 0) {
-                            message = message + "[!] Trustcache is too short\n"
-                        } else if(result == 1) {
-                            message = message + "[!] Trustcache version is invalid\n"
-                        } else if(result == 2) {
-                            message = message + "[!] Something is wrong with count\n"
-                        }else if(result == 3) {
-                            message = message + "[!] find_pmap_image4_trust_caches returned 0x0\n"
-                        } else if(result == 4) {
-                            message = message + "[!] Telescopeinit was killed via a signal.\n"
-                        } else if(result == 5) {
-                            message = message + "[!] Mem is 0\n"
-                        }
-                        else {
-                            message = message + "[*] Suceeded to start Telescoped\n"
-                        }
-                    }.buttonStyle(.bordered)
-                    Button("Test KALLOC") {
-                        let addr = testKalloc()
-                        message = message + String(format: "Kalloc'ed to: %p",addr)
-                    }.buttonStyle(.bordered)
                     Button("TEST TCINEJCTION") {
                         testTC()
                         message = message + "Trustcache test succeed!"
                     }.buttonStyle(.bordered)
-                    Button("Hello World test ENSURE YOU'VE TESTED TCINJECTION FIRST!!!!") {
-                        if(helloworldtest() == 1) {
-                            message = message + "Hello World exited normally!"
-                        } else {
-                            message = message + "Hello World was signaled to exit, this likely means it was rejected by the system due to it not being the trustcache or signed!"
-                        }
-                    }
+                    Button("run tc'ed bin") {
+                        helloworldtest()
+                    }.buttonStyle(.bordered)
                 }.listRowBackground(Color.clear)
                 
             }

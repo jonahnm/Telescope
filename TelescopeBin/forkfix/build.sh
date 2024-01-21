@@ -1,1 +1,0 @@
-xcrun -sdk iphoneos clang -Oz -Wall -Wextra -miphoneos-version-min=14.0 -framework Security -framework Foundation *.c -o forkfix.dylib -dynamiclib

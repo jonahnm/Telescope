@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65CECFE32B5CA602009E5D80 /* basebin.tc in Resources */ = {isa = PBXBuildFile; fileRef = 65CECFE22B5CA602009E5D80 /* basebin.tc */; };
 		65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D806E32B58DBE400823CC4 /* TSUtil.m */; };
 		868BDAB12B2E14260017CB10 /* libmeow.m in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB02B2E14260017CB10 /* libmeow.m */; };
 		868BDABA2B2E1A890017CB10 /* meowfinder.c in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB92B2E1A890017CB10 /* meowfinder.c */; };
@@ -47,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		65CECFE22B5CA602009E5D80 /* basebin.tc */ = {isa = PBXFileReference; lastKnownFileType = file; name = basebin.tc; path = TelescopeBin/basebin.tc; sourceTree = "<group>"; };
 		65D806E32B58DBE400823CC4 /* TSUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSUtil.m; sourceTree = "<group>"; };
 		868BDAB02B2E14260017CB10 /* libmeow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libmeow.m; sourceTree = "<group>"; };
 		868BDAB22B2E14410017CB10 /* libmeow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libmeow.h; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 		86A48A622B2B49CD005D1639 = {
 			isa = PBXGroup;
 			children = (
+				65CECFE22B5CA602009E5D80 /* basebin.tc */,
 				86A48A6D2B2B49CD005D1639 /* kfd-meow */,
 				86A48A6C2B2B49CD005D1639 /* Products */,
 				86A48AC62B2B4A89005D1639 /* Frameworks */,
@@ -471,6 +474,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */,
+				65CECFE32B5CA602009E5D80 /* basebin.tc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
