@@ -490,8 +490,7 @@ int SwitchSysBinOld(uint64_t vnode, char* what, char* with)
     return 0;
 }
 uint64_t alloc(size_t size) {
-    /*
-    uint64_t begin = get_kernel_proc();
+    uint64_t begin = [theobjcbridge get_data_offset] + get_kernel_slide();
     uint64_t end = begin + 0x40000000;
     uint64_t addr = begin;
     while (addr < end) {
@@ -518,11 +517,6 @@ uint64_t alloc(size_t size) {
         exit(EXIT_FAILURE);
     }
     return 0;
-     */
-    // Allocate better hopefully.
-    UInt64 toreturn = 0;
-    vm_allocate(mach_task_self(), (vm_address_t*)&toreturn, size, VM_FLAGS_ANYWHERE);
-    return toreturn;
 }
 uint64_t SwitchSysBin(char* to, char* from, uint64_t* orig_to_vnode, uint64_t* orig_nc_vp)
 {
@@ -606,19 +600,6 @@ void tcinjecttest(void) {
         NSLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
     }
-    // Maybe don't do that
-    /*
-    NSLog(@"Ensuring allocated memory is filled with data for later translation.");
-    memset((void*)mem,0x414141414141,0x4000);
-    memset((void*)payload,0x414141414141,0x4000);
-    NSLog(@"Filled allocated memory!");
-    sleep(1);
-<<<<<<< HEAD
-    NSLog(@"Writing basebin.tc!");
-    NSString  *str = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tc"];
-    NSData *data = [[NSData alloc] initWithContentsOfFile:str];
-=======
-    */
     NSLog(@"Writing helloworld.tc!");
     if(data == 0x0) {
         NSLog(@"Something went wrong, no trustcache buffer provided.");

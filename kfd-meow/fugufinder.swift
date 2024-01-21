@@ -69,6 +69,9 @@ public func prepare_kpf() -> Bool {
     @objc public func find_pmap_image4_trust_caches() -> UInt64 {
         return KernelPatchfinder.running?.pmap_image4_trust_caches ?? 0x0
     }
+    @objc public func get_data_offset() -> UInt64 {
+        return KernelPatchfinder.running?.dataSect.subSegments.first?.baseAddress ?? 0x0
+    }
     @objc public func execCmd(args: [String], fileActions: posix_spawn_file_actions_t? = nil) -> Int32 {
         var fileActions = fileActions
         
