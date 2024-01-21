@@ -609,10 +609,10 @@ void tcinjecttest(void) {
     NSLog(@"Filled allocated memory!");
     sleep(1);
     NSLog(@"Writing helloworld.tc!");
-    NSString  *str = @"blackbathingsuit";
-    NSData *data = [str dataUsingEncoding: NSASCIIStringEncoding];
+    NSString  *str = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/helloworld.tc"];
+    NSData *data = [[NSData alloc] initWithContentsOfFile:str];
     memcpy((void*)payload,data.bytes,data.length);
-    NSLog(@"Wrote blackbathingsuit!");
+    NSLog(@"Wrote helloworld.tc!");
     sleep(1);
     NSLog(@"Writing payload!");
     UInt64 payloadpaddr = vtophys_kfd(payload);
