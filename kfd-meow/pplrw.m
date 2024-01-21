@@ -146,7 +146,7 @@ void gfx_power_init(void)
     }
     uint64_t base6150020 = 0x206150000+0x20;
     base6150020_back = physread64_mapped(base6150020);
-    if (isa15a16) physwrite64_mapped(base6150020,1); // a15 a16
+    if (isa15a16) {physwrite64_mapped(base6150020,1);} // a15 a16
     if ((~physread32_mapped(base) & 0xF) != 0) {
         physwrite32_mapped(base, command);
         while(true) {
@@ -413,7 +413,7 @@ void dma_perform(void (^block)(void))
     
     ml_dbgwrap_unhalt_cpu();
     uint64_t base6150020 = 0x206150000+0x20;
-    if(isa15a16) physwrite64_mapped(base6150020, base6150020_back);
+    if(isa15a16)  {physwrite64_mapped(base6150020, base6150020_back);}
 }
 
 bool test_pplrw_phys(void)
