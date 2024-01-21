@@ -213,8 +213,8 @@
 				86A48A7A2B2B49CE005D1639 /* Assets.xcassets */,
 				86A48A7F2B2B49CE005D1639 /* Info.plist */,
 				D5D2DDB62B4832E500B62BED /* kfd-meow-Bridging-Header.h */,
-				9732F8E42B55A50C00762F31 /* loadtelescoped.h */,
 				9732F8E52B55A6ED00762F31 /* loadtelescoped.m */,
+				9732F8E42B55A50C00762F31 /* loadtelescoped.h */,
 				97A9DCE32B5B5366007ECBC9 /* trustcache.h */,
 			);
 			path = "kfd-meow";
