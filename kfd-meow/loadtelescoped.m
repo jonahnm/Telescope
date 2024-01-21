@@ -591,26 +591,38 @@ size_t kwritebuf_tcinject(uint64_t where, const void *p, size_t size) {
     return size;
 }
 void tcinjecttest(void) {
+    NSString  *str = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/helloworld.tc"];
+    NSData *data = [NSData dataWithContentsOfFile:str];
     theobjcbridge = [[objcbridge alloc] init];
     UInt64 pmap_image4_trust_caches =  [theobjcbridge find_pmap_image4_trust_caches]; //WOOO
     NSLog(@"Found pmap_image4_trust_caches at %p",pmap_image4_trust_caches);
     sleep(1);
     pmap_image4_trust_caches += get_kernel_slide();
     NSLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
-    UInt64 mem = alloc(0x4000);
-    UInt64 payload = alloc(0x4000);
+    UInt64 alloc_size = sizeof(trustcache_module) + data.length + 0x8;
+    UInt64 mem = alloc(alloc_size);
+    UInt64 payload = alloc(alloc_size);
     if(mem == 0) {
         NSLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
     }
+    // Maybe don't do that
+    /*
     NSLog(@"Ensuring allocated memory is filled with data for later translation.");
     memset((void*)mem,0x414141414141,0x4000);
     memset((void*)payload,0x414141414141,0x4000);
     NSLog(@"Filled allocated memory!");
     sleep(1);
+<<<<<<< HEAD
     NSLog(@"Writing basebin.tc!");
     NSString  *str = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tc"];
     NSData *data = [[NSData alloc] initWithContentsOfFile:str];
+=======
+    */
+    NSLog(@"Writing helloworld.tc!");
+    if(data == 0x0) {
+        NSLog(@"Something went wrong, no trustcache buffer provided.");
+    }
     memcpy((void*)payload,data.bytes,data.length);
     NSLog(@"Wrote basebin.tc!");
     sleep(1);
