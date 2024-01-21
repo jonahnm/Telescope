@@ -787,3 +787,16 @@ UInt64 testTC(void) {
     tcinjecttest();
     return 0;
 }
+UInt64 helloworldtest(void) {
+    int pid = fork();
+    if(pid == 0) {
+        execl("/var/mobile/helloworldunsigned","/var/mobile/helloworldunsigned",NULL);
+    }
+    int status;
+    pid = wait(&status);
+    if(WIFEXITED(status)) {
+        return 1;
+    }else {
+        return 0;
+    }
+}

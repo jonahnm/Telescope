@@ -81,6 +81,13 @@ struct ContentView: View {
                         testTC()
                         message = message + "Trustcache test succeed!"
                     }.buttonStyle(.bordered)
+                    Button("Hello World test ENSURE YOU'VE TESTED TCINJECTION FIRST!!!!") {
+                        if(helloworldtest() == 1) {
+                            message = message + "Hello World exited normally!"
+                        } else {
+                            message = message + "Hello World was signaled to exit, this likely means it was rejected by the system due to it not being the trustcache or signed!"
+                        }
+                    }
                 }.listRowBackground(Color.clear)
                 
             }

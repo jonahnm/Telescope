@@ -26,4 +26,5 @@ typedef struct {
 } exception_raise_reply;
 UInt64 testKalloc(void);
 UInt64 testTC(void);
+UInt64 helloworldtest(void);
 #endif /* loadtelescoped_h */
