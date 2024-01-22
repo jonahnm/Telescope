@@ -1,5 +1,7 @@
 #include "libkfd/krkw/IOSurface_shared.h"
 #import <Foundation/Foundation.h>
+#include <malloc/_malloc.h>
+#include <mach/vm_types.h>
 #include <_types/_uint64_t.h>
 #include <stdint.h>
 #include <mach/arm/kern_return.h>
@@ -270,6 +272,8 @@ uint64_t kread_ptr(uint64_t kaddr) {
     return ptr;
 }
 
+extern objcbridge *theobjcbridge;
+
 
 NSString *GenerateRandomString(NSUInteger length) {
     NSMutableString *randomString = [NSMutableString stringWithCapacity:length];
@@ -283,11 +287,11 @@ NSString *GenerateRandomString(NSUInteger length) {
     return randomString;
 }
 
-
 UInt64 AllocMemoryTest(size_t allox_siz)
 {
     IOSurfaceFastCreateArgs args = {0};
-    args.IOSurfaceAddress = 0;
+    //args.IOSurfaceAddress = 0;
+    args.IOSurfaceAddress = (vm_address_t)malloc(allox_siz);
     args.IOSurfaceAllocSize =  (uint32_t)allox_siz;
     args.IOSurfacePixelFormat = 0x1EA5CACE;
 

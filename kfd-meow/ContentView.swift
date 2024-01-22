@@ -59,7 +59,7 @@ struct ContentView: View {
                         message = message + "Trustcache test succeed!"
                     }.buttonStyle(.bordered)
                     Button("TEST KALLOC") {
-                        message = message + "kalloc ret " + String(UInt64(AllocMemoryTest(0x10))) + "\n"
+                        message = message + "kalloc ret " + String(UInt64(AllocMemoryTest(0x100))) + "\n"
                     }.buttonStyle(.bordered)
                     Button("run tc'ed bin") {
                         helloworldtest()
