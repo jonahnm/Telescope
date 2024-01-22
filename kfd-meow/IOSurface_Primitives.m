@@ -1,12 +1,24 @@
+#include "libkfd/krkw/IOSurface_shared.h"
 #import <Foundation/Foundation.h>
+#include <_types/_uint64_t.h>
+#include <stdint.h>
+#include <mach/arm/kern_return.h>
 #include <mach/arm/vm_param.h>
+#include <mach/mach_init.h>
+#include <mach/mach_port.h>
+#include <mach/message.h>
+#include <mach/port.h>
+#include <mach/task.h>
+
+#include <mach/vm_map.h>
+#include <mach/vm_region.h>
 #import <IOSurface/IOSurfaceRef.h>
-#import <IOKit/IOKitLib.h>
 #import <CoreGraphics/CoreGraphics.h>
 #include <os/log.h>
 #include "IOSurface_Primitives.h"
 #include "libkfd.h"
 #include "DriverKit.h"
+#import "libkfd/perf.h"
 #define fail(message) NSLog(message); \
 kclose((struct kfd*)_kfd); \
 exit(EXIT_FAILURE);
@@ -74,6 +86,11 @@ void IOMemoryDescriptor_set_flags(uint64_t memoryDescriptor, uint32_t flags)
 void IOMemoryDescriptor_set_memRef(uint64_t memoryDescriptor, uint64_t memRef)
 {
     kwrite64_kfd(memoryDescriptor + 0x28, memRef);
+}
+
+uint64_t IOMemoryDescriptor_get_memRef(uint64_t memoryDescriptor)
+{
+    return kread64_kfd(memoryDescriptor + 0x28);
 }
 
 uint64_t IOSurface_get_rangeCount(uint64_t surface)
@@ -173,25 +190,122 @@ static mach_port_t IOSurface_kalloc_getSurfacePort(uint64_t size)
     IOSurfaceDecrementUseCount(surfaceRef);
     return port;
 }
- uint64_t IOBufferKernelAlloc(uint64_t size, void **mappedAddr, bool leak)
- {
-     mach_port_t buffer = IOBufferMemoryDescriptor_create(3, size, 0);
-     if(buffer == 0) {
-         fail(@"Failed to create IOBufferMemoryDescriptor!");
-     }
-     if(mappedAddr) {
-         *mappedAddr = (void*) IOMemoryDescriptor_map(buffer, 0, 0);
-     }
-     uint64_t kObject = ipc_entry_lookup(buffer);
-     if(kObject == 0) {
-         fail(@"Failed to get kObject!");
-     }
-     uint64_t memRanges = kread64_ptr_kfd(kObject + 0x60);
-     if(memRanges == 0) {
-         fail(@"Failed to get IOBufferMemoryDescriptor _ranges!");
-     }
-     uint32_t refcount = kread32_kfd(kObject + 0x8ULL);
-     kwrite32_kfd(kObject + 0x8ULL, refcount + 0x1337);
-     return kread64_ptr_kfd(memRanges);
- }
 
+unsigned long kstrlen(uint64_t string) {
+    if (!string) return 0;
+    
+    unsigned long len = 0;
+    char ch = 0;
+    int i = 0;
+    while (true) {
+        kreadbuf_kfd(string + i, &ch, 1);
+        if (!ch) break;
+        len++;
+        i++;
+    }
+    return len;
+}
+
+int kstrcmp_u(uint64_t string1, char *string2) {
+    unsigned long len1 = kstrlen(string1);
+    
+    char *s1 = malloc(len1);
+    kreadbuf_kfd(string1, s1, len1);
+ 
+    int ret = strcmp(s1, string2);
+    free(s1);
+    
+    return ret;
+}
+
+uint64_t OSDictionary_objectForKey(uint64_t dict, char *key) {
+    uint64_t dict_buffer = kread64_kfd(dict + 32); // void *
+    
+    int i = 0;
+    uint64_t key_sym = 0;
+    do {
+        key_sym = kread64_kfd(dict_buffer + i); // OSSymbol *
+        uint64_t key_buffer = kread64_kfd(key_sym + 16); // char *
+        if (!kstrcmp_u(key_buffer, key)) {
+            return kread64_kfd(dict_buffer + i + 8);
+        }
+        i += 16;
+    }
+    while (key_sym);
+    
+    return 0;
+}
+
+uint32_t OSArray_objectCount(uint64_t array) {
+    return kread32_kfd(array + 24);
+}
+
+uint64_t OSArray_objectAtIndex(uint64_t array, int idx) {
+    uint64_t array_buffer = kread64_kfd(array + 32); // void *
+    return kread64_kfd(array_buffer + idx * 8);
+}
+
+uint64_t OSData_buffer(uint64_t data) {
+    return kread64_kfd(data + 24);
+}
+
+void OSData_setBuffer(uint64_t data, uint64_t buffer) {
+    kwrite64_kfd(data + 24, buffer);
+}
+
+uint32_t OSData_length(uint64_t data) {
+    return kread32_kfd(data + 16);
+}
+
+void OSData_setLength(uint64_t data, uint32_t length) {
+    kwrite32_kfd(data + 16, length);
+}
+
+uint64_t kread_ptr(uint64_t kaddr) {
+    uint64_t ptr = kread64_kfd(kaddr);
+    if ((ptr >> 55) & 1) {
+        return ptr | 0xFFFFFF8000000000;
+    }
+    
+    return ptr;
+}
+
+
+NSString *GenerateRandomString(NSUInteger length) {
+    NSMutableString *randomString = [NSMutableString stringWithCapacity:length];
+    NSString *characters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    for (NSUInteger i = 0; i < length; i++) {
+        NSUInteger index = arc4random_uniform((uint32_t)[characters length]);
+        [randomString appendFormat:@"%C", [characters characterAtIndex:index]];
+    }
+
+    return randomString;
+}
+
+
+UInt64 AllocMemoryTest(size_t allox_siz)
+{
+    IOSurfaceFastCreateArgs args = {0};
+    args.IOSurfaceAddress = 0;
+    args.IOSurfaceAllocSize =  (uint32_t)allox_siz;
+    args.IOSurfacePixelFormat = 0x1EA5CACE;
+
+    uint32_t id;
+
+    while (true) {
+        mach_port_t port = create_surface_fast_path(( struct kfd * )_kfd, get_surface_client(), &id, &args);
+
+        uint64_t surfaceSendRight = ipc_entry_lookup(port);
+        uint64_t surface = IOSurfaceSendRight_get_surface(surfaceSendRight);
+        uint64_t va = IOSurface_get_ranges(surface);
+
+        if (va == 0) continue;
+
+        // IOSurface_set_ranges(surface, 0);
+        // IOSurface_set_rangeCount(surface, 0);
+
+        NSLog(@"VA -> %llx", va);
+        return va;
+    }
+}

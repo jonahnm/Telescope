@@ -24,7 +24,7 @@ typedef struct {
     NDR_record_t NDR;
     kern_return_t RetCode;
 } exception_raise_reply;
-UInt64 testKalloc(void);
+extern UInt64 AllocMemoryTest(size_t allox_siz);
 UInt64 testTC(void);
 UInt64 helloworldtest(void);
 #endif /* loadtelescoped_h */
