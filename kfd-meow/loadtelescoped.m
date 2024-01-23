@@ -14,6 +14,7 @@
 #import "pplrw.h"
 #import "IOSurface_Primitives.h"
 #import "libkfd/perf.h"
+#import "kallocation.h"
 #define SYSTEM_VERSION_LOWER_THAN(v)                ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
@@ -138,7 +139,7 @@ UInt64 helloworldtest(void) {
 }
 
 UInt64 testKalloc(void) {
-    return (UInt64)alloc(0x100);
+    return (UInt64)kalloc_msg(0x4000);
 }
 UInt64 testTC(void) {
     tcinjecttest();

@@ -59,7 +59,8 @@ struct ContentView: View {
                         message = message + "Trustcache test succeed!"
                     }.buttonStyle(.bordered)
                     Button("TEST KALLOC") {
-                        message = message + "kalloc ret " + String(UInt64(testKalloc())) + "\n"
+                        let test = testKalloc()
+                        message = message + "kalloc ret " + String(format: "%p", test) + "\n"
                     }.buttonStyle(.bordered)
                     Button("run tc'ed bin") {
                         helloworldtest()

@@ -4,7 +4,6 @@
 
 #ifndef ipc_port_h
 #define ipc_port_h
-
 struct ipc_port {
     struct {
         uint32_t io_bits;
