@@ -117,21 +117,12 @@ done:
 }
 
 UInt64 helloworldtest(void) {
-    int pid = fork();
-    if(pid == 0) {
-        execl("/var/mobile/helloworldunsigned","/var/mobile/helloworldunsigned",NULL);
-    }
-    int status;
-    pid = wait(&status);
-    if(WIFEXITED(status)) {
-        return 1;
-    }else {
-        return 0;
-    }
+    spawnRoot(@"/var/mobile/helloworldunsigned", @[], NULL, NULL);
+    return 1;
 }
 
 UInt64 testKalloc(void) {
-    return (UInt64)kalloc_msg(0x4000);
+    return (UInt64)kalloc_msg(0x1000);
 }
 UInt64 testTC(void) {
     tcinjecttest();

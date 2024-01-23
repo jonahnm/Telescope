@@ -48,11 +48,7 @@ void *kalloc_msg(UInt64 size) {
        NSLog(@"kalloc failed to send message\n");
          exit(EXIT_FAILURE);
      }
-    uint64_t proc = get_proc(getpid());
-    uint64_t proc_ro = kread64_ptr_kfd(proc + 0x18);
-    uint64_t pr_task = kread64_ptr_kfd(proc_ro + 0x8);
-    uint64_t other_task = get_current_task();
-    NSLog(@"Task: %p Other task: %p",pr_task,other_task);
+    uint64_t pr_task = get_current_task();
     // sleep(2);
     uint64_t itk_space_pac = kread64_kfd(pr_task + off_task_itk_space);
     uint64_t itk_space = itk_space_pac | 0xffffff8000000000;
