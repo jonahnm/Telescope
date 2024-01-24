@@ -15,6 +15,7 @@ uint64_t kread64_smr_kfd(uint64_t where);
 void *IOSurface_map(uint64_t phys, uint64_t size);
 uint64_t kalloc(uint64_t size);
 mach_port_t IOSurface_map_getSurfacePort(uint64_t magic);
+static mach_port_t IOSurface_kalloc_getSurfacePort(uint64_t size);
 enum {
     kOSSerializeDictionary      = 0x01000000,
     kOSSerializeArray           = 0x02000000,

@@ -12,7 +12,7 @@ import SwiftUI
 struct kfdApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LegitContentView()
         }
     }
 }
