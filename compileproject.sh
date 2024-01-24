@@ -2,8 +2,16 @@
 
 # basebin
 cd TelescopeBin
-cd pluto
-make
-cd ../..
 
+#pluto (rootlesshooks)
+cd Pluto
+make
+cd ../
+
+#jup (jbd) (broken (xpc headers))
+cd Jupiter
+# make
+
+
+cd ../..
 make

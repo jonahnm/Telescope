@@ -48,6 +48,9 @@ struct LegitContentView: View {
 
     let items: [Item] = [
         Item(clickAction: {
+            meow_and_kclose()
+        }, name: "kclose"),
+        Item(clickAction: {
             testKalloc()
         }, name: "kalloc"),
         Item(clickAction: {

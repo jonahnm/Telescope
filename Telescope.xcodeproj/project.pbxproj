@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		658B80042B60C06E005D783E /* LegitContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658B80032B60C06E005D783E /* LegitContentView.swift */; };
+		658B80052B60C0E9005D783E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A48A7A2B2B49CE005D1639 /* Assets.xcassets */; };
 		65CECFE32B5CA602009E5D80 /* basebin.tc in Resources */ = {isa = PBXBuildFile; fileRef = 65CECFE22B5CA602009E5D80 /* basebin.tc */; };
 		65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D806E32B58DBE400823CC4 /* TSUtil.m */; };
 		868BDAB12B2E14260017CB10 /* libmeow.m in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB02B2E14260017CB10 /* libmeow.m */; };
 		868BDABA2B2E1A890017CB10 /* meowfinder.c in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB92B2E1A890017CB10 /* meowfinder.c */; };
-		86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A48A7A2B2B49CE005D1639 /* Assets.xcassets */; };
 		86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A892B2B4A0A005D1639 /* puaf.c */; };
 		86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A8A2B2B4A0A005D1639 /* perf.m */; };
 		86A48ABE2B2B4A0A005D1639 /* info.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48A8B2B2B4A0A005D1639 /* info.c */; };
@@ -24,32 +25,6 @@
 		86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A48AC72B2B4A89005D1639 /* IOKit.framework */; };
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
 		9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */ = {isa = PBXBuildFile; fileRef = 9732F8E52B55A6ED00762F31 /* loadtelescoped.m */; };
-		979456A92B60B3AE006B830D /* createbasebin.sh in Resources */ = {isa = PBXBuildFile; fileRef = 9794568C2B60B3AE006B830D /* createbasebin.sh */; };
-		979456AA2B60B3AE006B830D /* HelloWorld in Resources */ = {isa = PBXBuildFile; fileRef = 979456912B60B3AE006B830D /* HelloWorld */; };
-		979456AB2B60B3AE006B830D /* .stamp in Resources */ = {isa = PBXBuildFile; fileRef = 979456922B60B3AE006B830D /* .stamp */; };
-		979456AC2B60B3AE006B830D /* HelloWorld in Resources */ = {isa = PBXBuildFile; fileRef = 979456942B60B3AE006B830D /* HelloWorld */; };
-		979456AD2B60B3AE006B830D /* main.m.6418d3a8.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 979456952B60B3AE006B830D /* main.m.6418d3a8.o */; };
-		979456AE2B60B3AE006B830D /* HelloWorld.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 979456962B60B3AE006B830D /* HelloWorld.dSYM */; };
-		979456AF2B60B3AE006B830D /* main.m.6418d3a8.Td in Resources */ = {isa = PBXBuildFile; fileRef = 979456972B60B3AE006B830D /* main.m.6418d3a8.Td */; };
-		979456B02B60B3AE006B830D /* HelloWorld in Resources */ = {isa = PBXBuildFile; fileRef = 979456992B60B3AE006B830D /* HelloWorld */; };
-		979456B12B60B3AE006B830D /* main.m.641763e8.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 9794569A2B60B3AE006B830D /* main.m.641763e8.o */; };
-		979456B22B60B3AE006B830D /* HelloWorld.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 9794569B2B60B3AE006B830D /* HelloWorld.dSYM */; };
-		979456B32B60B3AE006B830D /* main.m.641763e8.Td in Resources */ = {isa = PBXBuildFile; fileRef = 9794569C2B60B3AE006B830D /* main.m.641763e8.Td */; };
-		979456B42B60B3AE006B830D /* build_session in Resources */ = {isa = PBXBuildFile; fileRef = 9794569F2B60B3AE006B830D /* build_session */; };
-		979456B52B60B3AE006B830D /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 979456A02B60B3AE006B830D /* Makefile */; };
-		979456B62B60B3AE006B830D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 979456A12B60B3AE006B830D /* .gitignore */; };
-		979456B72B60B3AE006B830D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 979456A22B60B3AE006B830D /* main.m */; };
-		979456B82B60B3AE006B830D /* control in Resources */ = {isa = PBXBuildFile; fileRef = 979456A32B60B3AE006B830D /* control */; };
-		979456B92B60B3AE006B830D /* TrustCache_x86_64 in Resources */ = {isa = PBXBuildFile; fileRef = 979456A42B60B3AE006B830D /* TrustCache_x86_64 */; };
-		979456BA2B60B3AE006B830D /* HelloWorld in Resources */ = {isa = PBXBuildFile; fileRef = 979456A62B60B3AE006B830D /* HelloWorld */; };
-		979456BB2B60B3AE006B830D /* basebin.tc in Resources */ = {isa = PBXBuildFile; fileRef = 979456A72B60B3AE006B830D /* basebin.tc */; };
-		979456BC2B60B3AE006B830D /* TrustCache in Resources */ = {isa = PBXBuildFile; fileRef = 979456A82B60B3AE006B830D /* TrustCache */; };
-		979456DF2B60B3EA006B830D /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 979456D02B60B3EA006B830D /* Makefile */; };
-		979456E02B60B3EA006B830D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 979456D12B60B3EA006B830D /* .gitignore */; };
-		979456E12B60B3EA006B830D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 979456D22B60B3EA006B830D /* main.m */; };
-		979456E22B60B3EA006B830D /* control in Resources */ = {isa = PBXBuildFile; fileRef = 979456D32B60B3EA006B830D /* control */; };
-		979457B02B60B501006B830D /* XPC.apinotes in Resources */ = {isa = PBXBuildFile; fileRef = 979456ED2B60B4FF006B830D /* XPC.apinotes */; };
-		979457B12B60B501006B830D /* libellekit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 979457AD2B60B500006B830D /* libellekit.tbd */; };
 		97EE5C722B5DA7C50066184E /* DriverKit.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C712B5DA7C50066184E /* DriverKit.c */; };
 		97EE5C752B5DA80E0066184E /* device.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C742B5DA80E0066184E /* device.c */; };
 		97EE5C772B5E05040066184E /* kallocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C762B5E05040066184E /* kallocation.m */; };
@@ -57,7 +32,6 @@
 		D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A052B4C41040040BF9D /* IOSurface_Primitives.m */; };
 		D54990D72B42C7C3003B3486 /* landa.c in Sources */ = {isa = PBXBuildFile; fileRef = D54990D62B42C7C3003B3486 /* landa.c */; };
 		D56FB6A02B499B0C00A48CA4 /* kfd-meow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56FB69F2B499B0C00A48CA4 /* kfd-meow.swift */; };
-		D56FB6A22B499B7000A48CA4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56FB6A12B499B7000A48CA4 /* ContentView.swift */; };
 		D5BF82AC2B4FF7E200C02D17 /* overwrite.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BF829D2B4F83D100C02D17 /* overwrite.m */; };
 		D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BF82C22B50242F00C02D17 /* patchfinder.m */; };
 		D5BF82C62B50242F00C02D17 /* libdimentio.c in Sources */ = {isa = PBXBuildFile; fileRef = D5BF82C32B50242F00C02D17 /* libdimentio.c */; };
@@ -77,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		658B80032B60C06E005D783E /* LegitContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegitContentView.swift; sourceTree = "<group>"; };
 		65CECFE22B5CA602009E5D80 /* basebin.tc */ = {isa = PBXFileReference; lastKnownFileType = file; name = basebin.tc; path = TelescopeBin/basebin.tc; sourceTree = "<group>"; };
 		65D806E32B58DBE400823CC4 /* TSUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSUtil.m; sourceTree = "<group>"; };
 		868BDAB02B2E14260017CB10 /* libmeow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libmeow.m; sourceTree = "<group>"; };
@@ -398,15 +373,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				979456AD2B60B3AE006B830D /* main.m.6418d3a8.o in Frameworks */,
 				86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */,
 				D5D2DDD22B4835F100B62BED /* CoreServices.framework in Frameworks */,
 				D5D2DDD02B4835E800B62BED /* libMobileGestalt.tbd in Frameworks */,
 				D5D2DDCE2B4835E000B62BED /* libz.tbd in Frameworks */,
 				D5D2DDB52B4832B600B62BED /* KernelPatchfinder in Frameworks */,
-				979456B12B60B3AE006B830D /* main.m.641763e8.o in Frameworks */,
 				D5D2DDC22B48341400B62BED /* libcurl.a in Frameworks */,
-				979457B12B60B501006B830D /* libellekit.tbd in Frameworks */,
 				D5D2DDC12B48341400B62BED /* libgrabkernel.a in Frameworks */,
 				D5D2DDC32B48341400B62BED /* libfragmentzip.a in Frameworks */,
 			);
@@ -462,6 +434,7 @@
 				D5D2DDB72B4832E600B62BED /* fugufinder.swift */,
 				D56FB69F2B499B0C00A48CA4 /* kfd-meow.swift */,
 				D56FB6A12B499B7000A48CA4 /* ContentView.swift */,
+				658B80032B60C06E005D783E /* LegitContentView.swift */,
 				86A48A7A2B2B49CE005D1639 /* Assets.xcassets */,
 				86A48A7F2B2B49CE005D1639 /* Info.plist */,
 				D5D2DDB62B4832E500B62BED /* kfd-meow-Bridging-Header.h */,
@@ -1247,27 +1220,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				979456B92B60B3AE006B830D /* TrustCache_x86_64 in Resources */,
-				979456AB2B60B3AE006B830D /* .stamp in Resources */,
-				979456AF2B60B3AE006B830D /* main.m.6418d3a8.Td in Resources */,
-				979456B82B60B3AE006B830D /* control in Resources */,
-				979456B22B60B3AE006B830D /* HelloWorld.dSYM in Resources */,
-				979457B02B60B501006B830D /* XPC.apinotes in Resources */,
-				979456E02B60B3EA006B830D /* .gitignore in Resources */,
-				979456BB2B60B3AE006B830D /* basebin.tc in Resources */,
-				979456A92B60B3AE006B830D /* createbasebin.sh in Resources */,
-				979456BA2B60B3AE006B830D /* HelloWorld in Resources */,
-				979456B42B60B3AE006B830D /* build_session in Resources */,
-				979456B32B60B3AE006B830D /* main.m.641763e8.Td in Resources */,
-				979456BC2B60B3AE006B830D /* TrustCache in Resources */,
-				979456AE2B60B3AE006B830D /* HelloWorld.dSYM in Resources */,
-				86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */,
-				979456E22B60B3EA006B830D /* control in Resources */,
-				979456AA2B60B3AE006B830D /* HelloWorld in Resources */,
-				979456AC2B60B3AE006B830D /* HelloWorld in Resources */,
-				979456B02B60B3AE006B830D /* HelloWorld in Resources */,
-				979456B62B60B3AE006B830D /* .gitignore in Resources */,
 				65CECFE32B5CA602009E5D80 /* basebin.tc in Resources */,
+				658B80052B60C0E9005D783E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1283,9 +1237,6 @@
 				D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */,
 				D5123A022B4C40B10040BF9D /* pplrw.m in Sources */,
 				D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */,
-				979456E12B60B3EA006B830D /* main.m in Sources */,
-				D56FB6A22B499B7000A48CA4 /* ContentView.swift in Sources */,
-				979456B52B60B3AE006B830D /* Makefile in Sources */,
 				D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */,
 				D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */,
 				65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */,
@@ -1294,10 +1245,10 @@
 				86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */,
 				97EE5C772B5E05040066184E /* kallocation.m in Sources */,
 				D5D2DDB82B4832E600B62BED /* fugufinder.swift in Sources */,
+				658B80042B60C06E005D783E /* LegitContentView.swift in Sources */,
 				D5BF82C62B50242F00C02D17 /* libdimentio.c in Sources */,
 				9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */,
 				86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */,
-				979456DF2B60B3EA006B830D /* Makefile in Sources */,
 				D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */,
 				86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */,
 				86A48AC32B2B4A0A005D1639 /* physpuppet.c in Sources */,
@@ -1311,7 +1262,6 @@
 				86A48AC52B2B4A0A005D1639 /* libkfd.m in Sources */,
 				97EE5C752B5DA80E0066184E /* device.c in Sources */,
 				86A48ABE2B2B4A0A005D1639 /* info.c in Sources */,
-				979456B72B60B3AE006B830D /* main.m in Sources */,
 				86A48AC02B2B4A0A005D1639 /* IOSurface_shared.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1470,7 +1420,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1534,7 +1484,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
