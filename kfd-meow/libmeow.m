@@ -89,7 +89,7 @@ uint64_t kpoen_bridge(uint64_t puaf_method, uint64_t pplrw) {
     return 0;
 }
 
-uint64_t meow_and_kclose(uint64_t _kfd) {
+uint64_t meow_and_kclose() {
     if(!isarm64e() && ((struct kfd*)_kfd)->info.env.vid >= 8)
         meow();
     kclose(_kfd);

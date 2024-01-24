@@ -16,4 +16,4 @@ extern uint64_t _kfd;
 
 extern uint64_t kpoen_bridge(uint64_t puaf_method, uint64_t pplrw);
 
-extern uint64_t meow_and_kclose(uint64_t _kfd);
+extern uint64_t meow_and_kclose();
