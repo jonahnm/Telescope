@@ -1,3 +1,4 @@
+#include <xpc/xpc.h>
 extern XPC_RETURNS_RETAINED xpc_object_t xpc_pipe_create_from_port(mach_port_t port, uint32_t flags);
 extern XPC_RETURNS_RETAINED xpc_object_t xpc_array_create_empty(void);
 extern XPC_RETURNS_RETAINED xpc_object_t xpc_dictionary_create_empty(void);
