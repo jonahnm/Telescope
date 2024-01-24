@@ -4,7 +4,7 @@
 #import <IOKit/IOKitLib.h>
 #import <CoreGraphics/CoreGraphics.h>
 #include <os/log.h>
-#include "IOSurface_Primitives.h"
+#include "IOSurface_primitives.h"
 #include "libkfd.h"
 #include <IOKit/IOKitLib.h>
 io_connect_t rootuserclientconnection = MACH_PORT_NULL;

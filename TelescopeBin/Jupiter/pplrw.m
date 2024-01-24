@@ -9,7 +9,7 @@
 #import <dlfcn.h>
 #import <mach-o/dyld.h>
 #import <sys/sysctl.h>
-#include "IOSurface_Primitives.h"
+#include "IOSurface_primitives.h"
 #include "libkfd.h"
 
 struct shit_map {

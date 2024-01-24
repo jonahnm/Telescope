@@ -4,7 +4,7 @@
 #ifndef __XPC_INDIRECT__
 #error "Please #include <xpc/xpc.h> instead of this file directly."
 // For HeaderDoc.
-#include <xpc/base.h>
+#include "xpc.h"
 #endif // __XPC_INDIRECT__
 
 #ifndef __BLOCKS__

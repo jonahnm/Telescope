@@ -1,9 +1,9 @@
-Package: com.yourcompany.helloworld
-Name: HelloWorld
+Package: com.soranknives.Jupiter
+Name: Jupiter
 Version: 0.0.1
-Architecture: iphoneos-arm
+Architecture: iphoneos-arm64
 Description: An awesome tool of some sort!!
 Maintainer: knives
-Author: knives
+Author: knivesnsora
 Section: System
 Tag: role::hacker

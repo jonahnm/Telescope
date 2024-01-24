@@ -1,6 +1,6 @@
 #ifndef __XPC_ENDPOINT_H__
 #define __XPC_ENDPOINT_H__
-
+#include "xpc.h"
 /*!
  * @function xpc_endpoint_create
  * Creates a new endpoint from a connection that is suitable for embedding into

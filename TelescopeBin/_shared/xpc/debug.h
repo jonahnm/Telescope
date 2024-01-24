@@ -1,6 +1,6 @@
 #ifndef __XPC_DEBUG_H__
 #define __XPC_DEBUG_H__
-
+#include "xpc.h"
 /*!
  * @function xpc_debugger_api_misuse_info
  * Returns a pointer to a string describing the reason XPC aborted the calling

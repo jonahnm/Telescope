@@ -16,7 +16,7 @@
 #include "libkfd.h"
 #include "libkfd/perf.h"
 #include "libkfd/info/static_types/miscellaneous_types.h"
-#include "IOSurface_Primitives.h"
+#include "IOSurface_primitives.h"
 
 #define DBGWRAP_DBGHALT          (1ULL << 31)
 #define DBGWRAP_DBGACK           (1ULL << 28)

@@ -9,7 +9,8 @@
 #define IOSurface_Permissive_h
 
 #include <stdio.h>
-
+#include <stdint.h>
+#include <mach/mach.h>
 uint64_t ipc_entry_lookup(mach_port_name_t port_name);
 uint64_t kread64_smr_kfd(uint64_t where);
 void *IOSurface_map(uint64_t phys, uint64_t size);

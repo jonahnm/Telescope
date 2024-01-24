@@ -9,8 +9,6 @@
 #include "../../../libkfd.h"
 #include "../../../libkfd/perf.h"
 
-#include "../../../kpf/patchfinder.h"
-
 #include "../../info.h"
 #include "../../info/static_types/semaphore.h"
 #include "../../info/static_types/miscellaneous_types.h"

@@ -5,8 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/_types/_mach_port_t.h>
-#include <xpc/xpc.h>
-#import "../_shared/xpc/private.h"
+#include "../_shared/xpc/xpc.h"
 #include "server.h"
 #include "libkfd.h"
 #include "pplrw.h"
@@ -46,9 +45,6 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
         xpc_type_t messageType = xpc_get_type(message);
         int msgId = -1;
         if(messageType == XPC_TYPE_DICTIONARY) {
-            audit_token_t auditToken = {};
-            xpc_dictionary_get_audit_token(message, &auditToken);
-            pid_t clientPid = audit_token_to_pid(auditToken);
             msgId = xpc_dictionary_get_uint64(message, "id");
             char *description = xpc_copy_description(message);
             JupiterLogDebug("[Jupiter] recieved %s message %d with dictionary: %s (from_binary: %s)",systemwide ? "systemwide" : "",msgId,description,"NOT IMPLEMENTED");
@@ -137,7 +133,7 @@ void setJetsamEnabled(bool enabled) {
 }
 int main(void) {
 	@autoreleasepool {
-		NSLog(@"Houston, this is Sora ariving on Jupiter.\n");
+		JupiterLogDebug("Houston, this is Sora ariving on Jupiter.\n");
         setJetsamEnabled(true);
         mach_port_t machPort = 0;
         kern_return_t kr = bootstrap_check_in(bootstrap_port, "com.soranknives.Jupiter", &machPort);

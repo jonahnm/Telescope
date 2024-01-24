@@ -4,7 +4,8 @@
 
 #ifndef libkfd_h
 #define libkfd_h
-
+#include <stdint.h>
+uint64_t _kfd = 0;
 #include <stdint.h>
 /*
  * The global configuration parameters of libkfd.
