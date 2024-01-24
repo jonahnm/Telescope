@@ -60,8 +60,8 @@ void tcinjecttest(void) {
     pmap_image4_trust_caches += get_kernel_slide();
     NSLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
     UInt64 alloc_size = sizeof(trustcache_module) + data.length + 0x8;
-    void *mem = alloc(alloc_size);
-    void *payload = alloc(alloc_size);
+    void *mem = kalloc_msg(0x1000);
+    void *payload = kalloc_msg(0x1000);
     if(mem == 0) {
         NSLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
@@ -70,27 +70,23 @@ void tcinjecttest(void) {
     if(data == 0x0) {
         NSLog(@"Something went wrong, no trustcache buffer provided.");
     }
-    memcpy((void*)payload,data.bytes,data.length);
+    kwritebuf_tcinject(payload, data.bytes, data.length);
     NSLog(@"Wrote basebin.tc!");
     sleep(1);
     NSLog(@"Writing payload!");
-    UInt64 payloadpaddr = vtophys_kfd(payload);
-    UInt64 payloadkaddr = phystokv_kfd(payloadpaddr);
-    memcpy((void*)mem + offsetof(trustcache_module, fileptr), &payloadkaddr, sizeof(UInt64));
+    kwrite64_kfd(mem + offsetof(trustcache_module, fileptr), payload);
     NSLog(@"Wrote payload!");
     sleep(1);
     NSLog(@"Writing length!");
     UInt64 len = data.length;
-    memcpy((void*)mem + offsetof(trustcache_module, module_size),&len,sizeof(UInt64));
+    kwrite64_kfd(mem + offsetof(trustcache_module, module_size),len);
     NSLog(@"Wrote length!");
     sleep(1);
     UInt64 trustcache = kread64_ptr_kfd(pmap_image4_trust_caches);
     NSLog(@"Beginning trustcache insertion!: trustcache gave: %p",trustcache);
     if(!trustcache) {
-        UInt64 mempaddr = vtophys_kfd(mem);
-        UInt64 memkaddr = phystokv_kfd(mempaddr);
         dma_perform(^{
-            dma_writevirt64(pmap_image4_trust_caches, memkaddr);
+            dma_writevirt64(pmap_image4_trust_caches, mem);
         });
         NSLog(@"Trustcache didn't already exist, write our stuff directly, and skip to end.");
         goto done;
@@ -104,19 +100,15 @@ void tcinjecttest(void) {
     }
     NSLog(@"Final trustcache addr: %p",prev);
     sleep(1);
-    NSLog(@"Writing previous to allocated trustcache before translating!");
-    memcpy((void*)mem+8, &prev, sizeof(UInt64));
-    NSLog(@"Wrote previous to allocated trustcache!");
     sleep(1);
-    UInt64 mempaddr = vtophys_kfd(mem);
-    UInt64 memkaddr = phystokv_kfd(mempaddr);
-    NSLog(@"memkaddr: %p", memkaddr);
+    NSLog(@"memkaddr: %p", mem);
     sleep(1);
     NSLog(@"Entering dma_perform!");
     sleep(1);
     dma_perform(^{
         NSLog(@"Entered dma_perform!");
-        dma_writevirt64(prev, memkaddr);
+        dma_writevirt64(prev, mem);
+        kwrite64_kfd(mem+8, prev);
         NSLog(@"Did write!");
     });
 done:
@@ -125,21 +117,12 @@ done:
 }
 
 UInt64 helloworldtest(void) {
-    int pid = fork();
-    if(pid == 0) {
-        execl("/var/mobile/helloworldunsigned","/var/mobile/helloworldunsigned",NULL);
-    }
-    int status;
-    pid = wait(&status);
-    if(WIFEXITED(status)) {
-        return 1;
-    }else {
-        return 0;
-    }
+    spawnRoot(@"/var/mobile/helloworldunsigned", @[], NULL, NULL);
+    return 1;
 }
 
 UInt64 testKalloc(void) {
-    return (UInt64)kalloc_msg(0x4000);
+    return (UInt64)kalloc_msg(0x1000);
 }
 UInt64 testTC(void) {
     tcinjecttest();

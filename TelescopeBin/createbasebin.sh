@@ -3,8 +3,9 @@ mkdir ./baseboin
 
 cd ./helloworld
 make
-cp .theos/obj/debug/arm64e/HelloWorld ../baseboin/
+cp .theos/obj/debug/HelloWorld ../baseboin/
 codesign -s - ../baseboin/HelloWorld
+ldid -S../../ent.xml ../baseboin/HelloWorld
 cd -
 
 rm -rf "./basebin.tc"
