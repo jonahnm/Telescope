@@ -17,17 +17,19 @@ cp Neptune.dylib ../baseboin/
 codesign -s - ../baseboin/Neptune.dylib
 cd ../
 
-#jup (jbd) (broken (xpc headers))
+#jupiter (jbd)
 cd Jupiter
-# make
-# cp .theos/obj/debug/Jupiter ../baseboin/
-# codesign -s - ../baseboin/Jupiter
-# ldid -S../../ent.xml ../baseboin/Jupiter
+make
+cp .theos/obj/debug/Jupiter ../baseboin/
+codesign -s - ../baseboin/Jupiter
+ldid -S../../ent.xml ../baseboin/Jupiter
 cd ../
 
 rm -rf "./basebin.tc"
 chmod +x ./TrustCache
 chmod +x ./TrustCache_x86_64
+cp opainject baseboin/
+cp -r LaunchDaemons baseboin/
 arch=$(uname -m)
 if [[ $arch == arm* ]] || [[ $arch == aarch64 ]]; then
 ./TrustCache create -v 2 basebin.tc baseboin

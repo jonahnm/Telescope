@@ -5,7 +5,6 @@
 #ifndef libkfd_h
 #define libkfd_h
 #include <stdint.h>
-uint64_t _kfd = 0;
 #include <stdint.h>
 /*
  * The global configuration parameters of libkfd.
@@ -21,7 +20,7 @@ uint64_t _kfd = 0;
 #define KERNEL_BASE_ADDRESS     0xFFFFFFF007004000
 
 #include "libkfd/common.h"
-
+uint64_t _kfd;
 /*
  * The private API of libkfd.
  */

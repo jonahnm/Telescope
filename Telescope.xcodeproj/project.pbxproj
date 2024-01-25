@@ -29,6 +29,7 @@
 		97EE5C722B5DA7C50066184E /* DriverKit.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C712B5DA7C50066184E /* DriverKit.c */; };
 		97EE5C752B5DA80E0066184E /* device.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C742B5DA80E0066184E /* device.c */; };
 		97EE5C772B5E05040066184E /* kallocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C762B5E05040066184E /* kallocation.m */; };
+		97F20D9B2B63178100CFB152 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = 97F20D9A2B63178100CFB152 /* libzstd */; };
 		D5123A022B4C40B10040BF9D /* pplrw.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A012B4C40B10040BF9D /* pplrw.m */; };
 		D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A052B4C41040040BF9D /* IOSurface_Primitives.m */; };
 		D54990D72B42C7C3003B3486 /* landa.c in Sources */ = {isa = PBXBuildFile; fileRef = D54990D62B42C7C3003B3486 /* landa.c */; };
@@ -175,6 +176,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97F20D9B2B63178100CFB152 /* libzstd in Frameworks */,
 				86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */,
 				D5D2DDD22B4835F100B62BED /* CoreServices.framework in Frameworks */,
 				D5D2DDD02B4835E800B62BED /* libMobileGestalt.tbd in Frameworks */,
@@ -315,9 +317,9 @@
 		86A48A972B2B4A0A005D1639 /* static_types */ = {
 			isa = PBXGroup;
 			children = (
+				86A48A9A2B2B4A0A005D1639 /* fileglob.h */,
 				86A48A982B2B4A0A005D1639 /* semaphore.h */,
 				86A48A992B2B4A0A005D1639 /* ipc_port.h */,
-				86A48A9A2B2B4A0A005D1639 /* fileglob.h */,
 				86A48A9B2B2B4A0A005D1639 /* miscellaneous_types.h */,
 				86A48A9C2B2B4A0A005D1639 /* ipc_space.h */,
 				86A48A9D2B2B4A0A005D1639 /* vm_map_copy.h */,
@@ -457,6 +459,7 @@
 			name = Telescope;
 			packageProductDependencies = (
 				D5D2DDB42B4832B600B62BED /* KernelPatchfinder */,
+				97F20D9A2B63178100CFB152 /* libzstd */,
 			);
 			productName = "kfd-meow";
 			productReference = 86A48A6B2B2B49CD005D1639 /* Telescope.app */;
@@ -488,6 +491,7 @@
 			mainGroup = 86A48A622B2B49CD005D1639;
 			packageReferences = (
 				D5D2DDB32B4832B600B62BED /* XCLocalSwiftPackageReference "KernelPatchfinder" */,
+				97F20D992B63178100CFB152 /* XCRemoteSwiftPackageReference "zstd" */,
 			);
 			productRefGroup = 86A48A6C2B2B49CD005D1639 /* Products */;
 			projectDirPath = "";
@@ -836,7 +840,23 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		97F20D992B63178100CFB152 /* XCRemoteSwiftPackageReference "zstd" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/zstd.git";
+			requirement = {
+				branch = dev;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		97F20D9A2B63178100CFB152 /* libzstd */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97F20D992B63178100CFB152 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstd;
+		};
 		D5D2DDB42B4832B600B62BED /* KernelPatchfinder */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = KernelPatchfinder;

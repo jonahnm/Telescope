@@ -25,7 +25,7 @@ CFTypeRef IORegistryEntryCreateCFProperty(io_registry_entry_t entry,
 #ifdef __cplusplus
 }
 #endif
-#define BOOT_INFO_PATH prebootPath(@"TelescopeBin/boot_info.plist")
+#define BOOT_INFO_PATH prebootPath(@"basebin/boot_info.plist")
 
 NSString *prebootPath(NSString *path) {
     static NSString *sPrebootPrefix = nil;
