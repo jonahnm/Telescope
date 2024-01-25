@@ -1,0 +1,7 @@
+/.
+/var
+/var/jb
+/var/jb/usr
+/var/jb/usr/lib
+/var/jb/usr/lib/libz-ng.2.0.6.dylib
+/var/jb/usr/lib/libz-ng.2.dylib -> libz-ng.2.0.6.dylib

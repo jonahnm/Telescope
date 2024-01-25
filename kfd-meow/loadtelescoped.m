@@ -50,8 +50,8 @@ void *alloc(UInt64 size) {
     vm_allocate(mach_task_self(), &toret, size, VM_FLAGS_ANYWHERE | VM_FLAGS_PERMANENT);
     return (void*)toret;
 }
-void tcinjecttest(void) {
-    NSString  *str = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/helloworld.tc"];
+void loadtc(NSString *path) {
+    NSString  *str = path;
     NSData *data = [NSData dataWithContentsOfFile:str];
     theobjcbridge = [[objcbridge alloc] init];
     UInt64 pmap_image4_trust_caches =  [theobjcbridge find_pmap_image4_trust_caches]; //WOOO
@@ -60,8 +60,8 @@ void tcinjecttest(void) {
     pmap_image4_trust_caches += get_kernel_slide();
     NSLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
     UInt64 alloc_size = sizeof(trustcache_module) + data.length + 0x8;
-    void *mem = kalloc_msg(0x1000);
-    void *payload = kalloc_msg(0x1000);
+    void *mem = kalloc_msg(alloc_size);
+    void *payload = kalloc_msg(alloc_size);
     if(mem == 0) {
         NSLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
@@ -115,6 +115,20 @@ done:
     sleep(1);
     NSLog(@"TrustCache Successfully loaded!");
 }
+NSString *locateExisting() {
+    
+}
+void jb(void) {
+    kopen(2,false);
+    NSString *basebintc = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tc"];
+    NSString *tartc = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar.tc"];
+    loadtc(basebintc);
+    sleep(1);
+    loadtc(tartc);
+    NSString *tarbin = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar"];
+    spawnRoot(tarbin,@[@"-u", @"-w",@"/private/preboot"],nil,nil);
+    
+}
 
 UInt64 helloworldtest(void) {
     spawnRoot(@"/var/mobile/helloworldunsigned", @[], NULL, NULL);
@@ -123,8 +137,4 @@ UInt64 helloworldtest(void) {
 
 UInt64 testKalloc(void) {
     return (UInt64)kalloc_msg(0x1000);
-}
-UInt64 testTC(void) {
-    tcinjecttest();
-    return 0;
 }

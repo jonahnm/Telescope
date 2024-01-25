@@ -130,8 +130,6 @@ struct kfd {
     struct krkw kwrite;
 };
 
-extern uint64_t _kfd;
-
 /*
  * The public API of libkfd.
  */

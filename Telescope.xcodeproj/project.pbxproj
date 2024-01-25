@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		658B80042B60C06E005D783E /* LegitContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658B80032B60C06E005D783E /* LegitContentView.swift */; };
 		658B80052B60C0E9005D783E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A48A7A2B2B49CE005D1639 /* Assets.xcassets */; };
-		658B80072B6212E7005D783E /* basebin.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 658B80062B6212E7005D783E /* basebin.tar.gz */; };
 		65CECFE32B5CA602009E5D80 /* basebin.tc in Resources */ = {isa = PBXBuildFile; fileRef = 65CECFE22B5CA602009E5D80 /* basebin.tc */; };
 		65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D806E32B58DBE400823CC4 /* TSUtil.m */; };
 		868BDAB12B2E14260017CB10 /* libmeow.m in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB02B2E14260017CB10 /* libmeow.m */; };
@@ -26,6 +25,7 @@
 		86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A48AC72B2B4A89005D1639 /* IOKit.framework */; };
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
 		9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */ = {isa = PBXBuildFile; fileRef = 9732F8E52B55A6ED00762F31 /* loadtelescoped.m */; };
+		97A13E8C2B62D74000BFB6FC /* tar in Resources */ = {isa = PBXBuildFile; fileRef = 97A13E8B2B62D74000BFB6FC /* tar */; };
 		97EE5C722B5DA7C50066184E /* DriverKit.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C712B5DA7C50066184E /* DriverKit.c */; };
 		97EE5C752B5DA80E0066184E /* device.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C742B5DA80E0066184E /* device.c */; };
 		97EE5C772B5E05040066184E /* kallocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C762B5E05040066184E /* kallocation.m */; };
@@ -53,7 +53,6 @@
 
 /* Begin PBXFileReference section */
 		658B80032B60C06E005D783E /* LegitContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegitContentView.swift; sourceTree = "<group>"; };
-		658B80062B6212E7005D783E /* basebin.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; name = basebin.tar.gz; path = TelescopeBin/basebin.tar.gz; sourceTree = "<group>"; };
 		65CECFE22B5CA602009E5D80 /* basebin.tc */ = {isa = PBXFileReference; lastKnownFileType = file; name = basebin.tc; path = TelescopeBin/basebin.tc; sourceTree = "<group>"; };
 		65D806E32B58DBE400823CC4 /* TSUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSUtil.m; sourceTree = "<group>"; };
 		868BDAB02B2E14260017CB10 /* libmeow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libmeow.m; sourceTree = "<group>"; };
@@ -112,6 +111,7 @@
 		9732F8E42B55A50C00762F31 /* loadtelescoped.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = loadtelescoped.h; sourceTree = "<group>"; };
 		9732F8E52B55A6ED00762F31 /* loadtelescoped.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = loadtelescoped.m; sourceTree = "<group>"; };
 		9732F8E72B55BBD800762F31 /* posix_spawn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = posix_spawn.h; sourceTree = "<group>"; };
+		97A13E8B2B62D74000BFB6FC /* tar */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = tar; sourceTree = "<group>"; };
 		97A312392B5EFFAD004773EB /* kallocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kallocation.h; sourceTree = "<group>"; };
 		97A9DCE32B5B5366007ECBC9 /* trustcache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = trustcache.h; sourceTree = "<group>"; };
 		97EE5C6F2B5DA7620066184E /* DriverKitClasses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKitClasses.h; sourceTree = "<group>"; };
@@ -192,7 +192,7 @@
 		86A48A622B2B49CD005D1639 = {
 			isa = PBXGroup;
 			children = (
-				658B80062B6212E7005D783E /* basebin.tar.gz */,
+				97A13E8B2B62D74000BFB6FC /* tar */,
 				65CECFE22B5CA602009E5D80 /* basebin.tc */,
 				86A48A6D2B2B49CD005D1639 /* kfd-meow */,
 				86A48A6C2B2B49CD005D1639 /* Products */,
@@ -503,8 +503,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97A13E8C2B62D74000BFB6FC /* tar in Resources */,
 				65CECFE32B5CA602009E5D80 /* basebin.tc in Resources */,
-				658B80072B6212E7005D783E /* basebin.tar.gz in Resources */,
 				658B80052B60C0E9005D783E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

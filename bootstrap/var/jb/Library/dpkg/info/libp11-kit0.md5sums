@@ -1,0 +1,6 @@
+30f7dd4dd3faf6faf2eeab5ccbc5e3b4  var/jb/usr/lib/libp11-kit.0.dylib
+4f09d403c510762c0a2306e95b0e2935  var/jb/usr/share/doc/libp11-kit0/AUTHORS
+fde976521bf905d887727fccbd46494a  var/jb/usr/share/doc/libp11-kit0/README.zst
+02933887f609807fbb57aa4237d14a50  var/jb/usr/share/doc/libp11-kit0/COPYING
+3d7878cdab6bd40177fb5ae0cd856c6a  var/jb/usr/share/doc/libp11-kit0/NEWS.zst
+063eff133cf32c1ff6204bfd2cda7941  var/jb/etc/pkcs11/pkcs11.conf.example

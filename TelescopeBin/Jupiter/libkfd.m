@@ -11,8 +11,6 @@
 #include "libkfd/puaf.h"
 #include "libkfd/krkw.h"
 #include "libkfd/perf.h"
-#include "libkfd/krkw/IOSurface_shared.h"
-
 #include <mach/mach.h>
 #include <mach-o/dyld.h>
 #include <mach-o/getsect.h>

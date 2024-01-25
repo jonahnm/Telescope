@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+	(configure)
+	add-shell /var/jb/bin/bash
+	add-shell /var/jb/usr/bin/bash
+	if dpkg --compare-versions "$2" lt 5.1.004-2; then
+		rm -f /var/jb/bin/sh.disabled
+		dpkg-divert --remove --package dash --rename \
+				/var/jb/bin/sh
+		rm -f /var/jb/usr/bin/sh.disabled
+		dpkg-divert --remove --package dash --rename \
+				/var/jb/usr/bin/sh
+	fi
+	;;
+	(abort-upgrade|abort-remove|abort-deconfigure)
+	exit 0
+	;;
+	(*)
+	echo "postinst called with unknown argument \`$1'" >&2
+	exit 0
+	;;
+esac
+
+exit 0

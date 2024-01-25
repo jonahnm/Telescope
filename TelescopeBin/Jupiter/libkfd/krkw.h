@@ -9,9 +9,7 @@
 
 #include "info.h"
 #include "krkw/kread/kread_sem_open.h"
-#include "krkw/kread/kread_IOSurface.h"
 #include "krkw/kwrite/kwrite_sem_open.h"
-#include "krkw/kwrite/kwrite_IOSurface.h"
 
 // Forward declarations for helper functions.
 void krkw_helper_init(struct kfd* kfd, struct krkw* krkw);

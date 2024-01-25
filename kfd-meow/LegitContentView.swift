@@ -48,18 +48,14 @@ struct LegitContentView: View {
 
     let items: [Item] = [
         Item(clickAction: {
+            kpoen_bridge(UInt64(2), 0)
+        }, name: "kopen"),
+        Item(clickAction: {
             meow_and_kclose()
         }, name: "kclose"),
         Item(clickAction: {
             testKalloc()
         }, name: "kalloc"),
-        Item(clickAction: {
-            testTC()
-        }, name: "tcinject"),
-        Item(clickAction: {
-            // Handle click action for the second item
-            helloworldtest()
-        }, name: "jupiter")
     ]
 
     
@@ -121,8 +117,8 @@ struct LegitContentView: View {
                             {
                                 tapped.toggle()
                                 DispatchQueue.global().async {
-                                    //jb()
-                                    print("TODO: Jb function");
+                                    //kpoen_bridge(UInt64(2), 0)
+                                    jb()
                                 }
                             }
                         }
