@@ -410,7 +410,7 @@ kBinaryConfig configForBinary(const char *path, char *const argv[restrict])
 			{
 				if (argv[1])
 				{
-					if (!strcmp(argv[1], "com.xia0o0o0o.jailbreakd"))
+					if (!strcmp(argv[1], "com.soranknives.Jupiter"))
 					{
 						// Don't do anything for xpcproxy if it's called on jailbreakd because this also implies jbd is not running currently
 						return (kBinaryConfigDontInject | kBinaryConfigDontProcess);
@@ -662,7 +662,7 @@ mach_port_t jbdMachPort(void)
 	}
 	else
 	{
-		bootstrap_look_up(bootstrap_port, "com.xia0o0o0o.jailbreakd", &outPort);
+		bootstrap_look_up(bootstrap_port, "com.soranknives.Jupiter", &outPort);
 	}
 
 	return outPort;
