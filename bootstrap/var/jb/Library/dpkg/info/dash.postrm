@@ -1,9 +1,0 @@
-#!/bin/sh
-
-set -e
-
-case "$1" in
-	(remove)
-	remove-shell /var/jb/usr/bin/dash
-	;;
-esac

@@ -1,3 +1,0 @@
-#!/bin/sh
-
-nohup /var/jb/usr/libexec/firmware-wrapper >/dev/null 2>&1 &
