@@ -23,7 +23,8 @@ DerivedData
 .idea/
 .theos 
 .tmp
-basebin.tar
+baseboin
+basebin.tar.gz
 basebin.tc
 Telescope.tipa
 Telescope.xcodeproj/xcuserdata/*.xcuserdatad/
