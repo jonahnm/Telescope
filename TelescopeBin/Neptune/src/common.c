@@ -74,7 +74,7 @@ kern_return_t bootstrap_look_up(mach_port_t port, const char *service, mach_port
 
 bool jbdSystemWideIsReachable(void)
 {
-	int sbc = sandbox_check(getpid(), "mach-lookup", SANDBOX_FILTER_GLOBAL_NAME | SANDBOX_CHECK_NO_REPORT, "com.xia0o0o0o.jailbreakd.systemwide");
+	int sbc = sandbox_check(getpid(), "mach-lookup", SANDBOX_FILTER_GLOBAL_NAME | SANDBOX_CHECK_NO_REPORT, "com.soranknives.Jupiter.systemwide");
 	return sbc == 0;
 }
 
@@ -91,7 +91,7 @@ mach_port_t jbdSystemWideMachPort(void)
 	}
 	else
 	{
-		kr = bootstrap_look_up(bootstrap_port, "com.xia0o0o0o.jailbreakd.systemwide", &outPort);
+		kr = bootstrap_look_up(bootstrap_port, "com.soranknives.Jupiter.systemwide", &outPort);
 	}
 
 	if (kr != KERN_SUCCESS)
