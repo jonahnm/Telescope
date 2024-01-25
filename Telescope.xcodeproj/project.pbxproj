@@ -500,10 +500,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< Updated upstream
-=======
 				86A48A7B2B2B49CE005D1639 /* Assets.xcassets in Resources */,
->>>>>>> Stashed changes
 				65CECFE32B5CA602009E5D80 /* basebin.tc in Resources */,
 				658B80052B60C0E9005D783E /* Assets.xcassets in Resources */,
 			);
@@ -521,10 +518,7 @@
 				D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */,
 				D5123A022B4C40B10040BF9D /* pplrw.m in Sources */,
 				D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */,
-<<<<<<< Updated upstream
-=======
 				D56FB6A22B499B7000A48CA4 /* ContentView.swift in Sources */,
->>>>>>> Stashed changes
 				D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */,
 				D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */,
 				65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */,

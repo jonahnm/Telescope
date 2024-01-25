@@ -7,7 +7,7 @@
 
 #include "../libkfd.h"
 #include "info.h"
-
+#import "../boot_info.h"
 #include "krkw/kread/kread_sem_open.h"
 
 #include "info/static_types/miscellaneous_types.h"

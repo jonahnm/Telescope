@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:TelescopeBin}/Jupiter/KernelPatchfinder",
+            "name": "Debug KernelPatchfinderTester (Jupiter/KernelPatchfinder)",
+            "program": "${workspaceFolder:TelescopeBin}/Jupiter/KernelPatchfinder/.build/debug/KernelPatchfinderTester",
+            "preLaunchTask": "swift: Build Debug KernelPatchfinderTester (Jupiter/KernelPatchfinder)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:TelescopeBin}/Jupiter/KernelPatchfinder",
+            "name": "Release KernelPatchfinderTester (Jupiter/KernelPatchfinder)",
+            "program": "${workspaceFolder:TelescopeBin}/Jupiter/KernelPatchfinder/.build/release/KernelPatchfinderTester",
+            "preLaunchTask": "swift: Build Release KernelPatchfinderTester (Jupiter/KernelPatchfinder)"
+        }
+    ]
+}

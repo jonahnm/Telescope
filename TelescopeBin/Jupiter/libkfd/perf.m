@@ -33,20 +33,17 @@ void perf_init(struct kfd* kfd)
     memset((void*)(shared_page_address), 0, shared_page_size);
     kfd->perf.shared_page.uaddr = shared_page_address;
     kfd->perf.shared_page.size = shared_page_size;
-    
-    objcbridge *obj = [[objcbridge alloc] init];
-    fugufinderbridge = (__bridge void *)obj;
-    if(isarm64e() && kfd->info.env.vid <= 7) {
-        kaddr_ptov_table = [obj find_ptov_table];
-        kaddr_gPhysBase = [obj find_gPhysBase];
-        kaddr_gPhysSize = [obj find_gPhysSize];
-        kaddr_gVirtBase = [obj find_gVirtBase];
+        if(isarm64e() && kfd->info.env.vid <= 7) {
+        kaddr_ptov_table = bootInfo_getUInt64(@"ptov_table");
+        kaddr_gPhysBase = bootInfo_getUInt64(@"gPhysBase");
+        kaddr_gPhysSize = bootInfo_getUInt64(@"gPhysSize");
+        kaddr_gVirtBase = bootInfo_getUInt64(@"gVirtBase");
     }
     if(isarm64e() && kfd->info.env.vid >= 8 && kfd->info.env.exploit_type == MEOW_EXPLOIT_SMITH) {
-        kaddr_vm_pages = [obj find_vm_pages];
-        kaddr_vm_page_array_beginning = [obj find_vm_page_array_beginning];
-        kaddr_vm_page_array_ending = [obj find_vm_page_array_ending];
-        kaddr_vm_first_phys_ppnum = [obj find_vm_first_phys_ppnum];
+        kaddr_vm_pages = bootInfo_getUInt64(@"vm_pages");
+        kaddr_vm_page_array_beginning = bootInfo_getUInt64(@"vm_page_array_beginning");
+        kaddr_vm_page_array_ending = bootInfo_getUInt64(@"vm_page_array_ending");
+        kaddr_vm_first_phys_ppnum = bootInfo_getUInt64(@"vm_first_phys_ppnum");
     }
 }
 

