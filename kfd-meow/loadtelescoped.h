@@ -27,4 +27,5 @@ typedef struct {
 UInt64 testKalloc(void);
 void jb(void);
 UInt64 helloworldtest(void);
+kern_return_t bootstrap_look_up(mach_port_t port, const char *service, mach_port_t *server_port);
 #endif /* loadtelescoped_h */

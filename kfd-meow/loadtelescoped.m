@@ -206,8 +206,8 @@ void loadtc(NSString *path) {
     pmap_image4_trust_caches += get_kernel_slide();
     NSLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
     UInt64 alloc_size = sizeof(trustcache_module) + data.length + 0x8;
-    void *mem = kalloc_msg(alloc_size);
-    void *payload = kalloc_msg(alloc_size);
+    void *mem = kalloc_msg(0x2000);
+    void *payload = kalloc_msg(0x2000);
     if(mem == 0) {
         NSLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
@@ -394,6 +394,31 @@ void patchBaseBinLaunchDaemonPlist(NSString *plistPath)
         }
     }
 }
+mach_port_t JupiterMachPort(void) {
+    mach_port_t outPort = -1;
+    kern_return_t kr = bootstrap_look_up(bootstrap_port,"com.soranknives.Jupiter",&outPort);
+    if(kr != KERN_SUCCESS)
+        return MACH_PORT_NULL;
+    return outPort;
+}
+xpc_object_t sendJupiterMessage(xpc_object_t xdict) {
+    xpc_object_t xreply = NULL;
+    mach_port_t jbdPort = JupiterMachPort();
+    if (jbdPort != -1) {
+        xpc_object_t pipe = xpc_pipe_create_from_port(jbdPort, 0);
+        if (pipe) {
+            int err = xpc_pipe_routine(pipe, xdict, &xreply);
+            if (err != 0) {
+                printf("xpc_pipe_routine error on sending message to Jupiter: %d / "
+                       "%s\n",
+                       err, xpc_strerror(err));
+                xreply = NULL;
+            };
+        }
+        mach_port_deallocate(mach_task_self(), jbdPort);
+    }
+    return xreply;
+}
 void bootstrap(void) {
     //kopen(2,false);
     NSString *basebintc = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tc"];
@@ -484,7 +509,8 @@ void bootstrap(void) {
                 @"ptov_table": [NSNumber numberWithUnsignedLongLong:kaddr_ptov_table],
                 @"gPhysBase": [NSNumber numberWithUnsignedLongLong:kaddr_gPhysBase],
                 @"gPhysSize": [NSNumber numberWithUnsignedLongLong:kaddr_gPhysSize],
-                @"gVirtBase": [NSNumber numberWithUnsignedLongLong:kaddr_gVirtBase]
+                @"gVirtBase": [NSNumber numberWithUnsignedLongLong:kaddr_gVirtBase],
+                @"pmap_image4_trust_caches": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_pmap_image4_trust_caches]]
             };
             [boot_infoconts writeToURL:bootinfoURL atomically:YES];
     }
@@ -502,7 +528,21 @@ void jb(void) {
     patchBaseBinLaunchDaemonPlist(prebootPath(@"basebin/LaunchDaemons/jupiter.plist"));
     kclose(_kfd);
     launchctl_load([prebootPath(@"basebin/LaunchDaemons/jupiter.plist") cStringUsingEncoding:NSUTF8StringEncoding], false);
-    // This is where I would ask jupiter to rebuild trustcache for the bootstrap, but I haven't gotten to that yet
+    xpc_object_t message = xpc_dictionary_create_empty();
+    xpc_dictionary_set_uint64(message, "id", 1);
+    xpc_object_t reply = sendJupiterMessage(message); // Tell jupiter it can kopen.
+    if(!reply) {
+        NSLog(@"Failed to send Jupiter the message to allow kopen.");
+        return;
+    }
+    message = xpc_dictionary_create_empty();
+    xpc_dictionary_set_uint64(message, "id", 9);
+    reply = sendJupiterMessage(message); // Tell jupiter to rebuild trustcache.
+    if(!reply) {
+        NSLog(@"Failed to send Jupiter the message to rebuild trustcache.");
+        return;
+    }
+    
     if([[NSFileManager defaultManager] fileExistsAtPath:@"/var/jb/prep_bootstrap.sh"]) {
         finbootstrap();
     }

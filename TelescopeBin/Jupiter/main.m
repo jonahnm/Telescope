@@ -12,6 +12,7 @@
 #include <Foundation/Foundation.h>
 #include "proc.h"
 #include "../_shared/kern_memorystatus.h"
+#include "trustcache.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -111,6 +112,10 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
                 }
                 xpc_dictionary_set_int64(reply, "ret", result);
             }
+            if(msgId == JUPITER_MSG_REBUILD_TRUSTCACHE) {
+                rebuildDynamicTrustCache();
+                xpc_dictionary_set_int64(reply, "ret", 1);
+            }
             if(reply) {
                 err = xpc_pipe_routine_reply(reply);
                 if(err != 0) {
@@ -133,7 +138,7 @@ void setJetsamEnabled(bool enabled) {
 }
 int main(void) {
 	@autoreleasepool {
-		JupiterLogDebug("Houston, this is Sora ariving on Jupiter.\n");
+		JupiterLogDebug("Houston, this is Sora ariving on Jupiter.");
         setJetsamEnabled(true);
         mach_port_t machPort = 0;
         kern_return_t kr = bootstrap_check_in(bootstrap_port, "com.soranknives.Jupiter", &machPort);
