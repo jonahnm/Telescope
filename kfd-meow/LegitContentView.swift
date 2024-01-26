@@ -88,23 +88,33 @@ struct LegitContentView: View {
                     ZStack {
                         
                         if tapped {
-                            ScrollView()
+                            VStack(alignment: .leading, spacing: 3)
                             {
-                                Text(logging)
-                                    .transition(.scale(scale: 50.5))
-                                    .animation(teleSpring())
-                                    .foregroundStyle(.white)
-                                    .frame(minWidth: 300)
-                                    .font(.caption)
-                                    .monospaced()
-//                                    .task {
-//                                        Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
-//                                            DispatchQueue.main.async {
-//                                                logging = String(cString: GlobalLogging)
-//                                            }
-//                                        }
-//                                    }
-                            }.frame(minWidth: 300, maxWidth: 300, maxHeight: (screenHeight() >= 670 ? 500 : 400) - 75)
+                                ScrollViewReader { proxy in
+                                    ScrollView()
+                                    {
+                                        Text(logging)
+                                            .transition(.scale(scale: 50.5))
+                                            .animation(teleSpring())
+                                            .foregroundStyle(.white)
+                                            .frame(minWidth: 290, maxWidth: 290)
+                                            .font(.system(size:7))
+                                            .monospaced()
+                                            .task {
+                                                Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
+                                                    DispatchQueue.main.async {
+                                                        logging = String(cString: GlobalLogging)
+                                                    }
+                                                }
+                                            }
+                                    }
+                                    .frame(minWidth: 300, maxWidth: 300, maxHeight: (screenHeight() >= 670 ? 500 : 400) - 75)
+                                    .onChange(of: logging) { newValue in
+                                        proxy.scrollTo(0, anchor: .bottom)
+                                    }
+                                }
+                            }
+                            // .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         
                         Image("telescope-50")
@@ -116,10 +126,10 @@ struct LegitContentView: View {
                             withAnimation(teleSpring())
                             {
                                 tapped.toggle()
-                                DispatchQueue.global().async {
-                                    //kpoen_bridge(UInt64(2), 0)
-                                    jb()
-                                }
+                            }
+                            DispatchQueue.global().async {
+                                //kpoen_bridge(UInt64(2), 0)
+                                jb()
                             }
                         }
                         .foregroundStyle(.white)
@@ -151,11 +161,8 @@ struct LegitContentView: View {
                             .shadow(color: .black.opacity(0.5), radius: 20)
                             .onTapGesture
                             {
-                                withAnimation(teleSpring())
-                                {
-                                    DispatchQueue.global().async {
-                                        self.items[index].clickAction()
-                                    }
+                                DispatchQueue.global().async {
+                                    self.items[index].clickAction()
                                 }
                             }
                         }
@@ -165,9 +172,12 @@ struct LegitContentView: View {
             
             if tapped {
                 HStack {
-                    ProgressView()
-                        .controlSize(.mini)
-                        .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+                    // ProgressView()
+                    //     .controlSize(.mini)
+                    //     .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+                    Image(systemName: "close")
+                        .foregroundStyle(.red)
+
                 }
                 .frame(minWidth: 44, minHeight: 44)
                 .background( VisualEffectView(effect: UIBlurEffect(style: .systemThinMaterialDark)) )

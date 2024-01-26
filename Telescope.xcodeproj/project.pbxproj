@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		658B80042B60C06E005D783E /* LegitContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658B80032B60C06E005D783E /* LegitContentView.swift */; };
 		658B80052B60C0E9005D783E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A48A7A2B2B49CE005D1639 /* Assets.xcassets */; };
+		658B80092B633940005D783E /* logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 658B80082B6338B8005D783E /* logging.m */; };
 		65CECFE32B5CA602009E5D80 /* basebin.tc in Resources */ = {isa = PBXBuildFile; fileRef = 65CECFE22B5CA602009E5D80 /* basebin.tc */; };
 		65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D806E32B58DBE400823CC4 /* TSUtil.m */; };
 		868BDAB12B2E14260017CB10 /* libmeow.m in Sources */ = {isa = PBXBuildFile; fileRef = 868BDAB02B2E14260017CB10 /* libmeow.m */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		658B80032B60C06E005D783E /* LegitContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegitContentView.swift; sourceTree = "<group>"; };
+		658B80082B6338B8005D783E /* logging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = logging.m; sourceTree = "<group>"; };
 		65CECFE22B5CA602009E5D80 /* basebin.tc */ = {isa = PBXFileReference; lastKnownFileType = file; name = basebin.tc; path = TelescopeBin/basebin.tc; sourceTree = "<group>"; };
 		65D806E32B58DBE400823CC4 /* TSUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSUtil.m; sourceTree = "<group>"; };
 		868BDAB02B2E14260017CB10 /* libmeow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libmeow.m; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				D5123A012B4C40B10040BF9D /* pplrw.m */,
 				D5123A042B4C41040040BF9D /* IOSurface_Primitives.h */,
 				D5123A052B4C41040040BF9D /* IOSurface_Primitives.m */,
+				658B80082B6338B8005D783E /* logging.m */,
 				D5D2DDB72B4832E600B62BED /* fugufinder.swift */,
 				D56FB69F2B499B0C00A48CA4 /* kfd-meow.swift */,
 				D56FB6A12B499B7000A48CA4 /* ContentView.swift */,
@@ -520,6 +523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D2DDB82B4832E600B62BED /* fugufinder.swift in Sources */,
 				D5BF82AC2B4FF7E200C02D17 /* overwrite.m in Sources */,
 				D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */,
 				D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */,
@@ -532,13 +536,13 @@
 				86A48AC42B2B4A0A005D1639 /* krkw.c in Sources */,
 				86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */,
 				97EE5C772B5E05040066184E /* kallocation.m in Sources */,
-				D5D2DDB82B4832E600B62BED /* fugufinder.swift in Sources */,
 				658B80042B60C06E005D783E /* LegitContentView.swift in Sources */,
 				D5BF82C62B50242F00C02D17 /* libdimentio.c in Sources */,
 				9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */,
 				86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */,
 				D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */,
 				86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */,
+				658B80092B633940005D783E /* logging.m in Sources */,
 				86A48AC32B2B4A0A005D1639 /* physpuppet.c in Sources */,
 				D5D2DDA82B47B85F00B62BED /* kread_IOSurface.c in Sources */,
 				D54990D72B42C7C3003B3486 /* landa.c in Sources */,
