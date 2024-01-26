@@ -613,6 +613,7 @@ void bootstrap(void) {
                 @"pmap_image4_trust_caches": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_pmap_image4_trust_caches]]
             };
             [boot_infoconts writeToURL:bootinfoURL atomically:YES];
+            
     }
 }
 // This won't work atm as I need to add Jupiter's trustcache functions.
@@ -626,13 +627,10 @@ void jb(void) {
     setenv("TERM","xterm-256color",1);
     bootstrap();
     NSLog(@"Extracted boostrap!");
-    patchBaseBinLaunchDaemonPlist(prebootPath(@"baseboin/LaunchDaemons/jupiter.plist"));
-    NSLog(@"Patched Basebin LaunchDaemons!");
     kclose(_kfd);
     NSLog(@"kclosed!");
-    //launchctl_load([prebootPath(@"baseboin/LaunchDaemons/jupiter.plist") cStringUsingEncoding:NSUTF8StringEncoding], false);
-    // launchctl seems to be broken, so launch it directly for now.
-    util_runCommand([prebootPath(@"baseboin/Jupiter") cStringUsingEncoding:NSUTF8StringEncoding],"");
+    launchctl_load("/var/jb/baseboin/LaunchDaemons/jupiter.plist", false);
+    //util_runCommand([prebootPath(@"baseboin/Jupiter") cStringUsingEncoding:NSUTF8StringEncoding],"");
     NSLog(@"Loaded Jupiter!");
     xpc_object_t message = xpc_dictionary_create_empty();
     xpc_dictionary_set_uint64(message, "id", 1);

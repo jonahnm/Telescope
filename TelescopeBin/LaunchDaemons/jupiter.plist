@@ -18,7 +18,7 @@
 	</dict>
 	<key>ProgramArguments</key>
 	<array>
-		<string>baseboin/Jupiter</string>
+		<string>/var/jb/baseboin/Jupiter</string>
 	</array>
 	<key>UserName</key>
 	<string>root</string>
