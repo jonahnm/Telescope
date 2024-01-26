@@ -42,6 +42,8 @@ CFTypeRef IORegistryEntryCreateCFProperty(io_registry_entry_t entry,
                                           IOOptionBits options);
 #define BOOT_INFO_PATH prebootPath(@"basebin/boot_info.plist")
 
+extern void AppendLog(NSString *format, ...) ;
+
 NSString *prebootPath(NSString *path) {
     static NSString *sPrebootPrefix = nil;
     static dispatch_once_t onceToken;
@@ -142,20 +144,20 @@ int64_t launchctl_load(const char *plistPath, bool unload) {
   xpc_object_t msgReply = launchd_xpc_send_message(msgDictionary);
 
   char *msgReplyDescription = xpc_copy_description(msgReply);
-  NSLog(@"[jbinit] msgReply = %s\n", msgReplyDescription);
+  AppendLog(@"[jbinit] msgReply = %s\n", msgReplyDescription);
   free(msgReplyDescription);
 
   int64_t bootstrapError =
       xpc_dictionary_get_int64(msgReply, "bootstrap-error");
   if (bootstrapError != 0) {
-    NSLog(@"[jbinit] bootstrap-error = %s\n",
+    AppendLog(@"[jbinit] bootstrap-error = %s\n",
           xpc_strerror((int32_t)bootstrapError));
     return bootstrapError;
   }
 
   int64_t error = xpc_dictionary_get_int64(msgReply, "error");
   if (error != 0) {
-    NSLog(@"[jbinit]error = %s\n", xpc_strerror((int32_t)error));
+    AppendLog(@"[jbinit]error = %s\n", xpc_strerror((int32_t)error));
     return error;
   }
 
@@ -201,65 +203,65 @@ void loadtc(NSString *path) {
     NSData *data = [NSData dataWithContentsOfFile:str];
     theobjcbridge = [[objcbridge alloc] init];
     UInt64 pmap_image4_trust_caches =  [theobjcbridge find_pmap_image4_trust_caches]; //WOOO
-    NSLog(@"Found pmap_image4_trust_caches at %p",pmap_image4_trust_caches);
+    AppendLog(@"Found pmap_image4_trust_caches at %p",pmap_image4_trust_caches);
     sleep(1);
     pmap_image4_trust_caches += get_kernel_slide();
-    NSLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
+    AppendLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
     UInt64 alloc_size = sizeof(trustcache_module) + data.length + 0x8;
     void *mem = kalloc_msg(0x2000);
     void *payload = kalloc_msg(0x2000);
     if(mem == 0) {
-        NSLog(@"Failed to allocate memory for TrustCache: %p",mem);
+        AppendLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
     }
-    NSLog(@"Writing helloworld.tc!");
+    AppendLog(@"Writing helloworld.tc!");
     if(data == 0x0) {
-        NSLog(@"Something went wrong, no trustcache buffer provided.");
+        AppendLog(@"Something went wrong, no trustcache buffer provided.");
     }
     kwritebuf_tcinject(payload, data.bytes, data.length);
-    NSLog(@"Wrote basebin.tc!");
+    AppendLog(@"Wrote basebin.tc!");
     sleep(1);
-    NSLog(@"Writing payload!");
+    AppendLog(@"Writing payload!");
     kwrite64_kfd(mem + offsetof(trustcache_module, fileptr), payload);
-    NSLog(@"Wrote payload!");
+    AppendLog(@"Wrote payload!");
     sleep(1);
-    NSLog(@"Writing length!");
+    AppendLog(@"Writing length!");
     UInt64 len = data.length;
     kwrite64_kfd(mem + offsetof(trustcache_module, module_size),len);
-    NSLog(@"Wrote length!");
+    AppendLog(@"Wrote length!");
     sleep(1);
     UInt64 trustcache = kread64_ptr_kfd(pmap_image4_trust_caches);
-    NSLog(@"Beginning trustcache insertion!: trustcache gave: %p",trustcache);
+    AppendLog(@"Beginning trustcache insertion!: trustcache gave: %p",trustcache);
     if(!trustcache) {
         dma_perform(^{
             dma_writevirt64(pmap_image4_trust_caches, mem);
         });
-        NSLog(@"Trustcache didn't already exist, write our stuff directly, and skip to end.");
+        AppendLog(@"Trustcache didn't already exist, write our stuff directly, and skip to end.");
         goto done;
     }
     UInt64 prev = 0;
-    NSLog(@"Entering while(trustcache)!");
+    AppendLog(@"Entering while(trustcache)!");
     sleep(1);
     while(trustcache) {
         prev = trustcache;
         trustcache = kread64_ptr_kfd(trustcache);
     }
-    NSLog(@"Final trustcache addr: %p",prev);
+    AppendLog(@"Final trustcache addr: %p",prev);
     sleep(1);
     sleep(1);
-    NSLog(@"memkaddr: %p", mem);
+    AppendLog(@"memkaddr: %p", mem);
     sleep(1);
-    NSLog(@"Entering dma_perform!");
+    AppendLog(@"Entering dma_perform!");
     sleep(1);
     dma_perform(^{
-        NSLog(@"Entered dma_perform!");
+        AppendLog(@"Entered dma_perform!");
         dma_writevirt64(prev, mem);
         kwrite64_kfd(mem+8, prev);
-        NSLog(@"Did write!");
+        AppendLog(@"Did write!");
     });
 done:
     sleep(1);
-    NSLog(@"TrustCache Successfully loaded!");
+    AppendLog(@"TrustCache Successfully loaded!");
 }
 NSString *bootmanifesthash(void) {
     io_registry_entry_t entry = IORegistryEntryFromPath(kIOMasterPortDefault, "IODeviceTree:/chosen");
