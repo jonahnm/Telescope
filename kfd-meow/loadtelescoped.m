@@ -18,6 +18,7 @@
 #import "../TelescopeBin/_shared/IOKit/IOKitLib.h"
 #import <zstd.h>
 #import "../TelescopeBin/_shared/xpc/xpc.h"
+#import "../NVHTarGzip/Classes/NVHTarGzip.h"
 #define SYSTEM_VERSION_LOWER_THAN(v)                ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
@@ -31,6 +32,7 @@ typedef mach_port_t io_object_t;
 typedef io_object_t io_registry_entry_t;
 extern const mach_port_t kIOMainPortDefault;
 typedef char io_string_t[512];
+extern char **environ;
 
 kern_return_t IOObjectRelease(io_object_t object);
 
@@ -40,7 +42,7 @@ CFTypeRef IORegistryEntryCreateCFProperty(io_registry_entry_t entry,
                                           CFStringRef key,
                                           CFAllocatorRef allocator,
                                           IOOptionBits options);
-#define BOOT_INFO_PATH prebootPath(@"basebin/boot_info.plist")
+#define BOOT_INFO_PATH prebootPath(@"baseboin/boot_info.plist")
 
 extern void AppendLog(NSString *format, ...) ;
 
@@ -296,8 +298,8 @@ NSString *locateexistingfakeroot(void) {
 }
 NSString *generatefakerootpath(void) {
     const char *letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    char *result = malloc(6*sizeof(char));
-    for(int counter = 0; counter < 6; counter++) {
+    char *result = malloc(15*sizeof(char));
+    for(int counter = 0; counter < 15; counter++) {
         UInt32 randomindex = arc4random_uniform((UInt32)strlen(letters));
         const char randomchar = letters[randomindex];
         result[counter] = randomchar;
@@ -323,8 +325,8 @@ void UUIDFixer(void) {
     }
     mode_t perms = pathstat.st_mode & S_IRWXU;
     
-    if(perms != 493) {
-        if(chmod([path cStringUsingEncoding:NSUTF8StringEncoding],493) != 0) {
+    if(perms != 0755) {
+        if(chmod([path cStringUsingEncoding:NSUTF8StringEncoding],0755) != 0) {
             // TODO: THROW ERRORS
             return;
         }
@@ -337,16 +339,6 @@ void gimmeRoot(void) {
     dma_perform(^{
         dma_writevirt32(cr_posix_p + 0,0x0); // yummy root
     });
-}
-void untar(NSString *tarpath,NSString *target,bool isgz) {
-    NSString *bin = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar"];
-    // 493 is the decimal representation of the 755 octal btw
-    [[NSFileManager defaultManager] setAttributes:@{NSFilePosixPermissions: @493} ofItemAtPath:bin error:nil];
-    if(isgz) {
-        spawnRoot(bin, @[@"-xvzf",tarpath,@"-C",target], nil, nil);
-    } else {
-        spawnRoot(bin, @[@"-xf",tarpath,@"-C",target], nil, nil);
-    }
 }
 void createsymboliclink(NSString *path,NSString *pathdest) {
     NSMutableArray *comps = [NSMutableArray arrayWithArray:[path componentsSeparatedByString:@"/"]];
@@ -421,15 +413,126 @@ xpc_object_t sendJupiterMessage(xpc_object_t xdict) {
     }
     return xreply;
 }
+// Thanks KpwnZ
+int runCommandv(const char *cmd, int argc, const char * const* argv, void (^unrestrict)(pid_t))
+{
+    pid_t pid;
+    posix_spawn_file_actions_t *actions = NULL;
+    posix_spawn_file_actions_t actionsStruct;
+    int out_pipe[2];
+    bool valid_pipe = false;
+    posix_spawnattr_t *attr = NULL;
+    posix_spawnattr_t attrStruct;
+
+    valid_pipe = pipe(out_pipe) == 0;
+    if (valid_pipe && posix_spawn_file_actions_init(&actionsStruct) == 0) {
+        actions = &actionsStruct;
+        posix_spawn_file_actions_adddup2(actions, out_pipe[1], 1);
+        posix_spawn_file_actions_adddup2(actions, out_pipe[1], 2);
+        posix_spawn_file_actions_addclose(actions, out_pipe[0]);
+        posix_spawn_file_actions_addclose(actions, out_pipe[1]);
+    }
+
+    if (unrestrict && posix_spawnattr_init(&attrStruct) == 0) {
+        attr = &attrStruct;
+        posix_spawnattr_setflags(attr, POSIX_SPAWN_START_SUSPENDED);
+    }
+
+    int rv = posix_spawn(&pid, cmd, actions, attr, (char *const *)argv, environ);
+
+    if (unrestrict) {
+        unrestrict(pid);
+        kill(pid, SIGCONT);
+    }
+
+    if (valid_pipe) {
+        close(out_pipe[1]);
+    }
+
+    if (rv == 0) {
+        if (valid_pipe) {
+            char buf[256];
+            ssize_t len;
+            while (1) {
+                len = read(out_pipe[0], buf, sizeof(buf) - 1);
+                if (len == 0) {
+                    break;
+                }
+                else if (len == -1) {
+                    perror("posix_spawn, read pipe\n");
+                }
+                buf[len] = 0;
+                NSLog(@"%s\n", buf);
+            }
+        }
+        if (waitpid(pid, &rv, 0) == -1) {
+            NSLog(@"ERROR: Waitpid failed\n");
+        } else {
+            NSLog(@"%s(%d) completed with exit status %d\n", __FUNCTION__, pid, WEXITSTATUS(rv));
+        }
+
+    } else {
+        NSLog(@"%s(%d): ERROR posix_spawn failed (%d): %s\n", __FUNCTION__, pid, rv, strerror(rv));
+        rv <<= 8; // Put error into WEXITSTATUS
+    }
+    if (valid_pipe) {
+        close(out_pipe[0]);
+    }
+    return rv;
+}
+
+int util_runCommand(const char *cmd, ...)
+{
+    va_list ap, ap2;
+    int argc = 1;
+
+    va_start(ap, cmd);
+    va_copy(ap2, ap);
+
+    while (va_arg(ap, const char *) != NULL) {
+        argc++;
+    }
+    va_end(ap);
+
+    const char *argv[argc+1];
+    argv[0] = cmd;
+    for (int i=1; i<argc; i++) {
+        argv[i] = va_arg(ap2, const char *);
+    }
+    va_end(ap2);
+    argv[argc] = NULL;
+
+    int rv = runCommandv(cmd, argc, argv, NULL);
+    return WEXITSTATUS(rv);
+}
+void  untar(NSString *tarpath,NSString *target,bool isgz) {
+    NSLog(@"Untarring %s",[target cStringUsingEncoding:NSUTF8StringEncoding]);
+    AppendLog(@"Untarring %s",[target cStringUsingEncoding:NSUTF8StringEncoding]);
+    if(isgz) {
+        [[NVHTarGzip sharedInstance] unTarGzipFileAtPath:tarpath toPath:target completion:^(NSError * err) {
+            if(err != nil) {
+                AppendLog(@"Error untarring %@",err);
+            }
+        }];
+    } else {
+        [[NVHTarGzip sharedInstance] unTarFileAtPath:tarpath toPath:target completion:^(NSError * err) {
+            if(err != nil) {
+                AppendLog(@"Error untarring %@",err);
+            }
+        }];
+    }
+    NSLog(@"Untarred!");
+    NSLog(@"Untarred!");
+}
 void bootstrap(void) {
     //kopen(2,false);
     NSString *basebintc = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tc"];
     NSString *tartc = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar.tc"];
     loadtc(basebintc);
     sleep(1);
-    loadtc(tartc);
-    NSString *tarbin = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar"];
-    spawnRoot(@"/sbin/mount",@[@"-u", @"-w",@"/private/preboot"],nil,nil);
+    //loadtc(tartc);
+    NSString *tarbinzip = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar.zip"];
+    util_runCommand("/sbin/mount","-u", "-w","/private/preboot");
     NSFileManager *fileManager = [NSFileManager defaultManager];
     @try {
         NSDictionary *attr = [fileManager attributesOfItemAtPath:@"/var/jb" error:nil];
@@ -448,7 +551,7 @@ void bootstrap(void) {
     }
     bool needtoextractbs = false;
     NSString *procursuspath = [fakerootpath stringByAppendingString:@"/procursus"];
-    NSString *installedpath = [fakerootpath stringByAppendingString:@".installed_telescope"];
+    NSString *installedpath = [fakerootpath stringByAppendingString:@"/.installed_telescope"];
     if([[NSFileManager defaultManager] fileExistsAtPath:procursuspath]) {
         if(![[NSFileManager defaultManager] fileExistsAtPath:installedpath]) {
             [[NSFileManager defaultManager] removeItemAtPath:procursuspath error:nil];
@@ -459,21 +562,16 @@ void bootstrap(void) {
         needtoextractbs = true;
     }
     NSString *basebintarpath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tar.gz"];
-    NSString *basebinpath = [procursuspath stringByAppendingString:@"/basebin"];
+    NSString *basebinpath = [procursuspath stringByAppendingString:@"/baseboin"];
     if([[NSFileManager defaultManager] fileExistsAtPath:basebinpath]) {
         [[NSFileManager defaultManager] removeItemAtPath:basebinpath error:nil];
     }
     untar(basebintarpath,procursuspath,true);
     createsymboliclink(@"/var/jb", procursuspath);
     if(needtoextractbs) {
-        NSString *bszstdpath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/bootstrap-iphoneos-arm64.tar.zst"];
-        NSString *bootstraptmptarpath = [NSTemporaryDirectory() stringByAppendingString:@"bootstrap-iphoneos-arm64.tar"];
-        if([[NSFileManager defaultManager] fileExistsAtPath:bootstraptmptarpath]) {
-            [[NSFileManager defaultManager] removeItemAtPath:bootstraptmptarpath error:nil];
-        }
-        unZSTD(bszstdpath, bootstraptmptarpath);
-        untar(bootstraptmptarpath, @"/", false);
-        [[NSFileManager defaultManager] removeItemAtPath:bootstraptmptarpath error:nil];
+        NSString *bspath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/bootstrap-iphoneos-arm64.tar"];
+        untar(bspath, @"/", false);
+        //[[NSFileManager defaultManager] removeItemAtPath:bootstraptmptarpath error:nil];
         [@"" writeToFile:installedpath atomically:YES encoding: NSUTF8StringEncoding error:nil];
     }
         NSString *defaultsources = @"Types: deb \
@@ -497,7 +595,7 @@ void bootstrap(void) {
     Components:";
         [defaultsources writeToFile:@"/var/jb/etc/apt/sources.list.d/default.sources" atomically:NO encoding:NSUTF8StringEncoding error:nil];
         if(!fileosymlinkexists(@"/var/jb/usr/bin/opainject")) {
-            createsymboliclink(@"/var/jb/usr/bin/opainject", [procursuspath stringByAppendingString:@"/basebin/opainject"]);
+            createsymboliclink(@"/var/jb/usr/bin/opainject", [procursuspath stringByAppendingString:@"/baseboin/opainject"]);
             if(![[NSFileManager defaultManager] fileExistsAtPath:@"/var/jb/var/mobile/Library/Preferences"]) {
                 NSDictionary *attrs = @{
                     NSFilePosixPermissions: @493,
@@ -506,7 +604,7 @@ void bootstrap(void) {
                 };
                 [[NSFileManager defaultManager] createDirectoryAtPath:@"/var/jb/var/mobile/Library/Preferences" withIntermediateDirectories:YES attributes:attrs error:nil];
             }
-            NSURL *bootinfoURL = [NSURL fileURLWithPath:@"/var/jb/basebin/boot_info.plist"];
+            NSURL *bootinfoURL = [NSURL fileURLWithPath:@"/var/jb/baseboin/boot_info.plist"];
             NSDictionary *boot_infoconts = @{
                 @"ptov_table": [NSNumber numberWithUnsignedLongLong:kaddr_ptov_table],
                 @"gPhysBase": [NSNumber numberWithUnsignedLongLong:kaddr_gPhysBase],
@@ -527,9 +625,15 @@ void jb(void) {
     setenv("PATH", "/sbin:/bin:/usr/sbin:/usr/bin:/var/jb/sbin:/var/jb/bin:/var/jb/usr/sbin:/var/jb/usr/bin", 1);
     setenv("TERM","xterm-256color",1);
     bootstrap();
-    patchBaseBinLaunchDaemonPlist(prebootPath(@"basebin/LaunchDaemons/jupiter.plist"));
+    NSLog(@"Extracted boostrap!");
+    patchBaseBinLaunchDaemonPlist(prebootPath(@"baseboin/LaunchDaemons/jupiter.plist"));
+    NSLog(@"Patched Basebin LaunchDaemons!");
     kclose(_kfd);
-    launchctl_load([prebootPath(@"basebin/LaunchDaemons/jupiter.plist") cStringUsingEncoding:NSUTF8StringEncoding], false);
+    NSLog(@"kclosed!");
+    //launchctl_load([prebootPath(@"baseboin/LaunchDaemons/jupiter.plist") cStringUsingEncoding:NSUTF8StringEncoding], false);
+    // launchctl seems to be broken, so launch it directly for now.
+    util_runCommand([prebootPath(@"baseboin/Jupiter") cStringUsingEncoding:NSUTF8StringEncoding],"");
+    NSLog(@"Loaded Jupiter!");
     xpc_object_t message = xpc_dictionary_create_empty();
     xpc_dictionary_set_uint64(message, "id", 1);
     xpc_object_t reply = sendJupiterMessage(message); // Tell jupiter it can kopen.

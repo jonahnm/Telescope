@@ -26,7 +26,12 @@
 		86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A48AC72B2B4A89005D1639 /* IOKit.framework */; };
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
 		9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */ = {isa = PBXBuildFile; fileRef = 9732F8E52B55A6ED00762F31 /* loadtelescoped.m */; };
-		97A13E8C2B62D74000BFB6FC /* tar in Resources */ = {isa = PBXBuildFile; fileRef = 97A13E8B2B62D74000BFB6FC /* tar */; };
+		97A341D32B640679003F4D0C /* NVHProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A341862B640679003F4D0C /* NVHProgress.m */; };
+		97A341D42B640679003F4D0C /* NVHGzipFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A341872B640679003F4D0C /* NVHGzipFile.m */; };
+		97A341D52B640679003F4D0C /* NVHTarGzip.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A3418C2B640679003F4D0C /* NVHTarGzip.m */; };
+		97A341D62B640679003F4D0C /* NSFileManager+NVHFileSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A3418F2B640679003F4D0C /* NSFileManager+NVHFileSize.m */; };
+		97A341D72B640679003F4D0C /* NVHFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A341902B640679003F4D0C /* NVHFile.m */; };
+		97A341D82B640679003F4D0C /* NVHTarFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A341912B640679003F4D0C /* NVHTarFile.m */; };
 		97EE5C722B5DA7C50066184E /* DriverKit.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C712B5DA7C50066184E /* DriverKit.c */; };
 		97EE5C752B5DA80E0066184E /* device.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C742B5DA80E0066184E /* device.c */; };
 		97EE5C772B5E05040066184E /* kallocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C762B5E05040066184E /* kallocation.m */; };
@@ -52,6 +57,37 @@
 		D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDBD2B48341400B62BED /* libcurl.a */; };
 		D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDBF2B48341400B62BED /* libfragmentzip.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		97A13ECC2B63E1E300BFB6FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A13EC52B63E1E200BFB6FC /* ZipArchive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B423AE1A1C0DF76A0004A2F1;
+			remoteInfo = "ZipArchive-iOS";
+		};
+		97A13ECE2B63E1E300BFB6FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A13EC52B63E1E200BFB6FC /* ZipArchive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AFF75A241C37279600F450AC;
+			remoteInfo = "ZipArchive-Mac";
+		};
+		97A13ED02B63E1E300BFB6FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A13EC52B63E1E200BFB6FC /* ZipArchive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 37952C261F63B50D00DD6677;
+			remoteInfo = "ZipArchive-tvos";
+		};
+		97A13ED22B63E1E300BFB6FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A13EC52B63E1E200BFB6FC /* ZipArchive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 37952C5E1F63BB7100DD6677;
+			remoteInfo = "ZipArchive-watchos";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		658B80032B60C06E005D783E /* LegitContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegitContentView.swift; sourceTree = "<group>"; };
@@ -114,8 +150,21 @@
 		9732F8E42B55A50C00762F31 /* loadtelescoped.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = loadtelescoped.h; sourceTree = "<group>"; };
 		9732F8E52B55A6ED00762F31 /* loadtelescoped.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = loadtelescoped.m; sourceTree = "<group>"; };
 		9732F8E72B55BBD800762F31 /* posix_spawn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = posix_spawn.h; sourceTree = "<group>"; };
-		97A13E8B2B62D74000BFB6FC /* tar */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = tar; sourceTree = "<group>"; };
+		97A13EC42B63E1B800BFB6FC /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ZipArchive/Package.swift; sourceTree = "<group>"; };
+		97A13EC52B63E1E200BFB6FC /* ZipArchive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipArchive.xcodeproj; path = ZipArchive/ZipArchive.xcodeproj; sourceTree = "<group>"; };
 		97A312392B5EFFAD004773EB /* kallocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kallocation.h; sourceTree = "<group>"; };
+		97A341862B640679003F4D0C /* NVHProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVHProgress.m; sourceTree = "<group>"; };
+		97A341872B640679003F4D0C /* NVHGzipFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVHGzipFile.m; sourceTree = "<group>"; };
+		97A341882B640679003F4D0C /* NVHTarGzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVHTarGzip.h; sourceTree = "<group>"; };
+		97A341892B640679003F4D0C /* NVHFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVHFile.h; sourceTree = "<group>"; };
+		97A3418A2B640679003F4D0C /* NSFileManager+NVHFileSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+NVHFileSize.h"; sourceTree = "<group>"; };
+		97A3418B2B640679003F4D0C /* NVHTarFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVHTarFile.h; sourceTree = "<group>"; };
+		97A3418C2B640679003F4D0C /* NVHTarGzip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVHTarGzip.m; sourceTree = "<group>"; };
+		97A3418D2B640679003F4D0C /* NVHGzipFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVHGzipFile.h; sourceTree = "<group>"; };
+		97A3418E2B640679003F4D0C /* NVHProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVHProgress.h; sourceTree = "<group>"; };
+		97A3418F2B640679003F4D0C /* NSFileManager+NVHFileSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+NVHFileSize.m"; sourceTree = "<group>"; };
+		97A341902B640679003F4D0C /* NVHFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVHFile.m; sourceTree = "<group>"; };
+		97A341912B640679003F4D0C /* NVHTarFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVHTarFile.m; sourceTree = "<group>"; };
 		97A9DCE32B5B5366007ECBC9 /* trustcache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = trustcache.h; sourceTree = "<group>"; };
 		97EE5C6F2B5DA7620066184E /* DriverKitClasses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKitClasses.h; sourceTree = "<group>"; };
 		97EE5C702B5DA78D0066184E /* DriverKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKit.h; sourceTree = "<group>"; };
@@ -196,7 +245,7 @@
 		86A48A622B2B49CD005D1639 = {
 			isa = PBXGroup;
 			children = (
-				97A13E8B2B62D74000BFB6FC /* tar */,
+				97A341822B640678003F4D0C /* NVHTarGzip */,
 				65CECFE22B5CA602009E5D80 /* basebin.tc */,
 				86A48A6D2B2B49CD005D1639 /* kfd-meow */,
 				86A48A6C2B2B49CD005D1639 /* Products */,
@@ -374,6 +423,8 @@
 		86A48AC62B2B4A89005D1639 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				97A13EC52B63E1E200BFB6FC /* ZipArchive.xcodeproj */,
+				97A13EC42B63E1B800BFB6FC /* Package.swift */,
 				D56FB6A62B4A66DD00A48CA4 /* CoreFoundation.framework */,
 				D5D2DDD12B4835F100B62BED /* CoreServices.framework */,
 				D5D2DDCF2B4835E800B62BED /* libMobileGestalt.tbd */,
@@ -382,6 +433,44 @@
 				86A48AC72B2B4A89005D1639 /* IOKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97A13EC62B63E1E200BFB6FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				97A13ECD2B63E1E300BFB6FC /* ZipArchive.framework */,
+				97A13ECF2B63E1E300BFB6FC /* ZipArchive.framework */,
+				97A13ED12B63E1E300BFB6FC /* ZipArchive.framework */,
+				97A13ED32B63E1E300BFB6FC /* ZipArchive.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		97A341822B640678003F4D0C /* NVHTarGzip */ = {
+			isa = PBXGroup;
+			children = (
+				97A341852B640679003F4D0C /* Classes */,
+			);
+			path = NVHTarGzip;
+			sourceTree = "<group>";
+		};
+		97A341852B640679003F4D0C /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				97A341862B640679003F4D0C /* NVHProgress.m */,
+				97A341872B640679003F4D0C /* NVHGzipFile.m */,
+				97A341882B640679003F4D0C /* NVHTarGzip.h */,
+				97A341892B640679003F4D0C /* NVHFile.h */,
+				97A3418A2B640679003F4D0C /* NSFileManager+NVHFileSize.h */,
+				97A3418B2B640679003F4D0C /* NVHTarFile.h */,
+				97A3418C2B640679003F4D0C /* NVHTarGzip.m */,
+				97A3418D2B640679003F4D0C /* NVHGzipFile.h */,
+				97A3418E2B640679003F4D0C /* NVHProgress.h */,
+				97A3418F2B640679003F4D0C /* NSFileManager+NVHFileSize.m */,
+				97A341902B640679003F4D0C /* NVHFile.m */,
+				97A341912B640679003F4D0C /* NVHTarFile.m */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		D5BF829B2B4F83D100C02D17 /* overwrite */ = {
@@ -498,6 +587,12 @@
 			);
 			productRefGroup = 86A48A6C2B2B49CD005D1639 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 97A13EC62B63E1E200BFB6FC /* Products */;
+					ProjectRef = 97A13EC52B63E1E200BFB6FC /* ZipArchive.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				86A48A6A2B2B49CD005D1639 /* Telescope */,
@@ -505,12 +600,42 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		97A13ECD2B63E1E300BFB6FC /* ZipArchive.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ZipArchive.framework;
+			remoteRef = 97A13ECC2B63E1E300BFB6FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		97A13ECF2B63E1E300BFB6FC /* ZipArchive.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ZipArchive.framework;
+			remoteRef = 97A13ECE2B63E1E300BFB6FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		97A13ED12B63E1E300BFB6FC /* ZipArchive.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ZipArchive.framework;
+			remoteRef = 97A13ED02B63E1E300BFB6FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		97A13ED32B63E1E300BFB6FC /* ZipArchive.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ZipArchive.framework;
+			remoteRef = 97A13ED22B63E1E300BFB6FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		86A48A692B2B49CD005D1639 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97A13E8C2B62D74000BFB6FC /* tar in Resources */,
 				65CECFE32B5CA602009E5D80 /* basebin.tc in Resources */,
 				658B80052B60C0E9005D783E /* Assets.xcassets in Resources */,
 			);
@@ -528,12 +653,14 @@
 				D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */,
 				D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */,
 				D5123A022B4C40B10040BF9D /* pplrw.m in Sources */,
+				97A341D52B640679003F4D0C /* NVHTarGzip.m in Sources */,
 				D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */,
 				D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */,
 				D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */,
 				65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */,
 				D56FB6A02B499B0C00A48CA4 /* kfd-meow.swift in Sources */,
 				86A48AC42B2B4A0A005D1639 /* krkw.c in Sources */,
+				97A341D82B640679003F4D0C /* NVHTarFile.m in Sources */,
 				86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */,
 				97EE5C772B5E05040066184E /* kallocation.m in Sources */,
 				658B80042B60C06E005D783E /* LegitContentView.swift in Sources */,
@@ -542,15 +669,19 @@
 				86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */,
 				D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */,
 				86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */,
+				97A341D62B640679003F4D0C /* NSFileManager+NVHFileSize.m in Sources */,
 				658B80092B633940005D783E /* logging.m in Sources */,
 				86A48AC32B2B4A0A005D1639 /* physpuppet.c in Sources */,
 				D5D2DDA82B47B85F00B62BED /* kread_IOSurface.c in Sources */,
 				D54990D72B42C7C3003B3486 /* landa.c in Sources */,
 				86A48AC22B2B4A0A005D1639 /* smith.c in Sources */,
+				97A341D42B640679003F4D0C /* NVHGzipFile.m in Sources */,
 				97EE5C722B5DA7C50066184E /* DriverKit.c in Sources */,
 				868BDABA2B2E1A890017CB10 /* meowfinder.c in Sources */,
+				97A341D32B640679003F4D0C /* NVHProgress.m in Sources */,
 				868BDAB12B2E14260017CB10 /* libmeow.m in Sources */,
 				86A48AC12B2B4A0A005D1639 /* kwrite_IOSurface.c in Sources */,
+				97A341D72B640679003F4D0C /* NVHFile.m in Sources */,
 				86A48AC52B2B4A0A005D1639 /* libkfd.m in Sources */,
 				97EE5C752B5DA80E0066184E /* device.c in Sources */,
 				86A48ABE2B2B4A0A005D1639 /* info.c in Sources */,
