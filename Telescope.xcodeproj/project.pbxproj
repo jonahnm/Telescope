@@ -26,14 +26,9 @@
 		86A48AC82B2B4A89005D1639 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A48AC72B2B4A89005D1639 /* IOKit.framework */; };
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
 		9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */ = {isa = PBXBuildFile; fileRef = 9732F8E52B55A6ED00762F31 /* loadtelescoped.m */; };
-		97DD2ECB2B643F3A00930808 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 97DD2EBC2B643F3A00930808 /* LICENSE */; };
-		97DD2ECC2B643F3A00930808 /* NVHProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DD2EBE2B643F3A00930808 /* NVHProgress.m */; };
-		97DD2ECD2B643F3A00930808 /* NVHGzipFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DD2EBF2B643F3A00930808 /* NVHGzipFile.m */; };
-		97DD2ECE2B643F3A00930808 /* NVHTarGzip.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DD2EC42B643F3A00930808 /* NVHTarGzip.m */; };
-		97DD2ECF2B643F3A00930808 /* NSFileManager+NVHFileSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DD2EC72B643F3A00930808 /* NSFileManager+NVHFileSize.m */; };
-		97DD2ED02B643F3A00930808 /* NVHFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DD2EC82B643F3A00930808 /* NVHFile.m */; };
-		97DD2ED12B643F3A00930808 /* NVHTarFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DD2EC92B643F3A00930808 /* NVHTarFile.m */; };
-		97DD2ED22B643F3A00930808 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 97DD2ECA2B643F3A00930808 /* .gitignore */; };
+		97DD2ED62B644C9900930808 /* Tarscape in Frameworks */ = {isa = PBXBuildFile; productRef = 97DD2ED52B644C9900930808 /* Tarscape */; };
+		97DD2EDA2B644E6600930808 /* extractionbridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DD2ED92B644E6600930808 /* extractionbridge.swift */; };
+		97DD2EDD2B644FBE00930808 /* DataCompression in Frameworks */ = {isa = PBXBuildFile; productRef = 97DD2EDC2B644FBE00930808 /* DataCompression */; };
 		97EE5C722B5DA7C50066184E /* DriverKit.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C712B5DA7C50066184E /* DriverKit.c */; };
 		97EE5C752B5DA80E0066184E /* device.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C742B5DA80E0066184E /* device.c */; };
 		97EE5C772B5E05040066184E /* kallocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C762B5E05040066184E /* kallocation.m */; };
@@ -156,20 +151,7 @@
 		97A13EC52B63E1E200BFB6FC /* ZipArchive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipArchive.xcodeproj; path = ZipArchive/ZipArchive.xcodeproj; sourceTree = "<group>"; };
 		97A312392B5EFFAD004773EB /* kallocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kallocation.h; sourceTree = "<group>"; };
 		97A9DCE32B5B5366007ECBC9 /* trustcache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = trustcache.h; sourceTree = "<group>"; };
-		97DD2EBC2B643F3A00930808 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		97DD2EBE2B643F3A00930808 /* NVHProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVHProgress.m; sourceTree = "<group>"; };
-		97DD2EBF2B643F3A00930808 /* NVHGzipFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVHGzipFile.m; sourceTree = "<group>"; };
-		97DD2EC02B643F3A00930808 /* NVHTarGzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVHTarGzip.h; sourceTree = "<group>"; };
-		97DD2EC12B643F3A00930808 /* NVHFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVHFile.h; sourceTree = "<group>"; };
-		97DD2EC22B643F3A00930808 /* NSFileManager+NVHFileSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+NVHFileSize.h"; sourceTree = "<group>"; };
-		97DD2EC32B643F3A00930808 /* NVHTarFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVHTarFile.h; sourceTree = "<group>"; };
-		97DD2EC42B643F3A00930808 /* NVHTarGzip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVHTarGzip.m; sourceTree = "<group>"; };
-		97DD2EC52B643F3A00930808 /* NVHGzipFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVHGzipFile.h; sourceTree = "<group>"; };
-		97DD2EC62B643F3A00930808 /* NVHProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVHProgress.h; sourceTree = "<group>"; };
-		97DD2EC72B643F3A00930808 /* NSFileManager+NVHFileSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+NVHFileSize.m"; sourceTree = "<group>"; };
-		97DD2EC82B643F3A00930808 /* NVHFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVHFile.m; sourceTree = "<group>"; };
-		97DD2EC92B643F3A00930808 /* NVHTarFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVHTarFile.m; sourceTree = "<group>"; };
-		97DD2ECA2B643F3A00930808 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		97DD2ED92B644E6600930808 /* extractionbridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extractionbridge.swift; sourceTree = "<group>"; };
 		97EE5C6F2B5DA7620066184E /* DriverKitClasses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKitClasses.h; sourceTree = "<group>"; };
 		97EE5C702B5DA78D0066184E /* DriverKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKit.h; sourceTree = "<group>"; };
 		97EE5C712B5DA7C50066184E /* DriverKit.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = DriverKit.c; sourceTree = "<group>"; };
@@ -236,10 +218,12 @@
 				D5D2DDD22B4835F100B62BED /* CoreServices.framework in Frameworks */,
 				D5D2DDD02B4835E800B62BED /* libMobileGestalt.tbd in Frameworks */,
 				D5D2DDCE2B4835E000B62BED /* libz.tbd in Frameworks */,
+				97DD2EDD2B644FBE00930808 /* DataCompression in Frameworks */,
 				D5D2DDB52B4832B600B62BED /* KernelPatchfinder in Frameworks */,
 				D5D2DDC22B48341400B62BED /* libcurl.a in Frameworks */,
 				D5D2DDC12B48341400B62BED /* libgrabkernel.a in Frameworks */,
 				D5D2DDC32B48341400B62BED /* libfragmentzip.a in Frameworks */,
+				97DD2ED62B644C9900930808 /* Tarscape in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,7 +233,6 @@
 		86A48A622B2B49CD005D1639 = {
 			isa = PBXGroup;
 			children = (
-				97DD2EBB2B643F3A00930808 /* NVHTarGzip */,
 				65CECFE22B5CA602009E5D80 /* basebin.tc */,
 				86A48A6D2B2B49CD005D1639 /* kfd-meow */,
 				86A48A6C2B2B49CD005D1639 /* Products */,
@@ -304,6 +287,7 @@
 				97EE5C762B5E05040066184E /* kallocation.m */,
 				97A312392B5EFFAD004773EB /* kallocation.h */,
 				97F6056F2B5F18B300A71C74 /* kernelinclude.h */,
+				97DD2ED92B644E6600930808 /* extractionbridge.swift */,
 			);
 			path = "kfd-meow";
 			sourceTree = "<group>";
@@ -450,35 +434,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		97DD2EBB2B643F3A00930808 /* NVHTarGzip */ = {
-			isa = PBXGroup;
-			children = (
-				97DD2EBC2B643F3A00930808 /* LICENSE */,
-				97DD2EBD2B643F3A00930808 /* Classes */,
-				97DD2ECA2B643F3A00930808 /* .gitignore */,
-			);
-			path = NVHTarGzip;
-			sourceTree = "<group>";
-		};
-		97DD2EBD2B643F3A00930808 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				97DD2EBE2B643F3A00930808 /* NVHProgress.m */,
-				97DD2EBF2B643F3A00930808 /* NVHGzipFile.m */,
-				97DD2EC02B643F3A00930808 /* NVHTarGzip.h */,
-				97DD2EC12B643F3A00930808 /* NVHFile.h */,
-				97DD2EC22B643F3A00930808 /* NSFileManager+NVHFileSize.h */,
-				97DD2EC32B643F3A00930808 /* NVHTarFile.h */,
-				97DD2EC42B643F3A00930808 /* NVHTarGzip.m */,
-				97DD2EC52B643F3A00930808 /* NVHGzipFile.h */,
-				97DD2EC62B643F3A00930808 /* NVHProgress.h */,
-				97DD2EC72B643F3A00930808 /* NSFileManager+NVHFileSize.m */,
-				97DD2EC82B643F3A00930808 /* NVHFile.m */,
-				97DD2EC92B643F3A00930808 /* NVHTarFile.m */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
 		D5BF829B2B4F83D100C02D17 /* overwrite */ = {
 			isa = PBXGroup;
 			children = (
@@ -558,6 +513,8 @@
 			packageProductDependencies = (
 				D5D2DDB42B4832B600B62BED /* KernelPatchfinder */,
 				97F20D9A2B63178100CFB152 /* libzstd */,
+				97DD2ED52B644C9900930808 /* Tarscape */,
+				97DD2EDC2B644FBE00930808 /* DataCompression */,
 			);
 			productName = "kfd-meow";
 			productReference = 86A48A6B2B2B49CD005D1639 /* Telescope.app */;
@@ -590,6 +547,8 @@
 			packageReferences = (
 				D5D2DDB32B4832B600B62BED /* XCLocalSwiftPackageReference "KernelPatchfinder" */,
 				97F20D992B63178100CFB152 /* XCRemoteSwiftPackageReference "zstd" */,
+				97DD2ED42B644C9900930808 /* XCRemoteSwiftPackageReference "Tarscape" */,
+				97DD2EDB2B644FBE00930808 /* XCRemoteSwiftPackageReference "DataCompression" */,
 			);
 			productRefGroup = 86A48A6C2B2B49CD005D1639 /* Products */;
 			projectDirPath = "";
@@ -642,8 +601,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97DD2ED22B643F3A00930808 /* .gitignore in Resources */,
-				97DD2ECB2B643F3A00930808 /* LICENSE in Resources */,
 				65CECFE32B5CA602009E5D80 /* basebin.tc in Resources */,
 				658B80052B60C0E9005D783E /* Assets.xcassets in Resources */,
 			);
@@ -661,14 +618,13 @@
 				D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */,
 				D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */,
 				D5123A022B4C40B10040BF9D /* pplrw.m in Sources */,
-				97DD2ECE2B643F3A00930808 /* NVHTarGzip.m in Sources */,
 				D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */,
 				D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */,
+				97DD2EDA2B644E6600930808 /* extractionbridge.swift in Sources */,
 				D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */,
 				65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */,
 				D56FB6A02B499B0C00A48CA4 /* kfd-meow.swift in Sources */,
 				86A48AC42B2B4A0A005D1639 /* krkw.c in Sources */,
-				97DD2ED12B643F3A00930808 /* NVHTarFile.m in Sources */,
 				86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */,
 				97EE5C772B5E05040066184E /* kallocation.m in Sources */,
 				658B80042B60C06E005D783E /* LegitContentView.swift in Sources */,
@@ -677,19 +633,15 @@
 				86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */,
 				D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */,
 				86A48ABC2B2B4A0A005D1639 /* puaf.c in Sources */,
-				97DD2ECF2B643F3A00930808 /* NSFileManager+NVHFileSize.m in Sources */,
 				658B80092B633940005D783E /* logging.m in Sources */,
 				86A48AC32B2B4A0A005D1639 /* physpuppet.c in Sources */,
 				D5D2DDA82B47B85F00B62BED /* kread_IOSurface.c in Sources */,
 				D54990D72B42C7C3003B3486 /* landa.c in Sources */,
 				86A48AC22B2B4A0A005D1639 /* smith.c in Sources */,
-				97DD2ECD2B643F3A00930808 /* NVHGzipFile.m in Sources */,
 				97EE5C722B5DA7C50066184E /* DriverKit.c in Sources */,
 				868BDABA2B2E1A890017CB10 /* meowfinder.c in Sources */,
-				97DD2ECC2B643F3A00930808 /* NVHProgress.m in Sources */,
 				868BDAB12B2E14260017CB10 /* libmeow.m in Sources */,
 				86A48AC12B2B4A0A005D1639 /* kwrite_IOSurface.c in Sources */,
-				97DD2ED02B643F3A00930808 /* NVHFile.m in Sources */,
 				86A48AC52B2B4A0A005D1639 /* libkfd.m in Sources */,
 				97EE5C752B5DA80E0066184E /* device.c in Sources */,
 				86A48ABE2B2B4A0A005D1639 /* info.c in Sources */,
@@ -984,6 +936,22 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		97DD2ED42B644C9900930808 /* XCRemoteSwiftPackageReference "Tarscape" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kayembi/Tarscape.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		97DD2EDB2B644FBE00930808 /* XCRemoteSwiftPackageReference "DataCompression" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mw99/DataCompression.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.8.0;
+			};
+		};
 		97F20D992B63178100CFB152 /* XCRemoteSwiftPackageReference "zstd" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/facebook/zstd.git";
@@ -995,6 +963,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		97DD2ED52B644C9900930808 /* Tarscape */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97DD2ED42B644C9900930808 /* XCRemoteSwiftPackageReference "Tarscape" */;
+			productName = Tarscape;
+		};
+		97DD2EDC2B644FBE00930808 /* DataCompression */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97DD2EDB2B644FBE00930808 /* XCRemoteSwiftPackageReference "DataCompression" */;
+			productName = DataCompression;
+		};
 		97F20D9A2B63178100CFB152 /* libzstd */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 97F20D992B63178100CFB152 /* XCRemoteSwiftPackageReference "zstd" */;

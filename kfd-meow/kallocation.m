@@ -9,6 +9,7 @@
 #include <mach/mach.h>
 #include "libkfd.h"
 #include "IOSurface_Primitives.h"
+
 extern void AppendLog(NSString *format, ...) ;
 
 int message_size_for_kalloc_size(int kalloc_size) {

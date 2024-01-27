@@ -74,7 +74,11 @@ int isAvailable(void) {
     }
     return -1;
 }
-
+void *create_shared_memory(UInt64 size) {
+    int prot = VM_PROT_READ | VM_PROT_WRITE;
+    int vis = MAP_SHARED;
+    return mmap(NULL, <#size_t#>, <#int#>, <#int#>, <#int#>, <#off_t#>)
+}
 int ischip(void) {
     cpu_subtype_t cpuFamily = 0;
     size_t cpuFamilySize = sizeof(cpuFamily);

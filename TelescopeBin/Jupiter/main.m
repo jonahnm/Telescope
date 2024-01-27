@@ -21,6 +21,17 @@ kern_return_t bootstrap_check_in(mach_port_t bootstrap_port,const char *service,
 #ifdef __cplusplus
 }
 #endif
+void setJetsamEnabled(bool enabled) {
+    pid_t me = getpid();
+    int priorityToSet = -1;
+    if(enabled) {
+        priorityToSet = 500;
+    }
+    int rc = memorystatus_control(MEMORYSTATUS_CMD_SET_JETSAM_HIGH_WATER_MARK,me,priorityToSet,NULL,0);
+    if (rc < 0) {
+        perror("memorystatus_control");
+    }
+}
 void JupiterLogDebug(const char* format,...) {
     va_list va;
     va_start(va, format);
@@ -53,6 +64,7 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
             if(msgId == JUPITER_MSG_TELESCOPE_EXCLUSIVE_READYFORKOPEN) {
                 kopen(MEOW_EXPLOIT_LANDA, true);
                 JupiterLogDebug("Kopen'ed in Jupiter!");
+                xpc_dictionary_set_int64(reply, "ret", 1);
             }
             if(msgId == JUPITER_MSG_KREAD64) {
                 UInt64 vaddr = xpc_dictionary_get_uint64(message, "vaddr");
@@ -123,17 +135,6 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
                 }
             }
         }
-    }
-}
-void setJetsamEnabled(bool enabled) {
-    pid_t me = getpid();
-    int priorityToSet = -1;
-    if(enabled) {
-        priorityToSet = 10;
-    }
-    int rc = memorystatus_control(MEMORYSTATUS_CMD_SET_JETSAM_HIGH_WATER_MARK,me,priorityToSet,NULL,0);
-    if (rc < 0) {
-        perror("memorystatus_control");
     }
 }
 int main(void) {

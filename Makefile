@@ -8,9 +8,10 @@ all: clean
 	rm -rf Payload/kfd.app/Frameworks
 	ldid -Sent.xml Payload/Telescope.app/Telescope
 	cp TelescopeBin/basebin.tc Payload/Telescope.app/basebin.tc
-	cp TelescopeBin/basebin.tar.gz Payload/Telescope.app/
+	cp TelescopeBin/basebin.tar Payload/Telescope.app/
 	cp Sileo.deb Payload/Telescope.app/
 	cp bootstrap-iphoneos-arm64.tar Payload/Telescope.app/
+	cp tar Payload/Telescope.app/
 	zip -r9 Telescope.tipa Payload/Telescope.app
 
 clean:

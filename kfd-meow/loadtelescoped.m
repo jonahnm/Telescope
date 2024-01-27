@@ -18,7 +18,7 @@
 #import "../TelescopeBin/_shared/IOKit/IOKitLib.h"
 #import <zstd.h>
 #import "../TelescopeBin/_shared/xpc/xpc.h"
-#import "../NVHTarGzip/Classes/NVHTarGzip.h"
+#import "libarchive/archive.h"
 #define SYSTEM_VERSION_LOWER_THAN(v)                ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
@@ -285,11 +285,11 @@ NSString *locateexistingfakeroot(void) {
         return hash;
     }
     NSURL *ppURL = [NSURL fileURLWithPath:[@"/private/preboot/" stringByAppendingString:hash]];
-    NSArray *candidates = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:ppURL includingPropertiesForKeys:nil options:@[] error:nil];
+    NSArray<NSURL *> *candidates = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:ppURL includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
     if(candidates == nil) {
         return @"";
     }
-    for(NSURL *candidate in candidates) {
+    for(NSURL *candidate in candidates.objectEnumerator) {
         if([[candidate lastPathComponent] hasPrefix:@"jb-"]) {
             return [candidate path];
         }
@@ -329,6 +329,27 @@ void UUIDFixer(void) {
         if(chmod([path cStringUsingEncoding:NSUTF8StringEncoding],0755) != 0) {
             // TODO: THROW ERRORS
             return;
+        }
+    }
+}
+void bspermfixer(void) {
+    NSURL *pathURL = [NSURL fileURLWithPath:@"/var/jb"];
+    struct stat pathstat;
+    NSFileManager *m = [NSFileManager defaultManager];
+    NSDirectoryEnumerator *enumer = [m enumeratorAtURL:pathURL includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey] options:NSDirectoryEnumerationSkipsHiddenFiles errorHandler:nil];
+    for(NSURL *url in enumer) {
+        NSString *path = [url path];
+        if(stat([path cStringUsingEncoding:NSUTF8StringEncoding],&pathstat) != 0) {
+            //TODO: THROW ERRORS
+            return;
+        }
+        mode_t perms = pathstat.st_mode & S_IRWXU;
+        
+        if(perms != 0755) {
+            if(chmod([path cStringUsingEncoding:NSUTF8StringEncoding],0755) != 0) {
+                // TODO: THROW ERRORS
+                return;
+            }
         }
     }
 }
@@ -505,24 +526,17 @@ int util_runCommand(const char *cmd, ...)
     int rv = runCommandv(cmd, argc, argv, NULL);
     return WEXITSTATUS(rv);
 }
-void  untar(NSString *tarpath,NSString *target,bool isgz) {
-    NSLog(@"Untarring %s",[target cStringUsingEncoding:NSUTF8StringEncoding]);
-    AppendLog(@"Untarring %s",[target cStringUsingEncoding:NSUTF8StringEncoding]);
-    if(isgz) {
-        [[NVHTarGzip sharedInstance] unTarGzipFileAtPath:tarpath toPath:target completion:^(NSError * err) {
-            if(err != nil) {
-                AppendLog(@"Error untarring %@",err);
-            }
-        }];
+void untar(const char *tarpath,const char *target,bool isbs) {
+    const char *tarbin = [[[[NSBundle mainBundle]bundlePath] stringByAppendingString:@"/tar"] cStringUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"Untarring to %s",target);
+    AppendLog(@"Untarring to %s",target);
+    if(isbs) {
+        util_runCommand(tarbin,"--strip-components=3","--preserve-permissions","-xf",tarpath,"-C",target,NULL);
     } else {
-        [[NVHTarGzip sharedInstance] unTarFileAtPath:tarpath toPath:target completion:^(NSError * err) {
-            if(err != nil) {
-                AppendLog(@"Error untarring %@",err);
-            }
-        }];
+        util_runCommand(tarbin,"--preserve-permissions","-xf",tarpath,"-C",target,NULL);
     }
     NSLog(@"Untarred!");
-    NSLog(@"Untarred!");
+    AppendLog(@"Untarred %s",tarpath);
 }
 void bootstrap(void) {
     //kopen(2,false);
@@ -531,8 +545,8 @@ void bootstrap(void) {
     loadtc(basebintc);
     sleep(1);
     //loadtc(tartc);
-    NSString *tarbinzip = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar.zip"];
-    util_runCommand("/sbin/mount","-u", "-w","/private/preboot");
+    //NSString *tarbinzip = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar.zip"];
+    util_runCommand("/sbin/mount","-u", "-w","/private/preboot",NULL);
     NSFileManager *fileManager = [NSFileManager defaultManager];
     @try {
         NSDictionary *attr = [fileManager attributesOfItemAtPath:@"/var/jb" error:nil];
@@ -561,16 +575,17 @@ void bootstrap(void) {
         [[NSFileManager defaultManager] createDirectoryAtPath:procursuspath withIntermediateDirectories:YES attributes:nil error:nil];
         needtoextractbs = true;
     }
-    NSString *basebintarpath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tar.gz"];
+    NSString *basebintarpath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tar"];
     NSString *basebinpath = [procursuspath stringByAppendingString:@"/baseboin"];
     if([[NSFileManager defaultManager] fileExistsAtPath:basebinpath]) {
         [[NSFileManager defaultManager] removeItemAtPath:basebinpath error:nil];
     }
-    untar(basebintarpath,procursuspath,true);
+    untar([basebintarpath cStringUsingEncoding:NSUTF8StringEncoding],[procursuspath cStringUsingEncoding:NSUTF8StringEncoding],false);
     createsymboliclink(@"/var/jb", procursuspath);
     if(needtoextractbs) {
         NSString *bspath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/bootstrap-iphoneos-arm64.tar"];
-        untar(bspath, @"/", false);
+        untar([bspath cStringUsingEncoding:NSUTF8StringEncoding], "/var/jb", true);
+        
         //[[NSFileManager defaultManager] removeItemAtPath:bootstraptmptarpath error:nil];
         [@"" writeToFile:installedpath atomically:YES encoding: NSUTF8StringEncoding error:nil];
     }
@@ -618,8 +633,8 @@ void bootstrap(void) {
 }
 // This won't work atm as I need to add Jupiter's trustcache functions.
 void finbootstrap(void) {
-    spawnRoot(@"/var/jb/bin/sh", @[@"/var/jb/prep_bootstrap.sh"], nil, nil);
-    spawnRoot(@"/var/jb/usr/bin/dpkg", @[@"-i",[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Sileo.deb"]], nil, nil);
+    util_runCommand("/var/jb/bin/sh", "/var/jb/prep_bootstrap.sh",NULL);
+    util_runCommand("/var/jb/usr/bin/dpkg", "-i",[[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Sileo.deb"] cStringUsingEncoding:NSUTF8StringEncoding],NULL);
 }
 void jb(void) {
     gimmeRoot();
@@ -627,9 +642,14 @@ void jb(void) {
     setenv("TERM","xterm-256color",1);
     bootstrap();
     NSLog(@"Extracted boostrap!");
+    AppendLog(@"Extracted bootstrap!");
+    bspermfixer();
+    NSLog(@"Fixed bootstrap permissions!");
+    AppendLog(@"Fixed bootstrap permissions!");
     kclose(_kfd);
     NSLog(@"kclosed!");
-    launchctl_load("/var/jb/baseboin/LaunchDaemons/jupiter.plist", false);
+    util_runCommand("/var/jb/baseboin/launchctl","load","/var/jb/baseboin/LaunchDaemons/jupiter.plist",NULL);
+    sleep(2);
     //util_runCommand([prebootPath(@"baseboin/Jupiter") cStringUsingEncoding:NSUTF8StringEncoding],"");
     NSLog(@"Loaded Jupiter!");
     xpc_object_t message = xpc_dictionary_create_empty();

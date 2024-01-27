@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "datacompression",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mw99/DataCompression.git",
+      "state" : {
+        "revision" : "5ab15951321b08b74511601cbd0497667649d70b",
+        "version" : "3.8.0"
+      }
+    },
+    {
       "identity" : "patchfinderutils",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pinauten/PatchfinderUtils",
@@ -25,6 +34,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "1d37faabb4c58b3152394c9b6e1c1a68507646b9"
+      }
+    },
+    {
+      "identity" : "tarscape",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kayembi/Tarscape.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ce026160f8f009275afd1cc8175a199aa3ec0072"
       }
     },
     {
