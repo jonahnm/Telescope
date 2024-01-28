@@ -5,8 +5,6 @@ int evaluateSignature(NSURL *fileURL, NSData **cdHashOut,
                       BOOL *isAdhocSignedOut) {
     if (!fileURL || (!cdHashOut && !isAdhocSignedOut))
         return 1;
-    if (![fileURL checkResourceIsReachableAndReturnError:nil])
-        return 2;
 
     FILE *machoFile = fopen(fileURL.fileSystemRepresentation, "rb");
     if (!machoFile)

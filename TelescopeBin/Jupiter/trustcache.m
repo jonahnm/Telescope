@@ -109,7 +109,7 @@ uint64_t staticTrustCacheUploadFile(trustcache_file *filetoUpload,size_t fileSiz
     if(expectedSize != fileSize)
         return 0;
     uint64_t mapSize = sizeof(trustcache_module) + fileSize;
-    uint64_t mapKaddr = kalloc_msg(mapSize);
+    uint64_t mapKaddr = (uint64_t)kalloc_msg(mapSize);
     if(!mapKaddr)
         return 0;
     if(outMapSize)
@@ -145,7 +145,7 @@ void dynamicTrustCacheUploadCDHashesFromArray(NSArray *cdHashArray) {
     [mappedInPage updateTCPage];
 }
 int processBinary(NSString *binaryPath) {
-    if(!binaryPath)
+     if(!binaryPath)
         return 0;
     if(![[NSFileManager defaultManager] fileExistsAtPath:binaryPath]) {
         return 0;
@@ -191,10 +191,10 @@ int processBinary(NSString *binaryPath) {
     }
     return ret;
 }
-void fileEnumerateTrustCacheEntries(NSURL *fileURL, void (^enumerateBlock)(trustcache_entry entry)) {
+void fileEnumerateTrustCacheEntries(NSURL *filePath, void (^enumerateBlock)(trustcache_entry entry)) {
     NSData *cdHash = nil;
     BOOL adhocSigned = NO;
-    int evalRet = evaluateSignature(fileURL, &cdHash, &adhocSigned);
+    int evalRet = evaluateSignature(filePath, &cdHash, &adhocSigned);
     if(evalRet == 0) {
         if(adhocSigned) {
             if([cdHash length] == CS_CDHASH_LEN) {
@@ -212,7 +212,9 @@ void fileEnumerateTrustCacheEntries(NSURL *fileURL, void (^enumerateBlock)(trust
 void dynamicTrustCacheUploadDirectory(NSString *directoryPath) {
     NSString *basebinPath = [[@"/var/jb/baseboin" stringByResolvingSymlinksInPath] stringByStandardizingPath];
     NSString *resolvedPath = [[directoryPath stringByResolvingSymlinksInPath] stringByStandardizingPath];
-    NSDirectoryEnumerator<NSURL *> *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL fileURLWithPath:resolvedPath isDirectory:YES] includingPropertiesForKeys:@[NSURLIsSymbolicLinkKey] options:0 errorHandler:nil];
+    NSLog(@"resolvedPath: %@",resolvedPath);
+    NSURL *resolvedURL = [NSURL fileURLWithPath:resolvedPath isDirectory:YES];
+    NSDirectoryEnumerator<NSURL *> *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:resolvedURL includingPropertiesForKeys:@[NSURLIsSymbolicLinkKey] options:0 errorHandler:nil];
     __block JupiterTCPage *mappedInPage = nil;
     for(NSURL *enumURL in directoryEnumerator) {
         @autoreleasepool {

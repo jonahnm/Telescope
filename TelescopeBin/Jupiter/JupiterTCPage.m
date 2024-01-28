@@ -64,11 +64,13 @@ BOOL tcPagesRecover(void) {
  }
  - (void)setKaddr:(uint64_t)kaddr {
     _kaddr = kaddr;
+    NSLog(@"Kaddr being set: %p",kaddr);
     if(kaddr) {
         //TODO: add some logging
         if(_page == NULL) {
             _page = (trustcache_page *)malloc(ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE);
         }
+        NSLog(@"Page being written to: %p",_page);
         usleep(500);
         kreadbuf_kfd(kaddr, _page, ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE);
     } else {

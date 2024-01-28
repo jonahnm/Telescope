@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#include <unistd.h>
 #include <mach/mach.h>
 #include "libkfd.h"
 #include "IOSurface_primitives.h"
@@ -48,6 +49,8 @@ void *kalloc_msg(uint64_t size) {
 	NSLog(@"kalloc failed to send message\n");
 		exit(EXIT_FAILURE);
 	}
+	NSLog(@"Getting current task.");
+	usleep(1500);
 	uint64_t pr_task = get_current_task();
 	// sleep(2);
 	uint64_t itk_space_pac = kread64_kfd(pr_task + 0x300);

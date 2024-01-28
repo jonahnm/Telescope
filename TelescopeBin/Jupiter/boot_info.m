@@ -65,8 +65,7 @@ NSString *prebootPath(NSString *path) {
     }
 }
 void bootInfo_setObject(NSString *name,__kindof NSObject *object) {
-    NSURL *bootInfoURL = [NSURL fileURLWithPath:BOOT_INFO_PATH isDirectory:NO];
-    NSMutableDictionary *bootInfo = [NSDictionary dictionaryWithContentsOfURL:bootInfoURL error:nil]
+    NSMutableDictionary *bootInfo = [NSDictionary dictionaryWithContentsOfFile:BOOT_INFO_PATH]
     .mutableCopy
     ?: [NSMutableDictionary new];
     if(object) {
@@ -74,11 +73,10 @@ void bootInfo_setObject(NSString *name,__kindof NSObject *object) {
     } else {
         [bootInfo removeObjectForKey:name];
     }
-    [bootInfo writeToURL:bootInfoURL atomically:YES];
+    [bootInfo writeToFile:BOOT_INFO_PATH atomically:YES];
 }
 __kindof NSObject *bootInfo_getObject(NSString *name) {
-    NSURL *bootinfoURL = [NSURL fileURLWithPath:BOOT_INFO_PATH isDirectory:NO];
-    NSDictionary *bootInfo = [NSDictionary dictionaryWithContentsOfURL:bootinfoURL];
+    NSDictionary *bootInfo = [NSDictionary dictionaryWithContentsOfFile:BOOT_INFO_PATH];
     return bootInfo[name];
 }
 uint64_t bootInfo_getUInt64(NSString *name) {

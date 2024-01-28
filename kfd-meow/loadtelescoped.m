@@ -705,5 +705,7 @@ UInt64 helloworldtest(void) {
 }
 
 UInt64 testKalloc(void) {
-    return (UInt64)kalloc_msg(0x1000);
+    UInt64 ret = (UInt64)kalloc(0x1000);
+    NSLog(@"Kalloc'ed to %p",ret);
+    return ret;
 }

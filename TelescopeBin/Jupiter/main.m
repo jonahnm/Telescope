@@ -84,7 +84,25 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
                 });
             }
             if(msgId == JUPITER_MSG_ADD_TRUSTCACHE) {
-                // TODO.
+                __block JupiterTCPage *mappedInPage = nil;
+                const char *path = xpc_dictionary_get_string(message, "path");
+                if(path) {
+                    NSString *NSpath = [NSString stringWithCString:path encoding:NSUTF8StringEncoding];
+                    NSURL *URL = [NSURL fileURLWithPath:NSpath];
+                    fileEnumerateTrustCacheEntries(URL, ^(trustcache_entry entry) {
+                        if(!mappedInPage || mappedInPage.amountOfSlotsLeft == 0) {
+                        if(mappedInPage) {
+                            [mappedInPage sort];
+                        }
+                        mappedInPage = trustCacheFindFreePage();
+                    }
+                    trustcache_entry2 entry2;
+                    memcpy(&entry2.hash,entry.hash,CS_CDHASH_LEN);
+                    entry2.hash_type =  entry.hash_type;
+                    entry2.flags = entry.flags;
+                    [mappedInPage addEntry2:entry2];
+                    });
+                }
             }
             if(msgId == JUPITER_MSG_INIT_ENVIRONMENT) {
                 // TODO.
@@ -124,6 +142,7 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
                 xpc_dictionary_set_int64(reply, "ret", result);
             }
             if(msgId == JUPITER_MSG_REBUILD_TRUSTCACHE) {
+                tcPagesRecover();
                 rebuildDynamicTrustCache();
                 xpc_dictionary_set_int64(reply, "ret", 1);
             }
@@ -143,7 +162,6 @@ int main(void) {
         kopen(512,puaf_landa,kread_sem_open,kwrite_sem_open);
         JupiterLogDebug("Kopen'ed in Jupiter.");
         setJetsamEnabled(true);
-        tcPagesRecover();
         mach_port_t machPort = 0;
         kern_return_t kr = bootstrap_check_in(bootstrap_port, "com.soranknives.Jupiter", &machPort);
         if(kr != KERN_SUCCESS) {
