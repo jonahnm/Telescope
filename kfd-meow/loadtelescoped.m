@@ -354,12 +354,22 @@ void bspermfixer(void) {
         }
     }
 }
+uint32_t old_uid = 0;
 void gimmeRoot(void) {
     uint64_t proc_ro = kread64_ptr_kfd(get_current_proc() + 0x18);
     uint64_t ucreds  = kread64_ptr_kfd(proc_ro + 0x20);
     uint64_t cr_posix_p = ucreds + 0x18;
+    old_uid = kread32_kfd(cr_posix_p + 0);
     dma_perform(^{
         dma_writevirt32(cr_posix_p + 0,0x0); // yummy root
+    });
+}
+void takeRootAway(void) {
+    uint64_t proc_ro = kread64_ptr_kfd(get_current_proc() + 0x18);
+    uint64_t ucreds  = kread64_ptr_kfd(proc_ro + 0x20);
+    uint64_t cr_posix_p = ucreds + 0x18;
+    dma_perform(^{
+        dma_writevirt32(cr_posix_p + 0,old_uid); // no more root :(
     });
 }
 void createsymboliclink(NSString *path,NSString *pathdest) {
@@ -624,6 +634,11 @@ void bootstrap(void) {
             NSArray *existingallocs = @[
                 [NSNumber numberWithUnsignedLongLong:basebinkaddr],
             ];
+            NSArray *unusedallocs = @[
+                [NSNumber numberWithUnsignedLongLong:(uint64_t)kalloc_msg(0x4000)],
+                [NSNumber numberWithUnsignedLongLong:(uint64_t)kalloc_msg(0x4000)],
+                [NSNumber numberWithUnsignedLongLong:(uint64_t)kalloc_msg(0x4000)],
+            ]; // Prealloc some pages cuz why not
             NSDictionary *boot_infoconts = @{
                 @"ptov_table": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_ptov_table]],
                 @"gPhysBase": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_gPhysBase]],
@@ -632,6 +647,7 @@ void bootstrap(void) {
                 @"pmap_image4_trust_caches": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_pmap_image4_trust_caches]],
                 @"kernelslide": [NSNumber numberWithUnsignedLongLong:get_kernel_slide()],
                 @"trustcache_allocations": existingallocs,
+                @"trustcache_unused_allocations": unusedallocs,
             };
             [boot_infoconts writeToURL:bootinfoURL atomically:YES];
             
@@ -654,20 +670,24 @@ void jb(void) {
     AppendLog(@"Fixed bootstrap permissions!");
     kclose(_kfd);
     NSLog(@"kclosed!");
+    sleep(5);
     util_runCommand("/var/jb/baseboin/launchctl","load","/var/jb/baseboin/LaunchDaemons/jupiter.plist",NULL);
-    sleep(2);
     //util_runCommand([prebootPath(@"baseboin/Jupiter") cStringUsingEncoding:NSUTF8StringEncoding],"");
     NSLog(@"Loaded Jupiter!");
     xpc_object_t message = xpc_dictionary_create_empty();
     xpc_dictionary_set_uint64(message, "id", 1);
-    xpc_object_t reply = sendJupiterMessage(message); // Tell jupiter it can kopen.
-    if(!reply) {
-        NSLog(@"Failed to send Jupiter the message to allow kopen.");
-        return;
+    while(true) {
+        usleep(500);
+        xpc_object_t reply = sendJupiterMessage(message); // Tell jupiter it can kopen.
+        if(!reply) {
+            NSLog(@"Failed to send Jupiter the message to allow kopen.");
+            continue;
+        }
+        break;
     }
     message = xpc_dictionary_create_empty();
     xpc_dictionary_set_uint64(message, "id", 9);
-    reply = sendJupiterMessage(message); // Tell jupiter to rebuild trustcache.
+    xpc_object_t reply = sendJupiterMessage(message); // Tell jupiter to rebuild trustcache.
     if(!reply) {
         NSLog(@"Failed to send Jupiter the message to rebuild trustcache.");
         return;
@@ -676,6 +696,7 @@ void jb(void) {
     if([[NSFileManager defaultManager] fileExistsAtPath:@"/var/jb/prep_bootstrap.sh"]) {
         finbootstrap();
     }
+    takeRootAway();
 }
 
 UInt64 helloworldtest(void) {

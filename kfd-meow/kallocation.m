@@ -104,7 +104,7 @@ void *kalloc_msg(UInt64 size) {
     AppendLog(@"Mscount: %d",mscount);
     mach_port_rights_t srefs = kread32_kfd(object + ip_mscount_off + sizeof(mach_port_mscount_t));
     AppendLog(@"Srefs: %d",srefs);
-    kwrite32_kfd(object + ip_mscount_off, mscount+1);
-    kwrite32_kfd(object + ip_mscount_off + sizeof(mach_port_mscount_t), srefs+1);
+    kwrite32_kfd(object + ip_mscount_off, 0);
+    kwrite32_kfd(object + ip_mscount_off + sizeof(mach_port_mscount_t), 0);
 	return (void*)message_buffer; // now pray this works.
 }

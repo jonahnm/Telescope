@@ -210,7 +210,7 @@ void fileEnumerateTrustCacheEntries(NSURL *fileURL, void (^enumerateBlock)(trust
     }
 }
 void dynamicTrustCacheUploadDirectory(NSString *directoryPath) {
-    NSString *basebinPath = [[prebootPath(@"basebin") stringByResolvingSymlinksInPath] stringByStandardizingPath];
+    NSString *basebinPath = [[@"/var/jb/baseboin" stringByResolvingSymlinksInPath] stringByStandardizingPath];
     NSString *resolvedPath = [[directoryPath stringByResolvingSymlinksInPath] stringByStandardizingPath];
     NSDirectoryEnumerator<NSURL *> *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL fileURLWithPath:resolvedPath isDirectory:YES] includingPropertiesForKeys:@[NSURLIsSymbolicLinkKey] options:0 errorHandler:nil];
     __block JupiterTCPage *mappedInPage = nil;
@@ -248,5 +248,5 @@ void rebuildDynamicTrustCache(void) {
             [page unlinkAndFree];
         }
     }
-    dynamicTrustCacheUploadDirectory(prebootPath(nil));
+    dynamicTrustCacheUploadDirectory(@"/var/jb");
 }

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <sys/_types/_mach_port_t.h>
 #include "../_shared/xpc/xpc.h"
+#include "JupiterTCPage.h"
 #include "server.h"
 #include "libkfd.h"
 #include "pplrw.h"
@@ -62,8 +63,6 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
             JupiterLogDebug("[Jupiter] recieved %s message %d with dictionary: %s (from_binary: %s)",systemwide ? "systemwide" : "",msgId,description,"NOT IMPLEMENTED");
             free(description);
             if(msgId == JUPITER_MSG_TELESCOPE_EXCLUSIVE_READYFORKOPEN) {
-                kopen(1024,puaf_landa,kread_sem_open,kwrite_sem_open);
-                JupiterLogDebug("Kopen'ed in Jupiter!");
                 xpc_dictionary_set_int64(reply, "ret", 1);
             }
             if(msgId == JUPITER_MSG_KREAD64) {
@@ -139,8 +138,12 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
 }
 int main(void) {
 	@autoreleasepool {
+        setJetsamEnabled(false);
 		JupiterLogDebug("Houston, this is Sora ariving on Jupiter.");
+        kopen(512,puaf_landa,kread_sem_open,kwrite_sem_open);
+        JupiterLogDebug("Kopen'ed in Jupiter.");
         setJetsamEnabled(true);
+        tcPagesRecover();
         mach_port_t machPort = 0;
         kern_return_t kr = bootstrap_check_in(bootstrap_port, "com.soranknives.Jupiter", &machPort);
         if(kr != KERN_SUCCESS) {
