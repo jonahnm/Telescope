@@ -200,7 +200,7 @@ void *alloc(UInt64 size) {
     vm_allocate(mach_task_self(), &toret, size, VM_FLAGS_ANYWHERE | VM_FLAGS_PERMANENT);
     return (void*)toret;
 }
-void loadtc(NSString *path) {
+uint64_t loadtc(NSString *path) {
     NSString  *str = path;
     NSData *data = [NSData dataWithContentsOfFile:str];
     theobjcbridge = [[objcbridge alloc] init];
@@ -264,6 +264,7 @@ void loadtc(NSString *path) {
 done:
     sleep(1);
     AppendLog(@"TrustCache Successfully loaded!");
+    return (uint64_t)mem;
 }
 NSString *bootmanifesthash(void) {
     io_registry_entry_t entry = IORegistryEntryFromPath(kIOMasterPortDefault, "IODeviceTree:/chosen");
@@ -542,7 +543,7 @@ void bootstrap(void) {
     //kopen(2,false);
     NSString *basebintc = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tc"];
     NSString *tartc = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar.tc"];
-    loadtc(basebintc);
+    uint64_t basebinkaddr = loadtc(basebintc);
     sleep(1);
     //loadtc(tartc);
     //NSString *tarbinzip = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar.zip"];
@@ -620,6 +621,9 @@ void bootstrap(void) {
                 [[NSFileManager defaultManager] createDirectoryAtPath:@"/var/jb/var/mobile/Library/Preferences" withIntermediateDirectories:YES attributes:attrs error:nil];
             }
             NSURL *bootinfoURL = [NSURL fileURLWithPath:@"/var/jb/baseboin/boot_info.plist"];
+            NSArray *existingallocs = @[
+                [NSNumber numberWithUnsignedLongLong:basebinkaddr],
+            ];
             NSDictionary *boot_infoconts = @{
                 @"ptov_table": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_ptov_table]],
                 @"gPhysBase": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_gPhysBase]],
@@ -627,6 +631,7 @@ void bootstrap(void) {
                 @"gVirtBase": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_gVirtBase]],
                 @"pmap_image4_trust_caches": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_pmap_image4_trust_caches]],
                 @"kernelslide": [NSNumber numberWithUnsignedLongLong:get_kernel_slide()],
+                @"trustcache_allocations": existingallocs,
             };
             [boot_infoconts writeToURL:bootinfoURL atomically:YES];
             
