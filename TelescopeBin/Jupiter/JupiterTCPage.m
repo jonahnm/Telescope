@@ -10,7 +10,7 @@
 #import "kallocation.h"
 #import "trustcache.h"
 // Thanks KpwnZ! Couldn't have done this part without your help.
-#define ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE 0x4000
+#define ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE 0x2000
 NSMutableArray<NSNumber*> *gTCUnusedAllocations = nil;
 NSMutableArray<JupiterTCPage *> *gTCPages = nil;
 BOOL tcPagesRecover(void) {
@@ -83,7 +83,7 @@ BOOL tcPagesRecover(void) {
         kaddr = [gTCUnusedAllocations.firstObject unsignedLongLongValue];
         [gTCUnusedAllocations removeObjectAtIndex:0];
     } else {
-        kaddr = (uint64_t)kalloc_msg(ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE);
+        kaddr = (uint64_t)kalloc_msg(ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE*2);
     }
     if(kaddr == 0)
         return NO;

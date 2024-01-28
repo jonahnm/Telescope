@@ -11,6 +11,10 @@
 #include "IOSurface_Primitives.h"
 
 extern void AppendLog(NSString *format, ...) ;
+
+int message_size_for_kalloc_size(int kalloc_size) {
+	return ((3*kalloc_size)/4) - 0x74;
+}
 void *kalloc_msg(UInt64 size) {
 	AppendLog(@"Kalloc called with size: %p",size);
 	// sleep(2);
@@ -25,7 +29,7 @@ void *kalloc_msg(UInt64 size) {
 	char buf[0];
 	};
 	
-	mach_msg_size_t msg_size = (unsigned int)size*1.5;
+	mach_msg_size_t msg_size = message_size_for_kalloc_size(size);
 	struct simple_msg* msg = malloc(msg_size);
 	memset(msg, 0, msg_size);
 	
