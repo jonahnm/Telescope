@@ -62,7 +62,7 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
             JupiterLogDebug("[Jupiter] recieved %s message %d with dictionary: %s (from_binary: %s)",systemwide ? "systemwide" : "",msgId,description,"NOT IMPLEMENTED");
             free(description);
             if(msgId == JUPITER_MSG_TELESCOPE_EXCLUSIVE_READYFORKOPEN) {
-                kopen(MEOW_EXPLOIT_LANDA, true);
+                kopen(1024,puaf_landa,kread_sem_open,kwrite_sem_open);
                 JupiterLogDebug("Kopen'ed in Jupiter!");
                 xpc_dictionary_set_int64(reply, "ret", 1);
             }

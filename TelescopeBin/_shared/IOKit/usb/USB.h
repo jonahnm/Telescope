@@ -1,5 +1,5 @@
 /*
- * Copyright © 1998-2014 Apple Inc. All rights reserved.
+ * Copyright ï¿½ 1998-2014 Apple Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
  * 
@@ -1473,7 +1473,7 @@ typedef enum {
 } kUSBConnectable;
 
 typedef enum {
-	kUSBTypeAConnector				= 0x00,	// Type ÔAÕ connector
+	kUSBTypeAConnector				= 0x00,	// Type ï¿½Aï¿½ connector
 	kUSBTypeMiniABConnector	        = 0x01,	// Mini-AB connector
 	kUSBTypeExpressCard				= 0x02,	// ExpressCard
 	kUSB3TypeStdAConnector			= 0x03, // USB 3 Standard-A connector

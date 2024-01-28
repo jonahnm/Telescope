@@ -275,7 +275,7 @@ in the kernel and in user space
 // e000800f
 #define kIOFireWireOutOfTLabels							iokit_fw_err(0xF)
 
-// NOTE: errors 16Ñ31 used for address space response codes.. (see above)
+// NOTE: errors 16ï¿½31 used for address space response codes.. (see above)
 
 // e0008101
 #define kIOFireWireBogusDCLProgram						iokit_fw_err(0x101)

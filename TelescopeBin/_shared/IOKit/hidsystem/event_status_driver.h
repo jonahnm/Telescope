@@ -79,33 +79,33 @@ extern void NXResetMouse(NXEventHandle handle) __deprecated;
 * The following functions have been removed.
 *
 * NXIdleTime
-* ÊÊÊÊSee CGEventSourceSecondsSinceLastEventType.
+* ï¿½ï¿½ï¿½ï¿½See CGEventSourceSecondsSinceLastEventType.
 *
 * NXSetKeyMapping
 * NXKeyMappingLength
 * NXGetKeyMapping
-* ÊÊÊÊThese do not have a drop in replacement. ÊSee UCKeyTranslate.
+* ï¿½ï¿½ï¿½ï¿½These do not have a drop in replacement. ï¿½See UCKeyTranslate.
 *
 * NXSetMouseScaling
-* ÊÊÊÊSee IOHIDSetAccelerationWithKey and IOHIDSetMouseAcceleration.
+* ï¿½ï¿½ï¿½ï¿½See IOHIDSetAccelerationWithKey and IOHIDSetMouseAcceleration.
 *
 * NXGetMouseScaling
-* ÊÊÊÊSee IOHIDGetAccelerationWithKey and IOHIDGetMouseAcceleration.
+* ï¿½ï¿½ï¿½ï¿½See IOHIDGetAccelerationWithKey and IOHIDGetMouseAcceleration.
 *
 * NXSetAutoDimThreshold
 * NXSetAutoDimState
-* ÊÊÊÊSee IOPMSetAggressiveness and kPMMinutesToDim.
+* ï¿½ï¿½ï¿½ï¿½See IOPMSetAggressiveness and kPMMinutesToDim.
 *
 * NXAutoDimThreshold
 * NXAutoDimTime
 * NXAutoDimState
-* ÊÊÊÊSee IOPMGetAggressiveness and kPMMinutesToDim.
+* ï¿½ï¿½ï¿½ï¿½See IOPMGetAggressiveness and kPMMinutesToDim.
 *
 * NXSetAutoDimBrightness
 * NXAutoDimBrightness
 * NXSetScreenBrightness
 * NXScreenBrightness
-* ÊÊÊÊThis functionality is unsupported.
+* ï¿½ï¿½ï¿½ï¿½This functionality is unsupported.
 */
 
 __END_DECLS

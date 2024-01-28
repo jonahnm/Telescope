@@ -621,11 +621,12 @@ void bootstrap(void) {
             }
             NSURL *bootinfoURL = [NSURL fileURLWithPath:@"/var/jb/baseboin/boot_info.plist"];
             NSDictionary *boot_infoconts = @{
-                @"ptov_table": [NSNumber numberWithUnsignedLongLong:kaddr_ptov_table],
-                @"gPhysBase": [NSNumber numberWithUnsignedLongLong:kaddr_gPhysBase],
-                @"gPhysSize": [NSNumber numberWithUnsignedLongLong:kaddr_gPhysSize],
-                @"gVirtBase": [NSNumber numberWithUnsignedLongLong:kaddr_gVirtBase],
-                @"pmap_image4_trust_caches": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_pmap_image4_trust_caches]]
+                @"ptov_table": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_ptov_table]],
+                @"gPhysBase": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_gPhysBase]],
+                @"gPhysSize": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_gPhysSize]],
+                @"gVirtBase": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_gVirtBase]],
+                @"pmap_image4_trust_caches": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_pmap_image4_trust_caches]],
+                @"kernelslide": [NSNumber numberWithUnsignedLongLong:get_kernel_slide()],
             };
             [boot_infoconts writeToURL:bootinfoURL atomically:YES];
             

@@ -24,7 +24,7 @@
 
 	Contains:	Definitions for FireWire isochronous transfers.
 
-	Copyright:	© 1996-1999 by Apple Computer, Inc., all rights reserved.
+	Copyright:	ï¿½ 1996-1999 by Apple Computer, Inc., all rights reserved.
 
 */
 

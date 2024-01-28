@@ -138,15 +138,15 @@ uint64_t kread64_smr_kfd(uint64_t where)
 uint64_t ipc_entry_lookup(mach_port_name_t port_name)
 {
     uint64_t pr_task = get_current_task();
-    uint64_t itk_space_pac = kread64_kfd(pr_task + off_task_itk_space);
+    uint64_t itk_space_pac = kread64_kfd(pr_task + 0x300);
     uint64_t itk_space = itk_space_pac | 0xffffff8000000000;
     uint32_t port_index = MACH_PORT_INDEX(port_name);
     
-    uint64_t is_table = kread64_smr_kfd(itk_space + off_ipc_space_is_table);
+    uint64_t is_table = kread64_smr_kfd(itk_space + 0x20);
     uint64_t entry = is_table + port_index * 0x18/*SIZE(ipc_entry)*/;
-    uint64_t object_pac = kread64_kfd(entry + off_ipc_entry_ie_object);
+    uint64_t object_pac = kread64_kfd(entry + 0);
     uint64_t object = object_pac | 0xffffff8000000000;
-    uint64_t kobject_pac = kread64_kfd(object + off_ipc_port_ip_kobject);
+    uint64_t kobject_pac = kread64_kfd(object + 0x48);
     uint64_t kobject = kobject_pac | 0xffffff8000000000;
     
     return kobject;
