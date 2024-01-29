@@ -210,8 +210,8 @@ uint64_t loadtc(NSString *path) {
     pmap_image4_trust_caches += get_kernel_slide();
     AppendLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
     UInt64 alloc_size = sizeof(trustcache_module) + data.length + 0x8;
-    void *mem = kalloc_msg(0x2000);
-    void *payload = kalloc_msg(0x2000);
+    void *mem = kalloc_msg(0x4000);
+    void *payload = kalloc_msg(0x4000);
     if(mem == 0) {
         AppendLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics

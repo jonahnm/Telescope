@@ -91,7 +91,7 @@ mach_port_t jbdSystemWideMachPort(void)
 	}
 	else
 	{
-		kr = bootstrap_look_up(bootstrap_port, "com.soranknives.Jupiter.systemwide", &outPort);
+		kr = bootstrap_look_up(bootstrap_port, "com.soranknives.Jupiter", &outPort);
 	}
 
 	if (kr != KERN_SUCCESS)
@@ -197,8 +197,8 @@ int64_t jbdswProcessBinary(const char *filePath)
 		return -1;
 
 	xpc_object_t message = xpc_dictionary_create_empty();
-	xpc_dictionary_set_uint64(message, "id", JBD_MSG_PROCESS_BINARY);
-	xpc_dictionary_set_string(message, "filePath", absolutePath);
+	xpc_dictionary_set_uint64(message, "id", 5);
+	xpc_dictionary_set_string(message, "path", absolutePath);
 
 	xpc_object_t reply = sendJBDMessageSystemWide(message);
 	int64_t result = -1;
