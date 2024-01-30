@@ -1,4 +1,4 @@
-#include "libkfd.h"
+#include "pplrw.h"
 #include "trustcache_structs.h"
 #include <Foundation/Foundation.h>
 #include <stdint.h>
@@ -41,7 +41,7 @@ BOOL tcPagesRecover(void) {
  @implementation JupiterTCPage
  - (void)updateTCPage {
     //TODO: add some logging
-    kwritebuf_kfd(self.kaddr, _page, ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE);
+    kwritebuf(self.kaddr, _page, ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE);
  }
  - (instancetype)initWithKernelAddress:(uint64_t)kaddr {
    self = [super init];
@@ -72,7 +72,7 @@ BOOL tcPagesRecover(void) {
         }
         NSLog(@"Page being written to: %p",_page);
         usleep(500);
-        kreadbuf_kfd(kaddr, _page, ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE);
+        kreadbuf(kaddr, _page, ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE);
     } else {
         _page = 0;
     }

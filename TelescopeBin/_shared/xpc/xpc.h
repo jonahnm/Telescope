@@ -2018,7 +2018,6 @@ __OSX_AVAILABLE_STARTING(__MAC_10_7, __IPHONE_5_0)
 XPC_EXPORT XPC_WARN_RESULT XPC_NONNULL_ALL
 xpc_connection_t _Nullable
 xpc_dictionary_get_remote_connection(xpc_object_t xdict);
-
 #pragma mark Dictionary Primitive Setters
 /*!
  * @function xpc_dictionary_set_bool

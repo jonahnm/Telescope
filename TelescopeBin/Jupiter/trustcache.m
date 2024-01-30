@@ -1,6 +1,5 @@
 #include "JupiterTCPage.h"
 #include "kallocation.h"
-#include "libkfd.h"
 #include "pplrw.h"
 #include "trustcache_structs.h"
 #include <CoreFoundation/CoreFoundation.h>
@@ -55,32 +54,32 @@ BOOL trustCacheListAdd(uint64_t trustCacheKaddr) {
     if(!trustCacheKaddr)
         return NO;
     uint64_t pmap_image4_trust_caches = bootInfo_getSlidUInt64(@"pmap_image4_trust_caches");
-    uint64_t curTc = kread64_ptr_kfd(pmap_image4_trust_caches);
+    uint64_t curTc = kread_ptr(pmap_image4_trust_caches);
     if(curTc == 0) {
         dma_perform(^{
             dma_writevirt64(pmap_image4_trust_caches, trustCacheKaddr);
-            kwrite64_kfd(trustCacheKaddr, 0);
+            kwrite64(trustCacheKaddr, 0);
         });
     } else {
         uint64_t prevTc = 0;
         while(curTc != 0) {
             prevTc = curTc;
-            curTc = kread64_ptr_kfd(curTc);
+            curTc = kread_ptr(curTc);
         }
         dma_perform(^{
             dma_writevirt64(prevTc, trustCacheKaddr);
         }); 
-        kwrite64_kfd(trustCacheKaddr, 0);
-        kwrite64_kfd(trustCacheKaddr + 8, prevTc);
+        kwrite64(trustCacheKaddr, 0);
+        kwrite64(trustCacheKaddr + 8, prevTc);
     }
     return YES;
 }
 BOOL trustCacheListRemove(uint64_t trustCacheKaddr) {
     if(!trustCacheKaddr)
         return NO;
-    uint64_t nextPtr = kread64_ptr_kfd(trustCacheKaddr + offsetof(trustcache_page,nextPtr));
+    uint64_t nextPtr = kread_ptr(trustCacheKaddr + offsetof(trustcache_page,nextPtr));
     uint64_t pmap_image4_trust_caches = bootInfo_getSlidUInt64(@"pmap_image4_trust_caches");
-    uint64_t curTc = kread64_ptr_kfd(pmap_image4_trust_caches);
+    uint64_t curTc = kread_ptr(pmap_image4_trust_caches);
     if(curTc == 0) {
         return NO;
     }
@@ -94,7 +93,7 @@ BOOL trustCacheListRemove(uint64_t trustCacheKaddr) {
             if(curTc == 0)
                 return NO;
             prevTc = curTc;
-            curTc = kread64_ptr_kfd(curTc);
+            curTc = kread_ptr(curTc);
         }
         dma_perform(^{
             dma_writevirt64(prevTc, nextPtr);
@@ -115,10 +114,10 @@ uint64_t staticTrustCacheUploadFile(trustcache_file *filetoUpload,size_t fileSiz
     if(outMapSize)
         *outMapSize = mapSize;
     uint64_t module_size_ptr = mapKaddr + offsetof(trustcache_module,module_size);
-    kwrite64_kfd(module_size_ptr, fileSize);
+    kwrite64(module_size_ptr, fileSize);
     uint64_t module_fileptr_ptr = mapKaddr + offsetof(trustcache_module,fileptr);
-    kwrite64_kfd(module_fileptr_ptr, mapKaddr + 0x28);
-    kwritebuf_kfd(mapKaddr + 0x28, filetoUpload, fileSize);
+    kwrite64(module_fileptr_ptr, mapKaddr + 0x28);
+    kwritebuf(mapKaddr + 0x28, filetoUpload, fileSize);
     trustCacheListAdd(mapKaddr);
     return mapKaddr;
 }

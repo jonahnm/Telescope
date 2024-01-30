@@ -5,15 +5,21 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/_types/_mach_port_t.h>
+#include <IOSurface/IOSurfaceRef.h>
 #include "../_shared/xpc/xpc.h"
+#include "IOSurface_primitives.h"
 #include "JupiterTCPage.h"
 #include "server.h"
-#include "libkfd.h"
 #include "pplrw.h"
 #include <Foundation/Foundation.h>
+#include <unistd.h>
+#include "../_shared/xpc/xpc.h"
+#include "../_shared/xpc/private.h"
 #include "proc.h"
 #include "../_shared/kern_memorystatus.h"
 #include "trustcache.h"
+#include "boot_info.h"
+extern uint64_t pplrwmapping;
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -51,9 +57,6 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
     @autoreleasepool {
         xpc_object_t message = nil;
         int err = xpc_pipe_receive(machPort, &message);
-        if (err != 0) {
-            JupiterLogDebug("[Jupiter] xpc_pipe_recieve error %d",err);
-        }
         xpc_object_t reply = xpc_dictionary_create_reply(message);
         xpc_type_t messageType = xpc_get_type(message);
         int msgId = -1;
@@ -62,19 +65,27 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
             char *description = xpc_copy_description(message);
             JupiterLogDebug("[Jupiter] recieved %s message %d with dictionary: %s (from_binary: %s)",systemwide ? "systemwide" : "",msgId,description,"NOT IMPLEMENTED");
             free(description);
+            if(msgId == JUPITER_MSG_TELESCOPE_EXCLUSIVE_HANDOFF) {
+                mach_port_t port = (mach_port_t)xpc_dictionary_get_uint64(message, "port");
+                IOSurfaceRef ref = IOSurfaceLookupFromMachPort(port); // MAP!
+                pplrwmapping = (uint64_t)IOSurfaceGetBaseAddress(ref);
+                xpc_dictionary_set_uint64(reply, "ret", 1); // Thanks Telescope!
+                uint64_t kernel_proc64 = kread64(bootInfo_getUInt64(@"kernel_proc"));
+                JupiterLogDebug("PPLRW test: %p",(void *)kernel_proc64);
+            }
             if(msgId == JUPITER_MSG_TELESCOPE_EXCLUSIVE_READYFORKOPEN) {
                 xpc_dictionary_set_int64(reply, "ret", 1);
             }
             if(msgId == JUPITER_MSG_KREAD64) {
                 UInt64 vaddr = xpc_dictionary_get_uint64(message, "vaddr");
-                UInt64 retval = kread64_kfd(vaddr);
+                UInt64 retval = kread64(vaddr);
                 xpc_dictionary_set_uint64(reply, "id", msgId);
                 xpc_dictionary_set_uint64(reply, "ret", retval);
             }
             if(msgId == JUPITER_MSG_KWRITE64) {
                 UInt64 vaddr = xpc_dictionary_get_uint64(message, "vaddr");
                 UInt64 towrite = xpc_dictionary_get_uint64(message,"value");
-                kwrite64_kfd(vaddr, towrite);
+                kwrite64(vaddr, towrite);
             }
             if(msgId == JUPITER_MSG_PPLWRITEVIRT64) {
                 UInt64 vaddr = xpc_dictionary_get_uint64(message, "vaddr");
@@ -159,8 +170,6 @@ int main(void) {
 	@autoreleasepool {
         setJetsamEnabled(false);
 		JupiterLogDebug("Houston, this is Sora ariving on Jupiter.");
-        kopen(512,puaf_landa,kread_sem_open,kwrite_sem_open);
-        JupiterLogDebug("Kopen'ed in Jupiter.");
         setJetsamEnabled(true);
         mach_port_t machPort = 0;
         kern_return_t kr = bootstrap_check_in(bootstrap_port, "com.soranknives.Jupiter", &machPort);

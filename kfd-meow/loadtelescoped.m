@@ -641,13 +641,16 @@ void bootstrap(void) {
             ]; // Prealloc some pages cuz why not
             NSDictionary *boot_infoconts = @{
                 @"ptov_table": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_ptov_table]],
-                @"gPhysBase": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_gPhysBase]],
-                @"gPhysSize": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_gPhysSize]],
-                @"gVirtBase": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_gVirtBase]],
+                @"gPhysBase": [NSNumber numberWithUnsignedLongLong:kread64_ptr_kfd([theobjcbridge find_gPhysBase] + get_kernel_slide())],
+                @"gPhysSize": [NSNumber numberWithUnsignedLongLong:kread64_ptr_kfd([theobjcbridge find_gPhysSize] + get_kernel_slide())],
+                @"gVirtBase": [NSNumber numberWithUnsignedLongLong:kread64_ptr_kfd([theobjcbridge find_gVirtBase] + get_kernel_slide())],
                 @"pmap_image4_trust_caches": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_pmap_image4_trust_caches]],
                 @"kernelslide": [NSNumber numberWithUnsignedLongLong:get_kernel_slide()],
                 @"trustcache_allocations": existingallocs,
                 @"trustcache_unused_allocations": unusedallocs,
+                @"physical_ttep": [NSNumber numberWithUnsignedLongLong:((struct kfd*)_kfd)->info.kernel.ttbr[0].pa],
+                @"kernel_proc": [NSNumber numberWithUnsignedLongLong:get_kernel_proc()],
+                @"physical_tte1": [NSNumber numberWithUnsignedLongLong:((struct kfd*)_kfd)->info.kernel.ttbr[1].pa],
             };
             [boot_infoconts writeToURL:bootinfoURL atomically:YES];
             
@@ -657,6 +660,21 @@ void bootstrap(void) {
 void finbootstrap(void) {
     util_runCommand("/var/jb/bin/sh", "/var/jb/prep_bootstrap.sh",NULL);
     util_runCommand("/var/jb/usr/bin/dpkg", "-i",[[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Sileo.deb"] cStringUsingEncoding:NSUTF8StringEncoding],NULL);
+}
+void handoff(void) {
+    xpc_object_t msg;
+    xpc_object_t reply;
+    msg = xpc_dictionary_create_empty();
+    xpc_dictionary_set_uint64(msg, "id", 10);
+    mach_port_t port = IOSurface_map_forhandoff(kread64_kfd([theobjcbridge find_gPhysBase] + get_kernel_slide()), kread64_kfd([theobjcbridge find_gPhysSize] + get_kernel_slide()));
+    xpc_dictionary_set_uint64(msg, "port", (uint64_t)port);
+    reply = sendJupiterMessage(msg);
+    if(!reply) {
+        AppendLog(@"Failed to send jupiter handoff message.");
+        kclose(_kfd);
+        exit(EXIT_FAILURE);
+    }
+    AppendLog(@"Successfully handed PPLRW to Jupiter!");
 }
 void jb(void) {
     gimmeRoot();
@@ -668,24 +686,11 @@ void jb(void) {
     bspermfixer();
     NSLog(@"Fixed bootstrap permissions!");
     AppendLog(@"Fixed bootstrap permissions!");
-    kclose(_kfd);
-    NSLog(@"kclosed!");
-    sleep(5);
     util_runCommand("/var/jb/baseboin/launchctl","load","/var/jb/baseboin/LaunchDaemons/jupiter.plist",NULL);
     //util_runCommand([prebootPath(@"baseboin/Jupiter") cStringUsingEncoding:NSUTF8StringEncoding],"");
     NSLog(@"Loaded Jupiter!");
+    handoff();
     xpc_object_t message = xpc_dictionary_create_empty();
-    xpc_dictionary_set_uint64(message, "id", 1);
-    while(true) {
-        usleep(500);
-        xpc_object_t reply = sendJupiterMessage(message); // Tell jupiter it can kopen.
-        if(!reply) {
-            NSLog(@"Failed to send Jupiter the message to allow kopen.");
-            continue;
-        }
-        break;
-    }
-    message = xpc_dictionary_create_empty();
     xpc_dictionary_set_uint64(message, "id", 9);
     xpc_object_t reply = sendJupiterMessage(message); // Tell jupiter to rebuild trustcache.
     if(!reply) {
@@ -697,6 +702,7 @@ void jb(void) {
         finbootstrap();
     }
     takeRootAway();
+    kclose(_kfd);
 }
 
 UInt64 helloworldtest(void) {

