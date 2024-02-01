@@ -1,6 +1,7 @@
 #include "JupiterTCPage.h"
 #include "kallocation.h"
-#include "pplrw.h"
+#include "fun/ppl/pplrw.h"
+#include "fun/krw.h"
 #include "trustcache_structs.h"
 #include <CoreFoundation/CoreFoundation.h>
 #import <Foundation/Foundation.h>
@@ -53,8 +54,11 @@ BOOL isCdHashinTrustCache(NSData *cdHash) {
 BOOL trustCacheListAdd(uint64_t trustCacheKaddr) {
     if(!trustCacheKaddr)
         return NO;
-    uint64_t pmap_image4_trust_caches = bootInfo_getSlidUInt64(@"pmap_image4_trust_caches");
-    uint64_t curTc = kread_ptr(pmap_image4_trust_caches);
+    NSLog(@"In trustcachelistadd!");
+    uint64_t pmap_image4_trust_caches = bootInfo_getUInt64(@"pmap_image4_trust_caches") + get_kslide();
+    uint64_t curTc = kread64_ptr(pmap_image4_trust_caches);
+    NSLog(@"CurTC: %p",(void *)curTc);
+    usleep(500);
     if(curTc == 0) {
         dma_perform(^{
             dma_writevirt64(pmap_image4_trust_caches, trustCacheKaddr);
@@ -64,22 +68,27 @@ BOOL trustCacheListAdd(uint64_t trustCacheKaddr) {
         uint64_t prevTc = 0;
         while(curTc != 0) {
             prevTc = curTc;
-            curTc = kread_ptr(curTc);
+            curTc = kread64_ptr(curTc);
         }
+        NSLog(@"Entering dma_perform!");
+        usleep(500);
         dma_perform(^{
+            NSLog(@"Entered dma_perform");
             dma_writevirt64(prevTc, trustCacheKaddr);
-        }); 
+        });
+        NSLog(@"Did write!"); 
         kwrite64(trustCacheKaddr, 0);
         kwrite64(trustCacheKaddr + 8, prevTc);
     }
+    NSLog(@"Finished trustcachelistadd!");
     return YES;
 }
 BOOL trustCacheListRemove(uint64_t trustCacheKaddr) {
     if(!trustCacheKaddr)
         return NO;
-    uint64_t nextPtr = kread_ptr(trustCacheKaddr + offsetof(trustcache_page,nextPtr));
+    uint64_t nextPtr = kread64_ptr(trustCacheKaddr + offsetof(trustcache_page,nextPtr));
     uint64_t pmap_image4_trust_caches = bootInfo_getSlidUInt64(@"pmap_image4_trust_caches");
-    uint64_t curTc = kread_ptr(pmap_image4_trust_caches);
+    uint64_t curTc = kread64_ptr(pmap_image4_trust_caches);
     if(curTc == 0) {
         return NO;
     }
@@ -93,7 +102,7 @@ BOOL trustCacheListRemove(uint64_t trustCacheKaddr) {
             if(curTc == 0)
                 return NO;
             prevTc = curTc;
-            curTc = kread_ptr(curTc);
+            curTc = kread64_ptr(curTc);
         }
         dma_perform(^{
             dma_writevirt64(prevTc, nextPtr);
@@ -108,7 +117,7 @@ uint64_t staticTrustCacheUploadFile(trustcache_file *filetoUpload,size_t fileSiz
     if(expectedSize != fileSize)
         return 0;
     uint64_t mapSize = sizeof(trustcache_module) + fileSize;
-    uint64_t mapKaddr = (uint64_t)kalloc_msg(mapSize);
+    uint64_t mapKaddr = (uint64_t)kalloc_msg(0x1000);
     if(!mapKaddr)
         return 0;
     if(outMapSize)

@@ -7,10 +7,10 @@
 #include <sys/_types/_mach_port_t.h>
 #include <IOSurface/IOSurfaceRef.h>
 #include "../_shared/xpc/xpc.h"
-#include "IOSurface_primitives.h"
 #include "JupiterTCPage.h"
 #include "server.h"
-#include "pplrw.h"
+#include "fun/krw.h"
+#include "fun/ppl/pplrw.h"
 #include <Foundation/Foundation.h>
 #include <unistd.h>
 #include "../_shared/xpc/xpc.h"
@@ -19,7 +19,7 @@
 #include "../_shared/kern_memorystatus.h"
 #include "trustcache.h"
 #include "boot_info.h"
-extern uint64_t pplrwmapping;
+#include "fun/krw.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -65,15 +65,7 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
             char *description = xpc_copy_description(message);
             JupiterLogDebug("[Jupiter] recieved %s message %d with dictionary: %s (from_binary: %s)",systemwide ? "systemwide" : "",msgId,description,"NOT IMPLEMENTED");
             free(description);
-            if(msgId == JUPITER_MSG_TELESCOPE_EXCLUSIVE_HANDOFF) {
-                mach_port_t port = (mach_port_t)xpc_dictionary_get_uint64(message, "port");
-                IOSurfaceRef ref = IOSurfaceLookupFromMachPort(port); // MAP!
-                pplrwmapping = (uint64_t)IOSurfaceGetBaseAddress(ref);
-                xpc_dictionary_set_uint64(reply, "ret", 1); // Thanks Telescope!
-                uint64_t kernel_proc64 = kread64(bootInfo_getUInt64(@"kernel_proc"));
-                JupiterLogDebug("PPLRW test: %p",(void *)kernel_proc64);
-            }
-            if(msgId == JUPITER_MSG_TELESCOPE_EXCLUSIVE_READYFORKOPEN) {
+            if(msgId == JUPITER_MSG_POLL_IS_READY) {
                 xpc_dictionary_set_int64(reply, "ret", 1);
             }
             if(msgId == JUPITER_MSG_KREAD64) {
@@ -93,6 +85,7 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
                 dma_perform(^{
                     dma_writevirt64(vaddr, towrite);
                 });
+                xpc_dictionary_set_int64(reply, "ret", 1);
             }
             if(msgId == JUPITER_MSG_ADD_TRUSTCACHE) {
                 __block JupiterTCPage *mappedInPage = nil;
@@ -119,38 +112,10 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
                 // TODO.
             }
             if(msgId == JUPITER_MSG_SET_PID_DEBUGGED) {
-                int64_t result = 0;
-                pid_t pid = xpc_dictionary_get_int64(message, "pid");
-                uint64_t proc = proc_for_pid(pid);
-                if(proc == 0) {
-                    JupiterLogDebug("Failed to find proc for pid %d",pid);
-                    result = -1;
-                } else {
-                    uint32_t csflags = proc_get_csflags(proc);
-                    JupiterLogDebug("[Jupiter] orig_csflags: 0x%x",csflags);
-                    csflags = csflags | CS_DEBUGGED | CS_PLATFORM_BINARY | CS_INSTALLER | CS_GET_TASK_ALLOW;
-                    csflags &= ~(CS_RESTRICT | CS_HARD | CS_KILL);
-                    proc_updatecsflags(proc, csflags);
-                }
-                xpc_dictionary_set_int64(reply, "ret", result);
+                // TODO.
             }
             if(msgId == JUPITER_MSG_SET_PID_PLATFORMIZED) {
-                int64_t result = 0;
-                pid_t pid = xpc_dictionary_get_int64(message, "pid");
-                uint64_t proc = proc_for_pid(pid);
-                if(proc == 0) {
-                    JupiterLogDebug("Failed to find proc for pid %d",pid);
-                    result = -1;
-                } else {
-                    uint32_t csflags = proc_get_csflags(proc);
-                    JupiterLogDebug("[Jupiter] orig_csflags: 0x%x",csflags);
-                    csflags = csflags | CS_DEBUGGED | CS_PLATFORM_BINARY | CS_INSTALLER | CS_GET_TASK_ALLOW;
-                    csflags &= ~(CS_RESTRICT | CS_HARD | CS_KILL);
-                    proc_updatecsflags(proc, csflags);
-                    uint64_t task = proc_get_task(proc);
-                    task_set_flags(task,1);
-                }
-                xpc_dictionary_set_int64(reply, "ret", result);
+                // TODO.
             }
             if(msgId == JUPITER_MSG_REBUILD_TRUSTCACHE) {
                 tcPagesRecover();
@@ -170,7 +135,9 @@ int main(void) {
 	@autoreleasepool {
         setJetsamEnabled(false);
 		JupiterLogDebug("Houston, this is Sora ariving on Jupiter.");
-        setJetsamEnabled(true);
+        sleep(1);
+        do_kopen(512, 2, 1, 1);
+        JupiterLogDebug("Jupiter kopened!");
         mach_port_t machPort = 0;
         kern_return_t kr = bootstrap_check_in(bootstrap_port, "com.soranknives.Jupiter", &machPort);
         if(kr != KERN_SUCCESS) {

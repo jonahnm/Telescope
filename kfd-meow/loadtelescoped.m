@@ -631,9 +631,7 @@ void bootstrap(void) {
                 [[NSFileManager defaultManager] createDirectoryAtPath:@"/var/jb/var/mobile/Library/Preferences" withIntermediateDirectories:YES attributes:attrs error:nil];
             }
             NSURL *bootinfoURL = [NSURL fileURLWithPath:@"/var/jb/baseboin/boot_info.plist"];
-            NSArray *existingallocs = @[
-                [NSNumber numberWithUnsignedLongLong:basebinkaddr],
-            ];
+            NSArray *existingallocs = @[            ];
             NSArray *unusedallocs = @[
                 [NSNumber numberWithUnsignedLongLong:(uint64_t)kalloc_msg(0x4000)],
                 [NSNumber numberWithUnsignedLongLong:(uint64_t)kalloc_msg(0x4000)],
@@ -661,21 +659,29 @@ void finbootstrap(void) {
     util_runCommand("/var/jb/bin/sh", "/var/jb/prep_bootstrap.sh",NULL);
     util_runCommand("/var/jb/usr/bin/dpkg", "-i",[[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Sileo.deb"] cStringUsingEncoding:NSUTF8StringEncoding],NULL);
 }
+/*
 void handoff(void) {
     xpc_object_t msg;
     xpc_object_t reply;
-    msg = xpc_dictionary_create_empty();
-    xpc_dictionary_set_uint64(msg, "id", 10);
-    mach_port_t port = IOSurface_map_forhandoff(kread64_kfd([theobjcbridge find_gPhysBase] + get_kernel_slide()), kread64_kfd([theobjcbridge find_gPhysSize] + get_kernel_slide()));
-    xpc_dictionary_set_uint64(msg, "port", (uint64_t)port);
-    reply = sendJupiterMessage(msg);
-    if(!reply) {
-        AppendLog(@"Failed to send jupiter handoff message.");
-        kclose(_kfd);
-        exit(EXIT_FAILURE);
+    uint64_t gPhysBase = kread64_kfd(kaddr_gPhysBase);
+    uint64_t gPhysBasePage = gPhysBase & ~PAGE_MASK;
+    uint64_t gPhysSize = kread64_kfd(kaddr_gPhysSize);
+    for(uint64_t page = gPhysBasePage; page < ((gPhysBase + gPhysSize) & ~PAGE_MASK); page += 0x4000) {
+        msg = xpc_dictionary_create_empty();
+        xpc_dictionary_set_uint64(msg, "id", 10);
+        mach_port_t port = IOSurface_map_forhandoff(page, gPhysSize);
+        xpc_dictionary_set_uint64(msg, "port", (uint64_t)port);
+        xpc_dictionary_set_uint64(msg, "page", page);
+        reply = sendJupiterMessage(msg);
+        if(!reply) {
+            AppendLog(@"Failed to send jupiter handoff message.");
+            kclose(_kfd);
+            exit(EXIT_FAILURE);
+        }
     }
     AppendLog(@"Successfully handed PPLRW to Jupiter!");
 }
+ */
 void jb(void) {
     gimmeRoot();
     setenv("PATH", "/sbin:/bin:/usr/sbin:/usr/bin:/var/jb/sbin:/var/jb/bin:/var/jb/usr/sbin:/var/jb/usr/bin", 1);
@@ -686,13 +692,23 @@ void jb(void) {
     bspermfixer();
     NSLog(@"Fixed bootstrap permissions!");
     AppendLog(@"Fixed bootstrap permissions!");
+    kclose(_kfd);
+    sleep(2);
     util_runCommand("/var/jb/baseboin/launchctl","load","/var/jb/baseboin/LaunchDaemons/jupiter.plist",NULL);
     //util_runCommand([prebootPath(@"baseboin/Jupiter") cStringUsingEncoding:NSUTF8StringEncoding],"");
     NSLog(@"Loaded Jupiter!");
-    handoff();
-    xpc_object_t message = xpc_dictionary_create_empty();
+    //handoff();
+    xpc_object_t message;
+    xpc_object_t reply;
+    message = xpc_dictionary_create_empty();
+    xpc_dictionary_set_uint64(message, "id", 1);
+    while(!reply) {
+        reply = sendJupiterMessage(message);
+        usleep(500);
+    }
+    message = xpc_dictionary_create_empty();
     xpc_dictionary_set_uint64(message, "id", 9);
-    xpc_object_t reply = sendJupiterMessage(message); // Tell jupiter to rebuild trustcache.
+    reply = sendJupiterMessage(message); // Tell Jupiter to rebuild trustcache.
     if(!reply) {
         NSLog(@"Failed to send Jupiter the message to rebuild trustcache.");
         return;
