@@ -694,7 +694,16 @@ void jb(void) {
     AppendLog(@"Fixed bootstrap permissions!");
     kclose(_kfd);
     sleep(2);
-    util_runCommand("/var/jb/baseboin/launchctl","load","/var/jb/baseboin/LaunchDaemons/jupiter.plist",NULL);
+    /*
+    mach_port_t task;
+    kern_return_t kr = task_for_pid(mach_task_self(), 1, &task);
+    if(kr != KERN_SUCCESS) {
+        AppendLog(@"Failed to get launchd task.");
+        exit(EXIT_FAILURE);
+    }
+    task_set_exception_ports(task, EXC_MASK_ALL, MACH_PORT_NULL change , EXCEPTION_STATE, ARM_THREAD_STATE64);
+    */
+    util_runCommand("/var/jb/baseboin/opainject","1","/var/jb/baseboin/Jupiter.dylib",NULL);
     //util_runCommand([prebootPath(@"baseboin/Jupiter") cStringUsingEncoding:NSUTF8StringEncoding],"");
     NSLog(@"Loaded Jupiter!");
     //handoff();

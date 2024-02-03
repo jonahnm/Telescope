@@ -131,24 +131,24 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
         }
     }
 }
-int main(void) {
+__attribute__((constructor)) static void initializer(void)
+{
 	@autoreleasepool {
-        setJetsamEnabled(false);
-		JupiterLogDebug("Houston, this is Sora ariving on Jupiter.");
+		JupiterLogDebug("Houston, this is Sora ariving on Launchd's Jupiter.");
         sleep(1);
         do_kopen(512, 2, 1, 1);
-        JupiterLogDebug("Jupiter kopened!");
+        JupiterLogDebug("Launchd's Jupiter kopened!");
         mach_port_t machPort = 0;
         kern_return_t kr = bootstrap_check_in(bootstrap_port, "com.soranknives.Jupiter", &machPort);
         if(kr != KERN_SUCCESS) {
             JupiterLogDebug("Failed to bootstrap com.soranknives.Jupiter check in: %d (%s)",kr,mach_error_string(kr));
-            return 1;
+            return;
         }
         mach_port_t machPortsystemWide = 0;
         kr = bootstrap_check_in(bootstrap_port, "com.soranknives.Jupiter.systemwide", &machPortsystemWide);
         if(kr != KERN_SUCCESS) {
             JupiterLogDebug("Failed to bootstrap com.soranknives.Jupiter.systemwide check in: %d (%s)",kr,mach_error_string(kr));
-            return 1;
+            return;
         }
         dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_MACH_RECV, (uintptr_t)machPort, 0, dispatch_get_main_queue());
         dispatch_source_set_event_handler(source, ^{
@@ -163,6 +163,5 @@ int main(void) {
         });
         dispatch_resume(sourceSsystemWide);
         dispatch_main();
-		return 0;
 	}
 }

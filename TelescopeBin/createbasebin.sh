@@ -23,10 +23,10 @@ cd ../
 cd Jupiter
 make clean
 make
-cp .theos/obj/debug/Jupiter ../baseboin/
-codesign -s - ../baseboin/Jupiter
-ldid -Sent.xml ../baseboin/Jupiter
-chmod +x ../baseboin/Jupiter
+cp .theos/obj/debug/Jupiter.dylib ../baseboin/
+codesign -s - ../baseboin/Jupiter.dylib
+ldid -Sent.xml ../baseboin/Jupiter.dylib
+chmod +x ../baseboin/Jupiter.dylib
 cd ../
 
 rm -rf "./basebin.tc"
