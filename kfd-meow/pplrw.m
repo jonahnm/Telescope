@@ -317,7 +317,78 @@ void dma_writephys512(uint64_t targetPA, uint64_t *value)
 
     dma_done(orig);
 }
+#define DBGWRAP_REG_OFFSET      0
+#define DBGWRAP_DBGHALT         (1ULL << 31)
+#define DBGWRAP_DBGACK          (1ULL << 28)
 
+#define EDDTRRX_REG_OFFSET      0x80
+#define EDITR_REG_OFFSET        0x84
+#define EDSCR_REG_OFFSET        0x88
+#define EDSCR_TXFULL            (1ULL << 29)
+#define EDSCR_ITE               (1ULL << 24)
+#define EDSCR_MA                (1ULL << 20)
+#define EDSCR_ERR               (1ULL << 6)
+#define EDDTRTX_REG_OFFSET      0x8C
+#define EDRCR_REG_OFFSET        0x90
+#define EDRCR_CSE               (1ULL << 2)
+#define EDPRSR_REG_OFFSET       0x314
+#define EDPRSR_OSLK             (1ULL << 5)
+#define DBGDTRTX_REG_OFF (0x8C)
+#define DBGDTRRX_REG_OFF (0x80)
+#define MAX_EDITR_RETRIES       16
+/* Older SoCs require 32-bit accesses for DBGWRAP;
+ * newer ones require 64-bit accesses. */
+#ifdef HAS_32BIT_DBGWRAP
+typedef uint32_t dbgwrap_reg_t;
+#else
+typedef uint64_t dbgwrap_reg_t;
+#endif
+/*
+bool exec_insn(uint32_t insn) {
+    uint64_t coresight_debugbase = 0x0000000210010000; // Static for now.
+    addMapping(coresight_debugbase);
+    uint32_t edscr_val;
+    size_t i;
+    for(i = 0; i < MAX_EDITR_RETRIES; i++) {
+        physwrite32_mapped(coresight_debugbase + EDITR_REG_OFFSET, insn);
+        while(((edscr_val = physread32_mapped(coresight_debugbase + EDSCR_REG_OFFSET)) & EDSCR_ERR) == 0) {
+            if((edscr_val & EDSCR_ITE) != 0) {
+                return true;
+            }
+        }
+        physwrite32_mapped(coresight_debugbase + EDRCR_REG_OFFSET, EDRCR_CSE);
+    }
+    return false;
+}
+bool coresight_read_reg_32(uint64_t reg, uint32_t *val) {
+    uint64_t coresight_debugbase = 0x0000000210010000; // Static for now.
+    if(exec_insn(0xD5130400U | (reg & 0x1FU))) {
+        *val = physread32_mapped(coresight_debugbase + DBGDTRTX_REG_OFF);
+        return true;
+    }
+    return false;
+}
+bool coresight_write_reg(uint64_t reg,uint64_t val) {
+    uint64_t coresight_debugbase = 0x0000000210010000; // Static for now.
+    physwrite32_mapped(coresight_debugbase + DBGDTRTX_REG_OFF, val >> 32U);
+    physwrite32_mapped(coresight_debugbase + DBGDTRRX_REG_OFF, (uint32_t)val);
+    return exec_insn(0xD5330400U | (reg & 0x1FU));
+}
+bool coresight_read_reg_64(uint64_t reg, uint64_t *val) {
+    uint64_t coresight_debugbase = 0x0000000210010000; // Static for now.
+    if(exec_insn(0xD5130400U | (reg & 0x1FU))) {
+        *val = physread32_mapped(coresight_debugbase + DBGDTRTX_REG_OFF);
+        return true;
+    }
+    return false;
+}
+ 
+void disable_cache_flush(void) {
+    uint64_t instr_for_read = 0xD51DF600;
+    
+    if(!exec_insn(instr_for_read))
+}
+ */
 #define min(a,b) (((a)<(b))?(a):(b))
 void dma_writephysbuf(uint64_t pa, const void *input, size_t size)
 {

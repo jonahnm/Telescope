@@ -1,0 +1,4 @@
+module JupiterPatchfinder {
+    header "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/JupiterPatchfinder-Swift.h"
+    requires objc
+}

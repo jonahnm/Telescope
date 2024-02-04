@@ -1,0 +1,1 @@
+#import "CFastFind/include/CFastFind.h"

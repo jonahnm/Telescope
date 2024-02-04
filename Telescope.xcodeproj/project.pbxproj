@@ -27,7 +27,6 @@
 		86A48ACB2B2B5451005D1639 /* kread_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 86A48AC92B2B5451005D1639 /* kread_sem_open.c */; };
 		9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */ = {isa = PBXBuildFile; fileRef = 9732F8E52B55A6ED00762F31 /* loadtelescoped.m */; };
 		97DD2ED62B644C9900930808 /* Tarscape in Frameworks */ = {isa = PBXBuildFile; productRef = 97DD2ED52B644C9900930808 /* Tarscape */; };
-		97DD2EDA2B644E6600930808 /* extractionbridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DD2ED92B644E6600930808 /* extractionbridge.swift */; };
 		97DD2EDD2B644FBE00930808 /* DataCompression in Frameworks */ = {isa = PBXBuildFile; productRef = 97DD2EDC2B644FBE00930808 /* DataCompression */; };
 		97EE5C722B5DA7C50066184E /* DriverKit.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C712B5DA7C50066184E /* DriverKit.c */; };
 		97EE5C752B5DA80E0066184E /* device.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C742B5DA80E0066184E /* device.c */; };
@@ -37,7 +36,6 @@
 		D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A052B4C41040040BF9D /* IOSurface_Primitives.m */; };
 		D54990D72B42C7C3003B3486 /* landa.c in Sources */ = {isa = PBXBuildFile; fileRef = D54990D62B42C7C3003B3486 /* landa.c */; };
 		D56FB6A02B499B0C00A48CA4 /* kfd-meow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56FB69F2B499B0C00A48CA4 /* kfd-meow.swift */; };
-		D5BF82AC2B4FF7E200C02D17 /* overwrite.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BF829D2B4F83D100C02D17 /* overwrite.m */; };
 		D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BF82C22B50242F00C02D17 /* patchfinder.m */; };
 		D5BF82C62B50242F00C02D17 /* libdimentio.c in Sources */ = {isa = PBXBuildFile; fileRef = D5BF82C32B50242F00C02D17 /* libdimentio.c */; };
 		D5D2DDA52B4726D500B62BED /* kwrite_sem_open.c in Sources */ = {isa = PBXBuildFile; fileRef = D5D2DDA32B4726D500B62BED /* kwrite_sem_open.c */; };
@@ -151,7 +149,6 @@
 		97A13EC52B63E1E200BFB6FC /* ZipArchive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipArchive.xcodeproj; path = ZipArchive/ZipArchive.xcodeproj; sourceTree = "<group>"; };
 		97A312392B5EFFAD004773EB /* kallocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kallocation.h; sourceTree = "<group>"; };
 		97A9DCE32B5B5366007ECBC9 /* trustcache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = trustcache.h; sourceTree = "<group>"; };
-		97DD2ED92B644E6600930808 /* extractionbridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extractionbridge.swift; sourceTree = "<group>"; };
 		97EE5C6F2B5DA7620066184E /* DriverKitClasses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKitClasses.h; sourceTree = "<group>"; };
 		97EE5C702B5DA78D0066184E /* DriverKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKit.h; sourceTree = "<group>"; };
 		97EE5C712B5DA7C50066184E /* DriverKit.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = DriverKit.c; sourceTree = "<group>"; };
@@ -171,20 +168,6 @@
 		D56FB69F2B499B0C00A48CA4 /* kfd-meow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "kfd-meow.swift"; sourceTree = "<group>"; };
 		D56FB6A12B499B7000A48CA4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D56FB6A62B4A66DD00A48CA4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		D5BF829C2B4F83D100C02D17 /* overwrite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = overwrite.h; sourceTree = "<group>"; };
-		D5BF829D2B4F83D100C02D17 /* overwrite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = overwrite.m; sourceTree = "<group>"; };
-		D5BF82B02B4FFAF600C02D17 /* files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = files; sourceTree = "<group>"; };
-		D5BF82B52B500A4C00C02D17 /* endpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endpoint.h; sourceTree = "<group>"; };
-		D5BF82B62B500A4C00C02D17 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
-		D5BF82B72B500A4C00C02D17 /* listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = listener.h; sourceTree = "<group>"; };
-		D5BF82B82B500A4C00C02D17 /* availability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = availability.h; sourceTree = "<group>"; };
-		D5BF82B92B500A4C00C02D17 /* rich_error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rich_error.h; sourceTree = "<group>"; };
-		D5BF82BA2B500A4C00C02D17 /* xpc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpc.h; sourceTree = "<group>"; };
-		D5BF82BB2B500A4C00C02D17 /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = session.h; sourceTree = "<group>"; };
-		D5BF82BC2B500A4C00C02D17 /* xpc_connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xpc_connection.h; sourceTree = "<group>"; };
-		D5BF82BD2B500A4C00C02D17 /* activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = activity.h; sourceTree = "<group>"; };
-		D5BF82BE2B500A4C00C02D17 /* launch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = launch.h; sourceTree = "<group>"; };
-		D5BF82BF2B500A4C00C02D17 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base.h; sourceTree = "<group>"; };
 		D5BF82C12B50242F00C02D17 /* libdimentio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libdimentio.h; sourceTree = "<group>"; };
 		D5BF82C22B50242F00C02D17 /* patchfinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = patchfinder.m; sourceTree = "<group>"; };
 		D5BF82C32B50242F00C02D17 /* libdimentio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libdimentio.c; sourceTree = "<group>"; };
@@ -257,7 +240,6 @@
 				97EE5C732B5DA7ED0066184E /* device.h */,
 				97EE5C742B5DA80E0066184E /* device.c */,
 				D5BF82C02B50242F00C02D17 /* kpf */,
-				D5BF829B2B4F83D100C02D17 /* overwrite */,
 				D5D2DDB92B48341400B62BED /* libgrabkernel */,
 				86A48A882B2B4A0A005D1639 /* libkfd */,
 				65D806E32B58DBE400823CC4 /* TSUtil.m */,
@@ -287,7 +269,6 @@
 				97EE5C762B5E05040066184E /* kallocation.m */,
 				97A312392B5EFFAD004773EB /* kallocation.h */,
 				97F6056F2B5F18B300A71C74 /* kernelinclude.h */,
-				97DD2ED92B644E6600930808 /* extractionbridge.swift */,
 			);
 			path = "kfd-meow";
 			sourceTree = "<group>";
@@ -432,35 +413,6 @@
 				97A13ED32B63E1E300BFB6FC /* ZipArchive.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		D5BF829B2B4F83D100C02D17 /* overwrite */ = {
-			isa = PBXGroup;
-			children = (
-				D5BF82B42B500A4C00C02D17 /* xpc */,
-				D5BF82B02B4FFAF600C02D17 /* files */,
-				D5BF829C2B4F83D100C02D17 /* overwrite.h */,
-				D5BF829D2B4F83D100C02D17 /* overwrite.m */,
-			);
-			path = overwrite;
-			sourceTree = "<group>";
-		};
-		D5BF82B42B500A4C00C02D17 /* xpc */ = {
-			isa = PBXGroup;
-			children = (
-				D5BF82B52B500A4C00C02D17 /* endpoint.h */,
-				D5BF82B62B500A4C00C02D17 /* debug.h */,
-				D5BF82B72B500A4C00C02D17 /* listener.h */,
-				D5BF82B82B500A4C00C02D17 /* availability.h */,
-				D5BF82B92B500A4C00C02D17 /* rich_error.h */,
-				D5BF82BA2B500A4C00C02D17 /* xpc.h */,
-				D5BF82BB2B500A4C00C02D17 /* session.h */,
-				D5BF82BC2B500A4C00C02D17 /* xpc_connection.h */,
-				D5BF82BD2B500A4C00C02D17 /* activity.h */,
-				D5BF82BE2B500A4C00C02D17 /* launch.h */,
-				D5BF82BF2B500A4C00C02D17 /* base.h */,
-			);
-			path = xpc;
 			sourceTree = "<group>";
 		};
 		D5BF82C02B50242F00C02D17 /* kpf */ = {
@@ -614,13 +566,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5D2DDB82B4832E600B62BED /* fugufinder.swift in Sources */,
-				D5BF82AC2B4FF7E200C02D17 /* overwrite.m in Sources */,
 				D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */,
 				D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */,
 				D5123A022B4C40B10040BF9D /* pplrw.m in Sources */,
 				D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */,
 				D5D2DDDB2B483B1800B62BED /* libcurl.a in Sources */,
-				97DD2EDA2B644E6600930808 /* extractionbridge.swift in Sources */,
 				D5D2DDDC2B483B1800B62BED /* libfragmentzip.a in Sources */,
 				65D806E42B58DBE400823CC4 /* TSUtil.m in Sources */,
 				D56FB6A02B499B0C00A48CA4 /* kfd-meow.swift in Sources */,

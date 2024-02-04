@@ -1,0 +1,52 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "patchfinderutils",
+          "kind" : "fileSystem",
+          "location" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils",
+          "name" : "PatchfinderUtils"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils"
+        },
+        "subpath" : "patchfinderutils"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "swiftmacho",
+          "kind" : "fileSystem",
+          "location" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO",
+          "name" : "SwiftMachO"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO"
+        },
+        "subpath" : "swiftmacho"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "swiftutils",
+          "kind" : "fileSystem",
+          "location" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils",
+          "name" : "SwiftUtils"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils"
+        },
+        "subpath" : "swiftutils"
+      }
+    ]
+  },
+  "version" : 6
+}

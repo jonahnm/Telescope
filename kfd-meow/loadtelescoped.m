@@ -364,6 +364,33 @@ void gimmeRoot(void) {
         dma_writevirt32(cr_posix_p + 0,0x0); // yummy root
     });
 }
+uint64_t getProc(pid_t pid) {
+    uint64_t proc = get_kernel_proc();
+    while(true) {
+        if(kread32_kfd(proc + 0x60) == pid) {
+            return proc;
+        }
+        proc = kread64_kfd(proc + 0x8);
+        if(!proc) {
+            return 0;
+        }
+    }
+    return 0;
+}
+#define CS_DEBUGGED         0x10000000  /* process is currently or has previously been debugged and allowed to run with invalid pages */
+void setLaunchdasDebugged(void) {
+    uint64_t proc = getProc(1);
+    uint64_t proc_ro = kread64_kfd(proc + 0x18);
+    uint32_t csflags = kread32_kfd(proc_ro + 0x1c);
+    csflags = (csflags | CS_DEBUGGED | CS_GET_TASK_ALLOW) & ~(CS_RESTRICT | CS_HARD | CS_KILL);
+    AppendLog(@"Setting launchd as debugged now!");
+    sleep(1);
+    dma_perform(^{
+        dma_writevirt32(proc_ro + 0x1c, csflags);
+    });
+    AppendLog(@"Set launchd as debugged!");
+    sleep(1);
+}
 void takeRootAway(void) {
     uint64_t proc_ro = kread64_ptr_kfd(get_current_proc() + 0x18);
     uint64_t ucreds  = kread64_ptr_kfd(proc_ro + 0x20);
@@ -692,6 +719,7 @@ void jb(void) {
     bspermfixer();
     NSLog(@"Fixed bootstrap permissions!");
     AppendLog(@"Fixed bootstrap permissions!");
+    setLaunchdasDebugged();
     kclose(_kfd);
     sleep(2);
     /*
@@ -706,7 +734,27 @@ void jb(void) {
     util_runCommand("/var/jb/baseboin/opainject","1","/var/jb/baseboin/Jupiter.dylib",NULL);
     //util_runCommand([prebootPath(@"baseboin/Jupiter") cStringUsingEncoding:NSUTF8StringEncoding],"");
     NSLog(@"Loaded Jupiter!");
+    xpc_object_t message;
+    xpc_object_t reply;
+    message = xpc_dictionary_create_empty();
+    xpc_dictionary_set_bool(message, "JAILBREAK", true);
+    xpc_dictionary_set_uint64(message, "id", 11);
+    xpc_dictionary_set_uint64(message, "subsystem", 3);
+    xpc_dictionary_set_uint64(message, "handle", 0);
+    int failcount = 0;
+tryagain:
+    reply = launchd_xpc_send_message(message);
+    if(!reply) {
+        if(failcount >= 15) {
+            return; // give up.
+        }
+        AppendLog(@"Failed to kopen in launchd, try again...");
+        usleep(500);
+        failcount++;
+        goto tryagain;
+    }
     //handoff();
+    /*
     xpc_object_t message;
     xpc_object_t reply;
     message = xpc_dictionary_create_empty();
@@ -728,6 +776,7 @@ void jb(void) {
     }
     takeRootAway();
     kclose(_kfd);
+     */
 }
 
 UInt64 helloworldtest(void) {

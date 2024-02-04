@@ -1,0 +1,4 @@
+module SwiftMachO {
+    header "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/SwiftMachO-Swift.h"
+    requires objc
+}

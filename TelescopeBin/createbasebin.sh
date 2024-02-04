@@ -24,8 +24,8 @@ cd Jupiter
 make clean
 make
 cp .theos/obj/debug/Jupiter.dylib ../baseboin/
+sudo install_name_tool -change /Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate /var/jb/baseboin/libellekit.dylib ../baseboin/Jupiter.dylib
 codesign -s - ../baseboin/Jupiter.dylib
-ldid -Sent.xml ../baseboin/Jupiter.dylib
 chmod +x ../baseboin/Jupiter.dylib
 cd ../
 
@@ -36,6 +36,7 @@ cp opainject baseboin/
 chmod +x baseboin/opainject
 cp launchctl baseboin/
 chmod +x baseboin/launchctl
+cp libellekit.dylib baseboin/
 cp -r LaunchDaemons baseboin/
 sudo chown -hR root:wheel baseboin
 arch=$(uname -m)

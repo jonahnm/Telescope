@@ -1,1 +1,4 @@
-{}
+{
+    "swift.searchSubfoldersForPackages": true,
+    "swift.backgroundCompilation": false
+}

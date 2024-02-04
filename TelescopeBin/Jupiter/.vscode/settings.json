@@ -1,0 +1,10 @@
+{
+    "swift.searchSubfoldersForPackages": true,
+    "swift.sourcekit-lsp.serverPath": "/usr/bin/sourcekit-lsp",
+    "swift.sourcekit-lsp.supported-languages": [
+        "swift",
+        "objective-c"
+    ],
+    "swift.backgroundCompilation": false,
+    "sourcekit-lsp.toolchainPath": "/usr/bin/"
+}

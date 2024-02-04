@@ -1,0 +1,1279 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.JupiterPatchfinder-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "importPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Package.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/AArch64Instr.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/Kernel.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/MachO.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/PatchfinderSegment.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Package.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/ChainedFixups.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/FAT/FAT.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/CSLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/ChainedFixupsLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/DSymTabLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/FilesetEntryLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/LoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/MainLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/OpaqueLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Segment64LoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/SymTabLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/LoadCommandType.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Flags.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Type.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/VMProt.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UUIDLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UnixThreadLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachO.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOError.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFiletype.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFlags.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOMagic.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/SymbolTable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/dyld/SharedCache.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/extensions.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Package.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/Data.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/String.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/ptrauth.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/require.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/patchfind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.swiftmodule"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "JupiterPatchfinder",
+      "moduleOutputPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.swiftmodule",
+      "objects" : [
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/PatchfinderUtils/Package.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/PatchfinderUtils/Sources/PatchfinderUtils/AArch64Instr.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/PatchfinderUtils/Sources/PatchfinderUtils/Kernel.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/PatchfinderUtils/Sources/PatchfinderUtils/MachO.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/PatchfinderUtils/Sources/PatchfinderUtils/PatchfinderSegment.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Package.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/ChainedFixups.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/FAT/FAT.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/CSLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/ChainedFixupsLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/DSymTabLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/FilesetEntryLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/LoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/MainLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/OpaqueLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Segment64LoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/SymTabLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/LoadCommandType.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Flags.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Type.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/VMProt.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UUIDLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UnixThreadLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/MachO.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/MachOError.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/MachOFiletype.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/MachOFlags.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/MachOMagic.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/SymbolTable.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/dyld/SharedCache.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/extensions.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftUtils/Package.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftUtils/Sources/SwiftUtils/Extensions/Data.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftUtils/Sources/SwiftUtils/Extensions/String.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftUtils/Sources/SwiftUtils/ptrauth.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftUtils/Sources/SwiftUtils/require.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/patchfind.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-apple-macosx12.0",
+        "-swift-version",
+        "5",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-g",
+        "-j16",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/JupiterPatchfinder-Swift.h",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC"
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/PatchfinderUtils/Package.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/PatchfinderUtils/Sources/PatchfinderUtils/AArch64Instr.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/PatchfinderUtils/Sources/PatchfinderUtils/Kernel.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/PatchfinderUtils/Sources/PatchfinderUtils/MachO.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/PatchfinderUtils/Sources/PatchfinderUtils/PatchfinderSegment.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Package.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/ChainedFixups.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/FAT/FAT.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/CSLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/ChainedFixupsLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/DSymTabLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/FilesetEntryLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/LoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/MainLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/OpaqueLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Segment64LoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/SymTabLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/LoadCommandType.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Flags.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Type.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/VMProt.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UUIDLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UnixThreadLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/MachO.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/MachOError.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/MachOFiletype.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/MachOFlags.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/MachOMagic.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/MachO/SymbolTable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/dyld/SharedCache.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftMachO/Sources/SwiftMachO/extensions.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftUtils/Package.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftUtils/Sources/SwiftUtils/Extensions/Data.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftUtils/Sources/SwiftUtils/Extensions/String.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftUtils/Sources/SwiftUtils/ptrauth.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/SwiftUtils/Sources/SwiftUtils/require.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/patchfind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.swiftmodule"
+        }
+      ],
+      "sources" : [
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Package.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/AArch64Instr.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/Kernel.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/MachO.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/PatchfinderSegment.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Package.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/ChainedFixups.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/FAT/FAT.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/CSLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/ChainedFixupsLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/DSymTabLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/FilesetEntryLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/LoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/MainLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/OpaqueLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Segment64LoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/SymTabLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/LoadCommandType.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Flags.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Type.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/VMProt.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UUIDLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UnixThreadLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachO.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOError.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFiletype.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFlags.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOMagic.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/SymbolTable.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/dyld/SharedCache.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/extensions.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Package.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/Data.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/String.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/ptrauth.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/require.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/patchfind.swift"
+      ],
+      "tempsPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.PatchfinderUtils-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "importPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/AArch64Instr.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/Kernel.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/MachO.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/PatchfinderSegment.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.swiftmodule"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "PatchfinderUtils",
+      "moduleOutputPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.swiftmodule",
+      "objects" : [
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build/AArch64Instr.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build/Kernel.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build/MachO.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build/PatchfinderSegment.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-apple-macosx11.0",
+        "-swift-version",
+        "5",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-g",
+        "-j16",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build/PatchfinderUtils-Swift.h",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC"
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build/AArch64Instr.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build/Kernel.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build/MachO.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build/PatchfinderSegment.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.swiftmodule"
+        }
+      ],
+      "sources" : [
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/AArch64Instr.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/Kernel.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/MachO.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/PatchfinderSegment.swift"
+      ],
+      "tempsPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.SwiftMachO-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "importPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/ChainedFixups.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/FAT/FAT.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/CSLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/ChainedFixupsLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/DSymTabLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/FilesetEntryLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/LoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/MainLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/OpaqueLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Segment64LoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/SymTabLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/LoadCommandType.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Flags.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Type.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/VMProt.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UUIDLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UnixThreadLoadCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachO.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOError.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFiletype.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFlags.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOMagic.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/SymbolTable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/dyld/SharedCache.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/extensions.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.swiftmodule"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "SwiftMachO",
+      "moduleOutputPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.swiftmodule",
+      "objects" : [
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/ChainedFixups.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/FAT/FAT.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/CSLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/ChainedFixupsLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/DSymTabLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/FilesetEntryLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/LoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/MainLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/OpaqueLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/Segment64LoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/SymTabLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/Types/LoadCommandType.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/Types/Section64Flags.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/Types/Section64Type.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/Types/VMProt.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/UUIDLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/UnixThreadLoadCommand.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/MachO.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/MachOError.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/MachOFiletype.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/MachOFlags.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/MachOMagic.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/SymbolTable.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/dyld/SharedCache.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/extensions.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-apple-macosx10.13",
+        "-swift-version",
+        "5",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-g",
+        "-j16",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/SwiftMachO-Swift.h",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC"
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/ChainedFixups.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/FAT/FAT.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/CSLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/ChainedFixupsLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/DSymTabLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/FilesetEntryLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/LoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/MainLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/OpaqueLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/Segment64LoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/SymTabLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/Types/LoadCommandType.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/Types/Section64Flags.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/Types/Section64Type.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/Types/VMProt.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/UUIDLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/LoadCommands/UnixThreadLoadCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/MachO.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/MachOError.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/MachOFiletype.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/MachOFlags.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/MachOMagic.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/MachO/SymbolTable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/dyld/SharedCache.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/extensions.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.swiftmodule"
+        }
+      ],
+      "sources" : [
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/ChainedFixups.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/FAT/FAT.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/CSLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/ChainedFixupsLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/DSymTabLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/FilesetEntryLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/LoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/MainLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/OpaqueLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Segment64LoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/SymTabLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/LoadCommandType.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Flags.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Type.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/VMProt.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UUIDLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UnixThreadLoadCommand.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachO.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOError.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFiletype.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFlags.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOMagic.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/SymbolTable.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/dyld/SharedCache.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/extensions.swift"
+      ],
+      "tempsPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.SwiftUtils-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "importPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/Data.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/String.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/ptrauth.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/require.swift"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "SwiftUtils",
+      "moduleOutputPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.swiftmodule",
+      "objects" : [
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build/Extensions/Data.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build/Extensions/String.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build/ptrauth.swift.o",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build/require.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-apple-macosx10.13",
+        "-swift-version",
+        "5",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-g",
+        "-j16",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build/SwiftUtils-Swift.h",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC"
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build/Extensions/Data.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build/Extensions/String.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build/ptrauth.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build/require.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.swiftmodule"
+        }
+      ],
+      "sources" : [
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/Data.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/String.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/ptrauth.swift",
+        "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/require.swift"
+      ],
+      "tempsPath" : "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "JupiterPatchfinder" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "JupiterPatchfinder",
+      "-incremental",
+      "-c",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Package.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/AArch64Instr.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/Kernel.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/MachO.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/PatchfinderSegment.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Package.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/ChainedFixups.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/FAT/FAT.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/CSLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/ChainedFixupsLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/DSymTabLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/FilesetEntryLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/LoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/MainLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/OpaqueLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Segment64LoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/SymTabLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/LoadCommandType.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Flags.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Type.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/VMProt.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UUIDLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UnixThreadLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachO.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOError.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFiletype.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFlags.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOMagic.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/SymbolTable.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/dyld/SharedCache.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/extensions.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Package.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/Data.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/String.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/ptrauth.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/require.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/patchfind.swift",
+      "-I",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug",
+      "-target",
+      "x86_64-apple-macosx12.0",
+      "-swift-version",
+      "5",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-g",
+      "-j16",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/JupiterPatchfinder.build/JupiterPatchfinder-Swift.h",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "PatchfinderUtils" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "PatchfinderUtils",
+      "-incremental",
+      "-c",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/AArch64Instr.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/Kernel.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/MachO.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/PatchfinderUtils/Sources/PatchfinderUtils/PatchfinderSegment.swift",
+      "-I",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug",
+      "-target",
+      "x86_64-apple-macosx11.0",
+      "-swift-version",
+      "5",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-g",
+      "-j16",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/PatchfinderUtils.build/PatchfinderUtils-Swift.h",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "SwiftMachO" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "SwiftMachO",
+      "-incremental",
+      "-c",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/ChainedFixups.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/FAT/FAT.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/CSLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/ChainedFixupsLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/DSymTabLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/FilesetEntryLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/LoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/MainLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/OpaqueLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Segment64LoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/SymTabLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/LoadCommandType.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Flags.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/Section64Type.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/Types/VMProt.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UUIDLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/LoadCommands/UnixThreadLoadCommand.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachO.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOError.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFiletype.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOFlags.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/MachOMagic.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/MachO/SymbolTable.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/dyld/SharedCache.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftMachO/Sources/SwiftMachO/extensions.swift",
+      "-I",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug",
+      "-target",
+      "x86_64-apple-macosx10.13",
+      "-swift-version",
+      "5",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-g",
+      "-j16",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftMachO.build/SwiftMachO-Swift.h",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "SwiftUtils" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "SwiftUtils",
+      "-incremental",
+      "-c",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/Data.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/Extensions/String.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/ptrauth.swift",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/SwiftUtils/Sources/SwiftUtils/require.swift",
+      "-I",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug",
+      "-target",
+      "x86_64-apple-macosx10.13",
+      "-swift-version",
+      "5",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-g",
+      "-j16",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/sora/Telescope/TelescopeBin/Jupiter/Swift/.build/x86_64-apple-macosx/debug/SwiftUtils.build/SwiftUtils-Swift.h",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "JupiterPatchfinder" : [
+      "PatchfinderUtils",
+      "SwiftMachO",
+      "SwiftUtils"
+    ],
+    "PatchfinderUtils" : [
+      "SwiftMachO",
+      "SwiftUtils"
+    ],
+    "SwiftMachO" : [
+      "SwiftUtils"
+    ],
+    "SwiftUtils" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  }
+}
