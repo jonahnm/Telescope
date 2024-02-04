@@ -1,10 +1,12 @@
 #include <Foundation/NSObjCRuntime.h>
 #include <mach-o/dyld.h>
+#include <mach-o/loader.h>
 #include <mach/kern_return.h>
 #include <mach/mach_error.h>
 #include <mach/mach_init.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/_types/_mach_port_t.h>
 #include <IOSurface/IOSurfaceRef.h>
 #include "../_shared/xpc/xpc.h"
@@ -21,6 +23,7 @@
 #include "trustcache.h"
 #include "boot_info.h"
 #include "fun/krw.h"
+#include <mach-o/getsect.h>
 #import <Jupiter-Swift.h>
 #ifdef __cplusplus
 extern "C" {
@@ -136,6 +139,7 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
 }
 */
 bool server_hook(xpc_object_t msg) {
+    JupiterLogDebug("Hook called!");
     xpc_type_t msgtype = xpc_get_type(msg);
     if(msgtype == XPC_TYPE_DICTIONARY) {
         if(!xpc_dictionary_get_bool(msg, "JAILBREAK")) {
@@ -184,9 +188,19 @@ __attribute__((constructor)) static void initializer(void)
         sleep(2);
         return; // Will cause a panic if I continue.
     }
+    const struct segment_command_64 *command = getsegbyname("__TEXT");
+    uint64_t staticbaseaddr = command->vmaddr;
+    uint64_t slide = 0;
+    for(uint32_t i = 0; i < _dyld_image_count(); i++) {
+        if(strcmp(_dyld_get_image_name(i), "/sbin/launchd") == 0) {
+                slide = _dyld_get_image_vmaddr_slide(i);
+                break;
+        }
+    }
+    uint64_t actualbaseaddr = staticbaseaddr + slide;
     JupiterLogDebug("Hooking address: %p",addr);
     sleep(1);
-    void *slidaddr = addr + _dyld_get_image_vmaddr_slide(0);
+    void *slidaddr = addr + actualbaseaddr;
     JupiterLogDebug("Slid hooking address: %p",slidaddr);
     sleep(1);
     initme(slidaddr);

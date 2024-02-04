@@ -120,8 +120,10 @@ xpc_object_t launchd_xpc_send_message(xpc_object_t xdict) {
     struct xpc_global_data *globalData = pipePtr;
     xpc_object_t pipe = globalData->xpc_bootstrap_pipe;
     if (pipe) {
-      int err = xpc_pipe_routine_with_flags(pipe, xdict, &xreply, 0);
+      int err = xpc_pipe_routine(pipe, xdict, &xreply);
       if (err != 0) {
+        AppendLog(@"Error on sending message to launchd! %s",xpc_strerror(err));
+          usleep(500);
         return nil;
       }
     }
