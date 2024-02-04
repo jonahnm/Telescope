@@ -186,5 +186,8 @@ __attribute__((constructor)) static void initializer(void)
     }
     JupiterLogDebug("Hooking address: %p",addr);
     sleep(1);
-    initme(addr);
+    void *slidaddr = addr + _dyld_get_image_vmaddr_slide(0);
+    JupiterLogDebug("Slid hooking address: %p",slidaddr);
+    sleep(1);
+    initme(slidaddr);
 }
