@@ -8,10 +8,10 @@
 #import <uuid/uuid.h>
 #import "boot_info.h"
 #import "JupiterTCPage.h"
-#import "kallocation.h"
 #import "trustcache.h"
+#import <Jupiter-Swift.h>
 // Thanks KpwnZ! Couldn't have done this part without your help.
-#define ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE 0x2000
+#define ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE 0x4000
 NSMutableArray<NSNumber*> *gTCUnusedAllocations = nil;
 NSMutableArray<JupiterTCPage *> *gTCPages = nil;
 BOOL tcPagesRecover(void) {
@@ -86,7 +86,7 @@ BOOL tcPagesRecover(void) {
         kaddr = [gTCUnusedAllocations.firstObject unsignedLongLongValue];
         [gTCUnusedAllocations removeObjectAtIndex:0];
     } else {
-        kaddr = (uint64_t)kalloc_msg(ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE*2);
+        kaddr = [kallocation kallocWithSize:ALLOCATED_DYNAMIC_TRUSTCACHE_SIZE]; // Ignore any errors in IDE here, it's just clangd being annoying.
     }
     if(kaddr == 0)
         return NO;

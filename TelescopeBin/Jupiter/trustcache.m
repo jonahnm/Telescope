@@ -1,5 +1,4 @@
 #include "JupiterTCPage.h"
-#include "kallocation.h"
 #include "fun/ppl/pplrw.h"
 #include "fun/krw.h"
 #include "trustcache_structs.h"
@@ -15,6 +14,7 @@
 #include <IOKit/IOKitLib.h>
 #import "boot_info.h"
 #import "trustcache.h"
+#import <Jupiter-Swift.h>
 //#import "signatures.h"
 #import "proc.h"
 #import "macho.h"
@@ -117,7 +117,7 @@ uint64_t staticTrustCacheUploadFile(trustcache_file *filetoUpload,size_t fileSiz
     if(expectedSize != fileSize)
         return 0;
     uint64_t mapSize = sizeof(trustcache_module) + fileSize;
-    uint64_t mapKaddr = (uint64_t)kalloc_msg(0x1000);
+    uint64_t mapKaddr = [kallocation kallocWithSize:mapSize]; // Ignore any errors in IDE here, it's just clangd being annoying.
     if(!mapKaddr)
         return 0;
     if(outMapSize)

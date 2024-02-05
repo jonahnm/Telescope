@@ -101,33 +101,14 @@ struct xpc_global_data {
 };
 
 extern struct _os_alloc_once_s _os_alloc_once_table[];
-extern void *_os_alloc_once(struct _os_alloc_once_s *slot, size_t sz,
-                            os_function_t init);
 
 xpc_object_t launchd_xpc_send_message(xpc_object_t xdict) {
-  void *pipePtr = NULL;
-
-  if (_os_alloc_once_table[1].once == -1) {
-    pipePtr = _os_alloc_once_table[1].ptr;
-  } else {
-    pipePtr = _os_alloc_once(&_os_alloc_once_table[1], 472, NULL);
-    if (!pipePtr)
-      _os_alloc_once_table[1].once = -1;
-  }
-
+    xpc_object_t bootstrap_pipe = ((struct xpc_global_data *)_os_alloc_once_table[1].ptr)->xpc_bootstrap_pipe;
   xpc_object_t xreply = nil;
-  if (pipePtr) {
-    struct xpc_global_data *globalData = pipePtr;
-    xpc_object_t pipe = xpc_pipe_create_from_port(bootstrap_port, 4);
-    if (pipe) {
-      int err = xpc_pipe_routine(pipe, xdict, &xreply);
-      if (err != 0) {
-        AppendLog(@"Error on sending message to launchd! %s",xpc_strerror(err));
-          usleep(500);
-        return nil;
-      }
+  int err = _xpc_pipe_interface_routine(bootstrap_pipe, 0, xdict, &xreply, 0);
+    if(err != 0) {
+        AppendLog(@"Failed to send launchd XPC message: %s",get_st)
     }
-  }
   return xreply;
 }
 
@@ -202,8 +183,9 @@ void *alloc(UInt64 size) {
     vm_allocate(mach_task_self(), &toret, size, VM_FLAGS_ANYWHERE | VM_FLAGS_PERMANENT);
     return (void*)toret;
 }
-uint64_t loadtc(NSString *path) {
+uint64_t *loadtc(NSString *path) {
     NSString  *str = path;
+    uint64_t *ret = malloc(sizeof(uint64_t)*2);
     NSData *data = [NSData dataWithContentsOfFile:str];
     theobjcbridge = [[objcbridge alloc] init];
     UInt64 pmap_image4_trust_caches =  [theobjcbridge find_pmap_image4_trust_caches]; //WOOO
@@ -266,7 +248,9 @@ uint64_t loadtc(NSString *path) {
 done:
     sleep(1);
     AppendLog(@"TrustCache Successfully loaded!");
-    return (uint64_t)mem;
+    ret[0] = (uint64_t)mem;
+    ret[1] = (uint64_t)payload;
+    return ret;
 }
 NSString *bootmanifesthash(void) {
     io_registry_entry_t entry = IORegistryEntryFromPath(kIOMasterPortDefault, "IODeviceTree:/chosen");
@@ -578,11 +562,11 @@ void untar(const char *tarpath,const char *target,bool isbs) {
     NSLog(@"Untarred!");
     AppendLog(@"Untarred %s",tarpath);
 }
-void bootstrap(void) {
+uint64_t *bootstrap(void) {
     //kopen(2,false);
     NSString *basebintc = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/basebin.tc"];
     NSString *tartc = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar.tc"];
-    uint64_t basebinkaddr = loadtc(basebintc);
+    uint64_t *basebinkaddr = loadtc(basebintc);
     sleep(1);
     //loadtc(tartc);
     //NSString *tarbinzip = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/tar.zip"];
@@ -682,11 +666,22 @@ void bootstrap(void) {
             [boot_infoconts writeToURL:bootinfoURL atomically:YES];
             
     }
+    return basebinkaddr;
 }
 // This won't work atm as I need to add Jupiter's trustcache functions.
 void finbootstrap(void) {
     util_runCommand("/var/jb/bin/sh", "/var/jb/prep_bootstrap.sh",NULL);
     util_runCommand("/var/jb/usr/bin/dpkg", "-i",[[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Sileo.deb"] cStringUsingEncoding:NSUTF8StringEncoding],NULL);
+}
+xpc_object_t sendLaunchdJupiterMessage(xpc_object_t msg) {
+    if(xpc_get_type(msg) != XPC_TYPE_DICTIONARY) {
+        return NULL;
+    }
+    xpc_dictionary_set_bool(msg, "JAILBREAK", true);
+    xpc_dictionary_set_uint64(msg, "subsystem", 3);
+    xpc_dictionary_set_uint64(msg, "handle", 0);
+    xpc_dictionary_set_uint64(msg, "type", 7);
+    return launchd_xpc_send_message(msg);
 }
 /*
 void handoff(void) {
@@ -715,7 +710,7 @@ void jb(void) {
     gimmeRoot();
     setenv("PATH", "/sbin:/bin:/usr/sbin:/usr/bin:/var/jb/sbin:/var/jb/bin:/var/jb/usr/sbin:/var/jb/usr/bin", 1);
     setenv("TERM","xterm-256color",1);
-    bootstrap();
+    uint64_t *tcallocation = bootstrap();
     NSLog(@"Extracted boostrap!");
     AppendLog(@"Extracted bootstrap!");
     bspermfixer();
@@ -738,23 +733,60 @@ void jb(void) {
     NSLog(@"Loaded Jupiter!");
     xpc_object_t message;
     xpc_object_t reply;
+    sleep(2);
     message = xpc_dictionary_create_empty();
-    xpc_dictionary_set_bool(message, "JAILBREAK", true);
-    xpc_dictionary_set_uint64(message, "id", 11);
-    xpc_dictionary_set_uint64(message, "subsystem", 3);
-    xpc_dictionary_set_uint64(message, "handle", 0);
-    int failcount = 0;
-tryagain:
-    reply = launchd_xpc_send_message(message);
+    xpc_dictionary_set_uint64(message, "id", 1);
+    reply = sendLaunchdJupiterMessage(message);
     if(!reply) {
-        if(failcount >= 15) {
-            return; // give up.
-        }
-        AppendLog(@"Failed to kopen in launchd, try again...");
-        usleep(500);
-        failcount++;
-        goto tryagain;
+        AppendLog(@"Failed to ping launchd's Jupiter...");
+        AppendLog(@"App will close in 5 seconds....");
+        sleep(5);
+        exit(EXIT_FAILURE);
     }
+    uint64_t exceptionPlaceAddr = xpc_dictionary_get_uint64(reply, "ret");
+    message = xpc_dictionary_create_empty();
+    xpc_dictionary_set_uint64(message, "id", 11);
+    reply = sendLaunchdJupiterMessage(message);
+    if(!reply) {
+        AppendLog(@"Kopen has failed in launchd, reboot and try again.");
+        AppendLog(@"App will close in 5 seconds...");
+        sleep(5);
+        exit(EXIT_FAILURE);
+    }
+    message = xpc_dictionary_create_empty();
+    int *fds0 = [kallocation getpipeWithWhereis:tcallocation[0]];
+    int *fds1 = [kallocation getpipeWithWhereis:tcallocation[1]];
+    xpc_object_t fd00 = xpc_fd_create(fds0[0]);
+    xpc_object_t fd01 = xpc_fd_create(fds0[1]);
+    xpc_object_t fd10 = xpc_fd_create(fds1[0]);
+    xpc_object_t fd11 = xpc_fd_create(fds1[1]);
+    xpc_dictionary_set_value(message, "fd0", fd00);
+    xpc_dictionary_set_value(message, "fd1", fd01);
+    xpc_dictionary_set_uint64(message, "where", tcallocation[0]);
+    xpc_dictionary_set_uint64(message, "id", 12);
+    reply = sendLaunchdJupiterMessage(message);
+    if(!reply) {
+        AppendLog(@"Failed to pass a kalloc pipe to launchd.");
+        exit(EXIT_FAILURE);
+    }
+    // Closing them now shouldn't free the allocation as launchd should now have a file descriptor to the pipe, and pipes only free when they have no open file descriptors.
+    close(fds0[0]);
+    close(fds0[1]);
+    free(fds0);
+    message = xpc_dictionary_create_empty();
+    xpc_dictionary_set_value(message, "fd0", fd10);
+    xpc_dictionary_set_value(message, "fd1", fd11);
+    xpc_dictionary_set_uint64(message, "where", tcallocation[1]);
+    xpc_dictionary_set_uint64(message, "id", 12);
+    reply = sendLaunchdJupiterMessage(message);
+    if(!reply) {
+        AppendLog(@"Failed to pass a kalloc pipe to launchd.");
+        exit(EXIT_FAILURE);
+    }
+    close(fds1[0]);
+    close(fds1[1]);
+    free(fds1);
+    free(tcallocation);
     //handoff();
     /*
     xpc_object_t message;

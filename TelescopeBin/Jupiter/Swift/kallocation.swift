@@ -25,17 +25,8 @@ import Foundation
         kallocPipes.append((pipeBuf,(newPipe[0],newPipe[1])))
         return pipeBuf
     }
-    @objc public static func getpipe(whereis: UInt64) -> UnsafeMutablePointer<Int32>? {
-        for i in 1..<kallocPipes.count {
-            let currentPipe = kallocPipes[i]
-            if currentPipe.0 == whereis {
-                let ret: UnsafeMutablePointer<Int32> = UnsafeMutablePointer<Int32>.allocate(capacity: 2)
-                ret[0] = currentPipe.1.0
-                ret[1] = currentPipe.1.1
-                return ret
-            }
-        }
-        return nil
+    @objc public static func addPipe(allocLoc: UInt64,pipe0: Int32,pipe1: Int32) {
+        kallocPipes.append((allocLoc,(pipe0,pipe1)))
     }
     @objc public static func kfree(whereis: UInt64) {
         for i in 1..<kallocPipes.count {

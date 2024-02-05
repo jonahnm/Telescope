@@ -20,6 +20,7 @@ typedef enum {
     JUPITER_MSG_REBUILD_TRUSTCACHE = 9,
     JUPITER_MSG_TELESCOPE_EXCLUSIVE_HANDOFF = 10,
     JUPITER_MSG_KOPEN = 11,
+    JUPITER_MSG_PASS_PIPE = 12,
 } JUPITER_MESSAGE_NAME;
 bool server_hook(xpc_object_t msg);
 void initme(void *addr);

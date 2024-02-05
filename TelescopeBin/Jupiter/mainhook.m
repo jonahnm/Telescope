@@ -138,6 +138,9 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
     }
 }
 */
+void exceptionPlace() {
+    do_kopen(512, 2, 1, 1)
+}
 bool server_hook(xpc_object_t msg) {
     JupiterLogDebug("Hook called!");
     xpc_type_t msgtype = xpc_get_type(msg);
@@ -148,11 +151,19 @@ bool server_hook(xpc_object_t msg) {
         xpc_object_t reply = xpc_dictionary_create_reply(msg);
         uint64_t id = xpc_dictionary_get_uint64(msg, "id");
         if(id == JUPITER_MSG_POLL_IS_READY) {
-            xpc_dictionary_set_int64(reply, "ret", 1);
+            xpc_dictionary_set_uint64(reply, "ret", (uint64_t)exceptionPlace);
         }
         if(id == JUPITER_MSG_KOPEN) {
             do_kopen(512, 2, 1, 1);
             xpc_dictionary_set_int64(reply, "ret",1);
+        }
+        if(id == JUPITER_MSG_PASS_PIPE) {
+            uint64_t where = xpc_dictionary_get_uint64(msg, "where");
+            int pipefds[2];
+            pipefds[0] = xpc_fd_dup(xpc_dictionary_get_value(msg,"fd0"));
+            pipefds[1] = xpc_fd_dup(xpc_dictionary_get_value(msg, "fd1"));
+            [kallocation addPipe: where,pipefds[0],pipefds[1]];
+            xpc_dictionary_set_int64(reply, "ret", 1);
         }
         if(reply) {
             int err = xpc_pipe_routine_reply(reply);
