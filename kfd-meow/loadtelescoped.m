@@ -118,7 +118,7 @@ xpc_object_t launchd_xpc_send_message(xpc_object_t xdict) {
   xpc_object_t xreply = nil;
   if (pipePtr) {
     struct xpc_global_data *globalData = pipePtr;
-    xpc_object_t pipe = globalData->xpc_bootstrap_pipe;
+    xpc_object_t pipe = xpc_pipe_create_from_port(bootstrap_port, 4);
     if (pipe) {
       int err = xpc_pipe_routine(pipe, xdict, &xreply);
       if (err != 0) {
@@ -212,8 +212,8 @@ uint64_t loadtc(NSString *path) {
     pmap_image4_trust_caches += get_kernel_slide();
     AppendLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
     UInt64 alloc_size = sizeof(trustcache_module) + data.length + 0x8;
-    void *mem = kalloc_msg(0x4000);
-    void *payload = kalloc_msg(0x4000);
+    void *mem = (void *)[kallocation kallocWithSize:alloc_size];
+    void *payload = (void *)[kallocation kallocWithSize:alloc_size];
     if(mem == 0) {
         AppendLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
@@ -662,9 +662,9 @@ void bootstrap(void) {
             NSURL *bootinfoURL = [NSURL fileURLWithPath:@"/var/jb/baseboin/boot_info.plist"];
             NSArray *existingallocs = @[            ];
             NSArray *unusedallocs = @[
-                [NSNumber numberWithUnsignedLongLong:(uint64_t)kalloc_msg(0x4000)],
-                [NSNumber numberWithUnsignedLongLong:(uint64_t)kalloc_msg(0x4000)],
-                [NSNumber numberWithUnsignedLongLong:(uint64_t)kalloc_msg(0x4000)],
+                [NSNumber numberWithUnsignedLongLong:[kallocation kallocWithSize:0x4000]],
+                [NSNumber numberWithUnsignedLongLong:[kallocation kallocWithSize:0x4000]],
+                [NSNumber numberWithUnsignedLongLong:[kallocation kallocWithSize:0x4000]],
             ]; // Prealloc some pages cuz why not
             NSDictionary *boot_infoconts = @{
                 @"ptov_table": [NSNumber numberWithUnsignedLongLong:[theobjcbridge find_ptov_table]],
@@ -787,7 +787,8 @@ UInt64 helloworldtest(void) {
 }
 
 UInt64 testKalloc(void) {
-    UInt64 ret = (UInt64)kalloc(0x1000);
-    NSLog(@"Kalloc'ed to %p",ret);
+    UInt64 ret = [kallocation kallocWithSize:0x100];
+    NSLog(@"Kalloc'ed to %p",(void *)ret);
+    [kallocation kfreeWithWhereis:ret];
     return ret;
 }

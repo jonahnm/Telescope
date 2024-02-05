@@ -28,9 +28,9 @@
 		9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */ = {isa = PBXBuildFile; fileRef = 9732F8E52B55A6ED00762F31 /* loadtelescoped.m */; };
 		97DD2ED62B644C9900930808 /* Tarscape in Frameworks */ = {isa = PBXBuildFile; productRef = 97DD2ED52B644C9900930808 /* Tarscape */; };
 		97DD2EDD2B644FBE00930808 /* DataCompression in Frameworks */ = {isa = PBXBuildFile; productRef = 97DD2EDC2B644FBE00930808 /* DataCompression */; };
+		97E09E302B70A8320045250F /* kallocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E09E2F2B70A8320045250F /* kallocation.swift */; };
 		97EE5C722B5DA7C50066184E /* DriverKit.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C712B5DA7C50066184E /* DriverKit.c */; };
 		97EE5C752B5DA80E0066184E /* device.c in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C742B5DA80E0066184E /* device.c */; };
-		97EE5C772B5E05040066184E /* kallocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EE5C762B5E05040066184E /* kallocation.m */; };
 		97F20D9B2B63178100CFB152 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = 97F20D9A2B63178100CFB152 /* libzstd */; };
 		D5123A022B4C40B10040BF9D /* pplrw.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A012B4C40B10040BF9D /* pplrw.m */; };
 		D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D5123A052B4C41040040BF9D /* IOSurface_Primitives.m */; };
@@ -147,14 +147,13 @@
 		9732F8E72B55BBD800762F31 /* posix_spawn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = posix_spawn.h; sourceTree = "<group>"; };
 		97A13EC42B63E1B800BFB6FC /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ZipArchive/Package.swift; sourceTree = "<group>"; };
 		97A13EC52B63E1E200BFB6FC /* ZipArchive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipArchive.xcodeproj; path = ZipArchive/ZipArchive.xcodeproj; sourceTree = "<group>"; };
-		97A312392B5EFFAD004773EB /* kallocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kallocation.h; sourceTree = "<group>"; };
 		97A9DCE32B5B5366007ECBC9 /* trustcache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = trustcache.h; sourceTree = "<group>"; };
+		97E09E2F2B70A8320045250F /* kallocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kallocation.swift; sourceTree = "<group>"; };
 		97EE5C6F2B5DA7620066184E /* DriverKitClasses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKitClasses.h; sourceTree = "<group>"; };
 		97EE5C702B5DA78D0066184E /* DriverKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKit.h; sourceTree = "<group>"; };
 		97EE5C712B5DA7C50066184E /* DriverKit.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = DriverKit.c; sourceTree = "<group>"; };
 		97EE5C732B5DA7ED0066184E /* device.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = device.h; sourceTree = "<group>"; };
 		97EE5C742B5DA80E0066184E /* device.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = device.c; sourceTree = "<group>"; };
-		97EE5C762B5E05040066184E /* kallocation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = kallocation.m; sourceTree = "<group>"; };
 		97F6056F2B5F18B300A71C74 /* kernelinclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kernelinclude.h; sourceTree = "<group>"; };
 		97F605F72B5F22AF00A71C74 /* ipc_mqueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ipc_mqueue.h; sourceTree = "<group>"; };
 		97F605F82B5F230600A71C74 /* waitq.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = waitq.h; sourceTree = "<group>"; };
@@ -266,9 +265,8 @@
 				9732F8E52B55A6ED00762F31 /* loadtelescoped.m */,
 				9732F8E42B55A50C00762F31 /* loadtelescoped.h */,
 				97A9DCE32B5B5366007ECBC9 /* trustcache.h */,
-				97EE5C762B5E05040066184E /* kallocation.m */,
-				97A312392B5EFFAD004773EB /* kallocation.h */,
 				97F6056F2B5F18B300A71C74 /* kernelinclude.h */,
+				97E09E2F2B70A8320045250F /* kallocation.swift */,
 			);
 			path = "kfd-meow";
 			sourceTree = "<group>";
@@ -567,6 +565,7 @@
 			files = (
 				D5D2DDB82B4832E600B62BED /* fugufinder.swift in Sources */,
 				D5D2DDDA2B483B1800B62BED /* libgrabkernel.a in Sources */,
+				97E09E302B70A8320045250F /* kallocation.swift in Sources */,
 				D5BF82C52B50242F00C02D17 /* patchfinder.m in Sources */,
 				D5123A022B4C40B10040BF9D /* pplrw.m in Sources */,
 				D5123A062B4C41040040BF9D /* IOSurface_Primitives.m in Sources */,
@@ -576,7 +575,6 @@
 				D56FB6A02B499B0C00A48CA4 /* kfd-meow.swift in Sources */,
 				86A48AC42B2B4A0A005D1639 /* krkw.c in Sources */,
 				86A48ABD2B2B4A0A005D1639 /* perf.m in Sources */,
-				97EE5C772B5E05040066184E /* kallocation.m in Sources */,
 				658B80042B60C06E005D783E /* LegitContentView.swift in Sources */,
 				D5BF82C62B50242F00C02D17 /* libdimentio.c in Sources */,
 				9732F8E62B55A6ED00762F31 /* loadtelescoped.m in Sources */,
