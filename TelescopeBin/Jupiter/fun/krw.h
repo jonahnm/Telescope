@@ -37,5 +37,5 @@ uint64_t do_vtophys(uint64_t what);
 uint64_t do_phystokv(uint64_t what);
 uint64_t kread64_ptr(uint64_t kaddr);
 void kreadbuf(uint64_t kaddr, void* output, size_t size);
-
+uint64_t get_selfproc(void);
 #endif /* krw_h */

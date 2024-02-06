@@ -16,16 +16,16 @@ import Foundation
         }
         var buf = [UInt8](repeating: 0, count: size)
         write(newPipe[1], &buf, size)
-        let proc_fd_ofiles = kread64_ptr_kfd(get_current_proc() + 0xf8)
-        let fproc = kread64_ptr_kfd(proc_fd_ofiles + UInt64(newPipe[0] * 8))
-        let fglob = kread64_ptr_kfd(fproc + 0x10)
-        let rawpipe = kread64_ptr_kfd(fglob + 0x38)
+        let proc_fd_ofiles = kread64_ptr(get_selfproc() + 0xf8)
+        let fproc = kread64_ptr(proc_fd_ofiles + UInt64(newPipe[0] * 8))
+        let fglob = kread64_ptr(fproc + 0x10)
+        let rawpipe = kread64_ptr(fglob + 0x38)
         let pipebufoff = UInt64(MemoryLayout<u_int>.size * 3)
-        let pipeBuf = kread64_ptr_kfd(rawpipe + pipebufoff)
+        let pipeBuf = kread64_ptr(rawpipe + pipebufoff)
         kallocPipes.append((pipeBuf,(newPipe[0],newPipe[1])))
         return pipeBuf
     }
-    @objc public static func addPipe(allocLoc: UInt64,pipe0: Int32,pipe1: Int32) {
+    @objc public static func addPipeWithAllocLoc(_ allocLoc: UInt64,Pipe0 pipe0: Int32,Pipe1 pipe1: Int32) {
         kallocPipes.append((allocLoc,(pipe0,pipe1)))
     }
     @objc public static func kfree(whereis: UInt64) {

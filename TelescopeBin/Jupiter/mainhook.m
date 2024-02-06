@@ -138,8 +138,10 @@ void jupiter_recieved_message(mach_port_t machPort,bool systemwide) {
     }
 }
 */
-void exceptionPlace() {
-    do_kopen(512, 2, 1, 1)
+void incaseofexception(void) {
+    JupiterLogDebug("I appear to have reached the exception function, an exception must've been handled by Telescope.");
+    usleep(500);
+    do_kopen(512, 2, 1, 1);
 }
 bool server_hook(xpc_object_t msg) {
     JupiterLogDebug("Hook called!");
@@ -151,7 +153,7 @@ bool server_hook(xpc_object_t msg) {
         xpc_object_t reply = xpc_dictionary_create_reply(msg);
         uint64_t id = xpc_dictionary_get_uint64(msg, "id");
         if(id == JUPITER_MSG_POLL_IS_READY) {
-            xpc_dictionary_set_uint64(reply, "ret", (uint64_t)exceptionPlace);
+            xpc_dictionary_set_uint64(reply, "ret", (uint64_t)incaseofexception);
         }
         if(id == JUPITER_MSG_KOPEN) {
             do_kopen(512, 2, 1, 1);
@@ -162,7 +164,7 @@ bool server_hook(xpc_object_t msg) {
             int pipefds[2];
             pipefds[0] = xpc_fd_dup(xpc_dictionary_get_value(msg,"fd0"));
             pipefds[1] = xpc_fd_dup(xpc_dictionary_get_value(msg, "fd1"));
-            [kallocation addPipe: where,pipefds[0],pipefds[1]];
+            [kallocation addPipeWithAllocLoc: where Pipe0:pipefds[0] Pipe1:pipefds[1]];
             xpc_dictionary_set_int64(reply, "ret", 1);
         }
         if(reply) {

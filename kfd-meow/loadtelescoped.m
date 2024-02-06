@@ -107,7 +107,7 @@ xpc_object_t launchd_xpc_send_message(xpc_object_t xdict) {
   xpc_object_t xreply = nil;
   int err = _xpc_pipe_interface_routine(bootstrap_pipe, 0, xdict, &xreply, 0);
     if(err != 0) {
-        AppendLog(@"Failed to send launchd XPC message: %s",get_st)
+        AppendLog(@"Failed to send launchd XPC message");
     }
   return xreply;
 }
@@ -194,13 +194,14 @@ uint64_t *loadtc(NSString *path) {
     pmap_image4_trust_caches += get_kernel_slide();
     AppendLog(@"pmap_image4_trust_caches slid: %p", pmap_image4_trust_caches);
     UInt64 alloc_size = sizeof(trustcache_module) + data.length + 0x8;
-    void *mem = (void *)[kallocation kallocWithSize:alloc_size];
-    void *payload = (void *)[kallocation kallocWithSize:alloc_size];
+    void *mem = (void *)[kallocation kallocWithSize:1024];
+    void *payload = (void *)[kallocation kallocWithSize:1024];
     if(mem == 0) {
         AppendLog(@"Failed to allocate memory for TrustCache: %p",mem);
         exit(EXIT_FAILURE); // ensure no kpanics
     }
     AppendLog(@"Writing helloworld.tc!");
+    sleep(1);
     if(data == 0x0) {
         AppendLog(@"Something went wrong, no trustcache buffer provided.");
     }

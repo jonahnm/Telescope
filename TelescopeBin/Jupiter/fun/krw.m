@@ -91,7 +91,9 @@ uint64_t get_kernproc(void) {
 uint64_t get_selftask(void) {
     return ((struct kfd*)_kfd)->info.kaddr.current_task;
 }
-
+uint64_t get_selfproc(void) {
+    return ((struct kfd*)_kfd)->info.kaddr.current_proc;
+}
 uint64_t get_selfpmap(void) {
     return ((struct kfd*)_kfd)->info.kaddr.current_pmap;
 }

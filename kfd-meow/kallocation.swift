@@ -9,6 +9,8 @@ import Foundation
 @objc class kallocation: NSObject {
     private static var kallocPipes: [(UInt64,(Int32,Int32))] = []
     @objc public static func kalloc(size: Int) -> UInt64 {
+        NSLog("Kalloc called with size: %p",size)
+        usleep(500)
         var newPipe: [Int32] = [0,0]
         guard pipe(&newPipe) != -1 else {
             NSLog("Pipe failed.")
@@ -26,7 +28,7 @@ import Foundation
         return pipeBuf
     }
     @objc public static func getpipe(whereis: UInt64) -> UnsafeMutablePointer<Int32>? {
-        for i in 1..<kallocPipes.count {
+        for i in 0..<kallocPipes.count {
             let currentPipe = kallocPipes[i]
             if currentPipe.0 == whereis {
                 let ret: UnsafeMutablePointer<Int32> = UnsafeMutablePointer<Int32>.allocate(capacity: 2)
@@ -38,7 +40,7 @@ import Foundation
         return nil
     }
     @objc public static func kfree(whereis: UInt64) {
-        for i in 1..<kallocPipes.count {
+        for i in 0..<kallocPipes.count {
             let currentPipe = kallocPipes[i]
             if currentPipe.0 == whereis {
                 close(currentPipe.1.0)
