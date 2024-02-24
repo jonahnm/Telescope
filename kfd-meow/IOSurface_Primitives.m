@@ -113,47 +113,33 @@ void IOSurface_set_rangeCount(uint64_t surface, uint32_t rangeCount)
     kwrite32_kfd(surface + 0x3e8, rangeCount);
 }
 
-mach_port_t IOSurface_map_getSurfacePort(uint64_t magic)
-{
+// Releases an IOSurfaceRef properly by decrementing its use count and releasing its Core Foundation reference.
+void IOSurface_release_surface(IOSurfaceRef surfaceRef) {
+    // Ensure the surfaceRef is valid
+    if (surfaceRef) {
+        // Decrement the use count of the IOSurface
+        IOSurfaceDecrementUseCount(surfaceRef);
+        
+        // Release the Core Foundation reference of the IOSurface
+        CFRelease(surfaceRef);
+    }
+}
+
+mach_port_t IOSurface_map_getSurfacePort(uint64_t magic) {
     IOSurfaceRef surfaceRef = IOSurfaceCreate((__bridge CFDictionaryRef)@{
         (__bridge NSString *)kIOSurfaceWidth : @120,
         (__bridge NSString *)kIOSurfaceHeight : @120,
         (__bridge NSString *)kIOSurfaceBytesPerElement : @4,
     });
     mach_port_t port = IOSurfaceCreateMachPort(surfaceRef);
+
+    IOSurface_release_surface(surfaceRef);
+    
     *((uint64_t *)IOSurfaceGetBaseAddress(surfaceRef)) = magic;
-    IOSurfaceDecrementUseCount(surfaceRef);
-    CFRelease(surfaceRef);
     return port;
 }
 
-//Thanks @jmpews
-uint64_t kread64_smr_kfd(uint64_t where)
-{
-    uint64_t value = kread64_kfd(where) | 0xffffff8000000000;
-    if((value & 0x400000000000) != 0)
-        value &= 0xFFFFFFFFFFFFFFE0;
-    return value;
-}
-
-uint64_t ipc_entry_lookup(mach_port_name_t port_name)
-{
-    uint64_t pr_task = get_current_task();
-    uint64_t itk_space_pac = kread64_kfd(pr_task + off_task_itk_space);
-    uint64_t itk_space = itk_space_pac | 0xffffff8000000000;
-    uint32_t port_index = MACH_PORT_INDEX(port_name);
-    
-    uint64_t is_table = kread64_smr_kfd(itk_space + off_ipc_space_is_table);
-    uint64_t entry = is_table + port_index * 0x18/*SIZE(ipc_entry)*/;
-    uint64_t object_pac = kread64_kfd(entry + off_ipc_entry_ie_object);
-    uint64_t object = object_pac | 0xffffff8000000000;
-    uint64_t kobject_pac = kread64_kfd(object + off_ipc_port_ip_kobject);
-    uint64_t kobject = kobject_pac | 0xffffff8000000000;
-    
-    return kobject;
-}
-mach_port_t IOSurface_map_forhandoff(uint64_t phys, uint64_t size)
-{
+mach_port_t IOSurface_map_forhandoff(uint64_t phys, uint64_t size) {
     mach_port_t surfaceMachPort = IOSurface_map_getSurfacePort(1337);
 
     uint64_t surfaceSendRight = ipc_entry_lookup(surfaceMachPort);
@@ -162,7 +148,7 @@ mach_port_t IOSurface_map_forhandoff(uint64_t phys, uint64_t size)
     uint64_t ranges = IOMemoryDescriptor_get_ranges(desc);
 
     kwrite64_kfd(ranges, phys);
-    kwrite64_kfd(ranges+8, size);
+    kwrite64_kfd(ranges + 8, size);
 
     IOMemoryDescriptor_set_size(desc, size);
 
@@ -179,8 +165,8 @@ mach_port_t IOSurface_map_forhandoff(uint64_t phys, uint64_t size)
 
     return surfaceMachPort;
 }
-void *IOSurface_map(uint64_t phys, uint64_t size)
-{
+
+void *IOSurface_map(uint64_t phys, uint64_t size) {
     mach_port_t surfaceMachPort = IOSurface_map_getSurfacePort(1337);
 
     uint64_t surfaceSendRight = ipc_entry_lookup(surfaceMachPort);
@@ -189,7 +175,7 @@ void *IOSurface_map(uint64_t phys, uint64_t size)
     uint64_t ranges = IOMemoryDescriptor_get_ranges(desc);
 
     kwrite64_kfd(ranges, phys);
-    kwrite64_kfd(ranges+8, size);
+    kwrite64_kfd(ranges + 8, size);
 
     IOMemoryDescriptor_set_size(desc, size);
 
@@ -205,8 +191,12 @@ void *IOSurface_map(uint64_t phys, uint64_t size)
     IOMemoryDescriptor_set_memRef(desc, 0);
 
     IOSurfaceRef mappedSurfaceRef = IOSurfaceLookupFromMachPort(surfaceMachPort);
+
+    IOSurface_release_surface(mappedSurfaceRef);
+    
     return IOSurfaceGetBaseAddress(mappedSurfaceRef);
 }
+
 static uint32_t
 base255_encode(uint32_t value) {
     uint32_t encoded = 0;
